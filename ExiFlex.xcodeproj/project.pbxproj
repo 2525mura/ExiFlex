@@ -1,0 +1,590 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
+		C05CB36A2787280D00B28849 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* ContentView.swift */; };
+		C05CB36C2787280F00B28849 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05CB36B2787280F00B28849 /* Assets.xcassets */; };
+		C05CB36F2787280F00B28849 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05CB36E2787280F00B28849 /* Preview Assets.xcassets */; };
+		C05CB3792787280F00B28849 /* ExiFlexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3782787280F00B28849 /* ExiFlexTests.swift */; };
+		C05CB3832787280F00B28849 /* ExiFlexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3822787280F00B28849 /* ExiFlexUITests.swift */; };
+		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C05CB3752787280F00B28849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C05CB35C2787280D00B28849 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C05CB3632787280D00B28849;
+			remoteInfo = ExiFlex;
+		};
+		C05CB37F2787280F00B28849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C05CB35C2787280D00B28849 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C05CB3632787280D00B28849;
+			remoteInfo = ExiFlex;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C05CB3672787280D00B28849 /* ExiFlexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexApp.swift; sourceTree = "<group>"; };
+		C05CB3692787280D00B28849 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C05CB36B2787280F00B28849 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C05CB36E2787280F00B28849 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C05CB3742787280F00B28849 /* ExiFlexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExiFlexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C05CB3782787280F00B28849 /* ExiFlexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexTests.swift; sourceTree = "<group>"; };
+		C05CB37E2787280F00B28849 /* ExiFlexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExiFlexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C05CB3822787280F00B28849 /* ExiFlexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITests.swift; sourceTree = "<group>"; };
+		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C05CB3612787280D00B28849 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C05CB3712787280F00B28849 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C05CB37B2787280F00B28849 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C05CB35B2787280D00B28849 = {
+			isa = PBXGroup;
+			children = (
+				C05CB3662787280D00B28849 /* ExiFlex */,
+				C05CB3772787280F00B28849 /* ExiFlexTests */,
+				C05CB3812787280F00B28849 /* ExiFlexUITests */,
+				C05CB3652787280D00B28849 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C05CB3652787280D00B28849 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C05CB3642787280D00B28849 /* ExiFlex.app */,
+				C05CB3742787280F00B28849 /* ExiFlexTests.xctest */,
+				C05CB37E2787280F00B28849 /* ExiFlexUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C05CB3662787280D00B28849 /* ExiFlex */ = {
+			isa = PBXGroup;
+			children = (
+				C05CB3672787280D00B28849 /* ExiFlexApp.swift */,
+				C05CB3692787280D00B28849 /* ContentView.swift */,
+				C05CB36B2787280F00B28849 /* Assets.xcassets */,
+				C05CB36D2787280F00B28849 /* Preview Content */,
+			);
+			path = ExiFlex;
+			sourceTree = "<group>";
+		};
+		C05CB36D2787280F00B28849 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				C05CB36E2787280F00B28849 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C05CB3772787280F00B28849 /* ExiFlexTests */ = {
+			isa = PBXGroup;
+			children = (
+				C05CB3782787280F00B28849 /* ExiFlexTests.swift */,
+			);
+			path = ExiFlexTests;
+			sourceTree = "<group>";
+		};
+		C05CB3812787280F00B28849 /* ExiFlexUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C05CB3822787280F00B28849 /* ExiFlexUITests.swift */,
+				C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */,
+			);
+			path = ExiFlexUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C05CB3632787280D00B28849 /* ExiFlex */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C05CB3882787280F00B28849 /* Build configuration list for PBXNativeTarget "ExiFlex" */;
+			buildPhases = (
+				C05CB3602787280D00B28849 /* Sources */,
+				C05CB3612787280D00B28849 /* Frameworks */,
+				C05CB3622787280D00B28849 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ExiFlex;
+			productName = ExiFlex;
+			productReference = C05CB3642787280D00B28849 /* ExiFlex.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C05CB3732787280F00B28849 /* ExiFlexTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C05CB38B2787280F00B28849 /* Build configuration list for PBXNativeTarget "ExiFlexTests" */;
+			buildPhases = (
+				C05CB3702787280F00B28849 /* Sources */,
+				C05CB3712787280F00B28849 /* Frameworks */,
+				C05CB3722787280F00B28849 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C05CB3762787280F00B28849 /* PBXTargetDependency */,
+			);
+			name = ExiFlexTests;
+			productName = ExiFlexTests;
+			productReference = C05CB3742787280F00B28849 /* ExiFlexTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C05CB37D2787280F00B28849 /* ExiFlexUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C05CB38E2787280F00B28849 /* Build configuration list for PBXNativeTarget "ExiFlexUITests" */;
+			buildPhases = (
+				C05CB37A2787280F00B28849 /* Sources */,
+				C05CB37B2787280F00B28849 /* Frameworks */,
+				C05CB37C2787280F00B28849 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C05CB3802787280F00B28849 /* PBXTargetDependency */,
+			);
+			name = ExiFlexUITests;
+			productName = ExiFlexUITests;
+			productReference = C05CB37E2787280F00B28849 /* ExiFlexUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C05CB35C2787280D00B28849 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					C05CB3632787280D00B28849 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					C05CB3732787280F00B28849 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = C05CB3632787280D00B28849;
+					};
+					C05CB37D2787280F00B28849 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = C05CB3632787280D00B28849;
+					};
+				};
+			};
+			buildConfigurationList = C05CB35F2787280D00B28849 /* Build configuration list for PBXProject "ExiFlex" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C05CB35B2787280D00B28849;
+			productRefGroup = C05CB3652787280D00B28849 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C05CB3632787280D00B28849 /* ExiFlex */,
+				C05CB3732787280F00B28849 /* ExiFlexTests */,
+				C05CB37D2787280F00B28849 /* ExiFlexUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C05CB3622787280D00B28849 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C05CB36F2787280F00B28849 /* Preview Assets.xcassets in Resources */,
+				C05CB36C2787280F00B28849 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C05CB3722787280F00B28849 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C05CB37C2787280F00B28849 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C05CB3602787280D00B28849 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C05CB36A2787280D00B28849 /* ContentView.swift in Sources */,
+				C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C05CB3702787280F00B28849 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C05CB3792787280F00B28849 /* ExiFlexTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C05CB37A2787280F00B28849 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */,
+				C05CB3832787280F00B28849 /* ExiFlexUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C05CB3762787280F00B28849 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C05CB3632787280D00B28849 /* ExiFlex */;
+			targetProxy = C05CB3752787280F00B28849 /* PBXContainerItemProxy */;
+		};
+		C05CB3802787280F00B28849 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C05CB3632787280D00B28849 /* ExiFlex */;
+			targetProxy = C05CB37F2787280F00B28849 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C05CB3862787280F00B28849 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C05CB3872787280F00B28849 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C05CB3892787280F00B28849 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ExiFlex/Preview Content\"";
+				DEVELOPMENT_TEAM = PUC375VZ46;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlex";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C05CB38A2787280F00B28849 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ExiFlex/Preview Content\"";
+				DEVELOPMENT_TEAM = PUC375VZ46;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlex";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C05CB38C2787280F00B28849 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PUC375VZ46;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlexTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExiFlex.app/ExiFlex";
+			};
+			name = Debug;
+		};
+		C05CB38D2787280F00B28849 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PUC375VZ46;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlexTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExiFlex.app/ExiFlex";
+			};
+			name = Release;
+		};
+		C05CB38F2787280F00B28849 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PUC375VZ46;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlexUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ExiFlex;
+			};
+			name = Debug;
+		};
+		C05CB3902787280F00B28849 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PUC375VZ46;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlexUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ExiFlex;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C05CB35F2787280D00B28849 /* Build configuration list for PBXProject "ExiFlex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C05CB3862787280F00B28849 /* Debug */,
+				C05CB3872787280F00B28849 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C05CB3882787280F00B28849 /* Build configuration list for PBXNativeTarget "ExiFlex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C05CB3892787280F00B28849 /* Debug */,
+				C05CB38A2787280F00B28849 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C05CB38B2787280F00B28849 /* Build configuration list for PBXNativeTarget "ExiFlexTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C05CB38C2787280F00B28849 /* Debug */,
+				C05CB38D2787280F00B28849 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C05CB38E2787280F00B28849 /* Build configuration list for PBXNativeTarget "ExiFlexUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C05CB38F2787280F00B28849 /* Debug */,
+				C05CB3902787280F00B28849 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C05CB35C2787280D00B28849 /* Project object */;
+}
