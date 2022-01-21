@@ -7,13 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C02D7EF2278AE95D00920A32 /* DevAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* DevAdvViewModel.swift */; };
+		C02D7EF4278AEAE200920A32 /* DevAdvListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* DevAdvListViewModel.swift */; };
+		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
 		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
-		C05CB36A2787280D00B28849 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* ContentView.swift */; };
+		C05CB36A2787280D00B28849 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* RootView.swift */; };
 		C05CB36C2787280F00B28849 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05CB36B2787280F00B28849 /* Assets.xcassets */; };
 		C05CB36F2787280F00B28849 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05CB36E2787280F00B28849 /* Preview Assets.xcassets */; };
 		C05CB3792787280F00B28849 /* ExiFlexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3782787280F00B28849 /* ExiFlexTests.swift */; };
 		C05CB3832787280F00B28849 /* ExiFlexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3822787280F00B28849 /* ExiFlexUITests.swift */; };
 		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
+		C064AD3C278734370014BFFD /* DevAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* DevAdvCardView.swift */; };
+		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
+		C0BF9872278C16160095CC65 /* DevConnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9871278C16160095CC65 /* DevConnView.swift */; };
+		C0BF9874278C3AE40095CC65 /* DevConnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9873278C3AE40095CC65 /* DevConnViewModel.swift */; };
+		C0BF9876278C3D1A0095CC65 /* DevAdvListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* DevAdvListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +42,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C02D7EF1278AE95D00920A32 /* DevAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvViewModel.swift; sourceTree = "<group>"; };
+		C02D7EF3278AEAE200920A32 /* DevAdvListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvListViewModel.swift; sourceTree = "<group>"; };
+		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3672787280D00B28849 /* ExiFlexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexApp.swift; sourceTree = "<group>"; };
-		C05CB3692787280D00B28849 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C05CB3692787280D00B28849 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		C05CB36B2787280F00B28849 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C05CB36E2787280F00B28849 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C05CB3742787280F00B28849 /* ExiFlexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExiFlexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +55,11 @@
 		C05CB37E2787280F00B28849 /* ExiFlexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExiFlexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3822787280F00B28849 /* ExiFlexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITests.swift; sourceTree = "<group>"; };
 		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C064AD3B278734370014BFFD /* DevAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvCardView.swift; sourceTree = "<group>"; };
+		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
+		C0BF9871278C16160095CC65 /* DevConnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevConnView.swift; sourceTree = "<group>"; };
+		C0BF9873278C3AE40095CC65 /* DevConnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevConnViewModel.swift; sourceTree = "<group>"; };
+		C0BF9875278C3D1A0095CC65 /* DevAdvListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +87,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C02D7EF0278AE88700920A32 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				C059CA6427906DF2008CB072 /* BleService.swift */,
+				C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 		C05CB35B2787280D00B28849 = {
 			isa = PBXGroup;
 			children = (
@@ -94,8 +119,10 @@
 		C05CB3662787280D00B28849 /* ExiFlex */ = {
 			isa = PBXGroup;
 			children = (
+				C02D7EF0278AE88700920A32 /* models */,
+				C0A5B55F27888B860016A026 /* viewModels */,
+				C064AD3827872D670014BFFD /* views */,
 				C05CB3672787280D00B28849 /* ExiFlexApp.swift */,
-				C05CB3692787280D00B28849 /* ContentView.swift */,
 				C05CB36B2787280F00B28849 /* Assets.xcassets */,
 				C05CB36D2787280F00B28849 /* Preview Content */,
 			);
@@ -125,6 +152,27 @@
 				C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */,
 			);
 			path = ExiFlexUITests;
+			sourceTree = "<group>";
+		};
+		C064AD3827872D670014BFFD /* views */ = {
+			isa = PBXGroup;
+			children = (
+				C05CB3692787280D00B28849 /* RootView.swift */,
+				C064AD3B278734370014BFFD /* DevAdvCardView.swift */,
+				C0BF9871278C16160095CC65 /* DevConnView.swift */,
+				C0BF9875278C3D1A0095CC65 /* DevAdvListView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		C0A5B55F27888B860016A026 /* viewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C02D7EF1278AE95D00920A32 /* DevAdvViewModel.swift */,
+				C02D7EF3278AEAE200920A32 /* DevAdvListViewModel.swift */,
+				C0BF9873278C3AE40095CC65 /* DevConnViewModel.swift */,
+			);
+			path = viewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +305,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C05CB36A2787280D00B28849 /* ContentView.swift in Sources */,
+				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
+				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
+				C0BF9876278C3D1A0095CC65 /* DevAdvListView.swift in Sources */,
+				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
+				C0BF9874278C3AE40095CC65 /* DevConnViewModel.swift in Sources */,
+				C0BF9872278C16160095CC65 /* DevConnView.swift in Sources */,
+				C02D7EF2278AE95D00920A32 /* DevAdvViewModel.swift in Sources */,
 				C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */,
+				C064AD3C278734370014BFFD /* DevAdvCardView.swift in Sources */,
+				C02D7EF4278AEAE200920A32 /* DevAdvListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +402,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -401,7 +457,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -422,11 +478,13 @@
 				DEVELOPMENT_TEAM = PUC375VZ46;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -451,11 +509,13 @@
 				DEVELOPMENT_TEAM = PUC375VZ46;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
