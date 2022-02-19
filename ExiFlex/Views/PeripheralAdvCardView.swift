@@ -1,5 +1,5 @@
 //
-//  DevAdvCardView.swift
+//  PeripheralAdvCardView.swift
 //  ExiFlex
 //
 //  Created by 村井慎太郎 on 2022/01/06.
@@ -7,31 +7,31 @@
 
 import SwiftUI
 
-struct DevAdvCardView: View {
+struct PeripheralAdvCardView: View {
 
-    let viewModel: DevAdvViewModel
+    let viewModel: PeripheralAdvViewModel
 
     var body: some View {
         HStack {
             VStack {
-                if viewModel.isLostAdv {
-                    Text(viewModel.devName ?? "Unnamed")
+                if viewModel.state == .adLost {
+                    Text(viewModel.peripheralName ?? "Unnamed")
                         .foregroundColor(.gray)
                         .font(.title)
                         .fontWeight(.bold)
                 } else {
-                    Text(viewModel.devName ?? "Unnamed")
+                    Text(viewModel.peripheralName ?? "Unnamed")
                         .foregroundColor(.black)
                         .font(.title)
                         .fontWeight(.bold)
                 }
-                Text(viewModel.periUuidString)
+                Text(viewModel.peripheralUuid)
                     .foregroundColor(.gray)
                     .font(.footnote)
             }
             Spacer()
             VStack {
-                if viewModel.isLostAdv {
+                if viewModel.state == .adLost {
                     Image(uiImage: UIImage(named: "ble_pow_0")!)
                         .renderingMode(.original)
                         .resizable()
@@ -63,13 +63,13 @@ struct DevAdvCardView: View {
     }
 }
 
-struct DevAdvCardView_Previews: PreviewProvider {
+struct PeripheralAdvCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            DevAdvCardView(viewModel: .init(periUuidString: "xx:xx:xx:xx:xx:xx", devName: "My BLE 1",
-                                            blePower: 1, rssi: -40))
-                .previewLayout(.sizeThatFits)
-
+            PeripheralAdvCardView(viewModel: .init(peripheralUuid: "xx:xx:xx:xx:xx:xx",
+                                                   peripheralName: "My BLE 1",
+                                                   blePower: 1,
+                                                   rssi: -40)).previewLayout(.sizeThatFits)
         }
     }
 }

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C02D7EF2278AE95D00920A32 /* DevAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* DevAdvViewModel.swift */; };
-		C02D7EF4278AEAE200920A32 /* DevAdvListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* DevAdvListViewModel.swift */; };
+		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
+		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
 		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
 		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
 		C05CB36A2787280D00B28849 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* RootView.swift */; };
@@ -17,11 +17,12 @@
 		C05CB3792787280F00B28849 /* ExiFlexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3782787280F00B28849 /* ExiFlexTests.swift */; };
 		C05CB3832787280F00B28849 /* ExiFlexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3822787280F00B28849 /* ExiFlexUITests.swift */; };
 		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
-		C064AD3C278734370014BFFD /* DevAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* DevAdvCardView.swift */; };
+		C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */; };
 		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
-		C0BF9872278C16160095CC65 /* DevConnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9871278C16160095CC65 /* DevConnView.swift */; };
-		C0BF9874278C3AE40095CC65 /* DevConnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9873278C3AE40095CC65 /* DevConnViewModel.swift */; };
-		C0BF9876278C3D1A0095CC65 /* DevAdvListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* DevAdvListView.swift */; };
+		C0BF9872278C16160095CC65 /* PeripheralConnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9871278C16160095CC65 /* PeripheralConnView.swift */; };
+		C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */; };
+		C0C372AC27BFA8D0000678A6 /* PeripheralConnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */; };
+		C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,8 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C02D7EF1278AE95D00920A32 /* DevAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvViewModel.swift; sourceTree = "<group>"; };
-		C02D7EF3278AEAE200920A32 /* DevAdvListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvListViewModel.swift; sourceTree = "<group>"; };
+		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
+		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
 		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3672787280D00B28849 /* ExiFlexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexApp.swift; sourceTree = "<group>"; };
@@ -55,11 +56,12 @@
 		C05CB37E2787280F00B28849 /* ExiFlexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExiFlexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3822787280F00B28849 /* ExiFlexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITests.swift; sourceTree = "<group>"; };
 		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		C064AD3B278734370014BFFD /* DevAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvCardView.swift; sourceTree = "<group>"; };
+		C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvCardView.swift; sourceTree = "<group>"; };
 		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
-		C0BF9871278C16160095CC65 /* DevConnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevConnView.swift; sourceTree = "<group>"; };
-		C0BF9873278C3AE40095CC65 /* DevConnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevConnViewModel.swift; sourceTree = "<group>"; };
-		C0BF9875278C3D1A0095CC65 /* DevAdvListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAdvListView.swift; sourceTree = "<group>"; };
+		C0BF9871278C16160095CC65 /* PeripheralConnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralConnView.swift; sourceTree = "<group>"; };
+		C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListView.swift; sourceTree = "<group>"; };
+		C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralConnViewModel.swift; sourceTree = "<group>"; };
+		C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,13 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C02D7EF0278AE88700920A32 /* models */ = {
+		C02D7EF0278AE88700920A32 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C0F3A79827AE50DC00F870BE /* Enums */,
 				C059CA6427906DF2008CB072 /* BleService.swift */,
 				C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */,
 			);
-			path = models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		C05CB35B2787280D00B28849 = {
@@ -119,9 +122,9 @@
 		C05CB3662787280D00B28849 /* ExiFlex */ = {
 			isa = PBXGroup;
 			children = (
-				C02D7EF0278AE88700920A32 /* models */,
-				C0A5B55F27888B860016A026 /* viewModels */,
-				C064AD3827872D670014BFFD /* views */,
+				C02D7EF0278AE88700920A32 /* Models */,
+				C0A5B55F27888B860016A026 /* ViewModels */,
+				C064AD3827872D670014BFFD /* Views */,
 				C05CB3672787280D00B28849 /* ExiFlexApp.swift */,
 				C05CB36B2787280F00B28849 /* Assets.xcassets */,
 				C05CB36D2787280F00B28849 /* Preview Content */,
@@ -154,25 +157,33 @@
 			path = ExiFlexUITests;
 			sourceTree = "<group>";
 		};
-		C064AD3827872D670014BFFD /* views */ = {
+		C064AD3827872D670014BFFD /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				C05CB3692787280D00B28849 /* RootView.swift */,
-				C064AD3B278734370014BFFD /* DevAdvCardView.swift */,
-				C0BF9871278C16160095CC65 /* DevConnView.swift */,
-				C0BF9875278C3D1A0095CC65 /* DevAdvListView.swift */,
+				C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */,
+				C0BF9871278C16160095CC65 /* PeripheralConnView.swift */,
+				C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */,
 			);
-			path = views;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		C0A5B55F27888B860016A026 /* viewModels */ = {
+		C0A5B55F27888B860016A026 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				C02D7EF1278AE95D00920A32 /* DevAdvViewModel.swift */,
-				C02D7EF3278AEAE200920A32 /* DevAdvListViewModel.swift */,
-				C0BF9873278C3AE40095CC65 /* DevConnViewModel.swift */,
+				C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */,
+				C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */,
+				C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */,
 			);
-			path = viewModels;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C0F3A79827AE50DC00F870BE /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,14 +318,15 @@
 			files = (
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
-				C0BF9876278C3D1A0095CC65 /* DevAdvListView.swift in Sources */,
+				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
-				C0BF9874278C3AE40095CC65 /* DevConnViewModel.swift in Sources */,
-				C0BF9872278C16160095CC65 /* DevConnView.swift in Sources */,
-				C02D7EF2278AE95D00920A32 /* DevAdvViewModel.swift in Sources */,
+				C0BF9872278C16160095CC65 /* PeripheralConnView.swift in Sources */,
+				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
+				C0C372AC27BFA8D0000678A6 /* PeripheralConnViewModel.swift in Sources */,
+				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,
 				C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */,
-				C064AD3C278734370014BFFD /* DevAdvCardView.swift in Sources */,
-				C02D7EF4278AEAE200920A32 /* DevAdvListViewModel.swift in Sources */,
+				C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */,
+				C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
