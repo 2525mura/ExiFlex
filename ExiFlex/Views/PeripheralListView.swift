@@ -19,7 +19,7 @@ struct PeripheralListView: View {
                     // タップ後に表示するビュー。リストに表示するビューと一緒に生成される。
                     // タップ後に生成されるわけではない。
                     destination: PeripheralConnView(
-                        viewModel: viewModel.connViewModel).onAppear {
+                        viewModel: device.connViewModel).onAppear {
                         viewModel.connectDevice(device: device)
                     }.onDisappear {
                         print("DisAppear")

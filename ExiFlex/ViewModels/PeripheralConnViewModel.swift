@@ -12,13 +12,14 @@ final class PeripheralConnViewModel: ObservableObject {
     let bleService: BleService
     let peripheralUuid: String
     let peripheralName: String?
-    var state: BlePeripheralState = .adAct
+    var state: BlePeripheralState
     var shutterCount: Int
 
-    init(bleService: BleService) {
+    init(peripheralUuid: String, peripheralName: String?, bleService: BleService) {
         self.bleService = bleService
-        self.peripheralUuid = "N/A"
-        self.peripheralName = nil
+        self.peripheralUuid = peripheralUuid
+        self.peripheralName = peripheralName
+        self.state = .adAct
         self.shutterCount = 0
     }
 }

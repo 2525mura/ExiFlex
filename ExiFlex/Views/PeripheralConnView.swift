@@ -23,6 +23,8 @@ struct PeripheralConnView: View {
 
 struct PeripheralConnView_Previews: PreviewProvider {
     static var previews: some View {
-        PeripheralConnView(viewModel: .init(bleService: .init()))
+        PeripheralConnView(viewModel: .init(peripheralUuid: "uuid",
+                                            peripheralName: "N/A",
+                                            bleService: .init()))
     }
 }

@@ -13,12 +13,10 @@ final class PeripheralListViewModel: ObservableObject {
 
     let bleService: BleService
     @Published private(set) var devices: [PeripheralAdvViewModel] = []
-    @Published private(set) var connViewModel: PeripheralConnViewModel
     private var cancellables: [AnyCancellable] = []
     
     init() {
         self.bleService = BleService()
-        self.connViewModel = PeripheralConnViewModel(bleService: self.bleService)
         bind()
     }
     
@@ -31,16 +29,17 @@ final class PeripheralListViewModel: ObservableObject {
             if blePower > 4 {blePower = 4}
             let rssi = Int(peripheral.rssi)
             // 既にペリフェラルが検出済みリストに登録されているかチェック
-            if let foundId = self.devices.firstIndex(where: { return $0.peripheralUuid == peripheral.peripheralUuid }) {
-                self.devices[foundId].blePower = blePower
-                self.devices[foundId].rssi = rssi
-                self.devices[foundId].state = peripheral.state
+            if let found = self.devices.first(where: { return $0.peripheralUuid == peripheral.peripheralUuid }) {
+                found.blePower = blePower
+                found.rssi = rssi
+                found.state = peripheral.state
             } else {
                 self.devices.append(
                     PeripheralAdvViewModel(peripheralUuid: peripheral.peripheralUuid,
                                            peripheralName: peripheral.peripheralName,
                                            blePower: blePower,
-                                           rssi: rssi)
+                                           rssi: rssi,
+                                           bleService: self.bleService)
                 )
             }
         })
@@ -52,6 +51,7 @@ final class PeripheralListViewModel: ObservableObject {
     
     // ペリフェラルをタップした時に呼ばれる関数
     func connectDevice(device: PeripheralAdvViewModel) {
+        
         bleService.connectPeripheral(peripheralUuid: device.peripheralUuid)
         if let found = devices.first(where: { return $0.peripheralUuid == device.peripheralUuid }) {
         }
