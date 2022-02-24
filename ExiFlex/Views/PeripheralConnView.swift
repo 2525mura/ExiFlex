@@ -13,7 +13,6 @@ struct PeripheralConnView: View {
     
     var body: some View {
         VStack() {
-            Text("接続デバイス：\(viewModel.peripheralName ?? "N/A")").frame(height:20)
             Text("UUID：\(viewModel.peripheralUuid)").frame(height:20)
             Text("シャッター回数：\(viewModel.shutterCount)").frame(height:20)
             Spacer()

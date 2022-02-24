@@ -18,6 +18,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     // ペリフェラルのアドバタイズイベントをViewModelに通知するためのSubject
     let peripheralAdvSubject = PassthroughSubject<BlePeripheralModel, Never>()
     
+    // MARK: ESP32 Ble UUID
+    let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+    let characteristic_uuid = "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+    
     // MARK: - Init
     // セントラルマネージャを起動する
     override init() {
@@ -54,7 +58,6 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         // 既にペリフェラルが検出済みリストに登録されているかチェック
         if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
             // RSSIと最終アドバタイズ受信日時を更新
-
             switch found.state {
             case .adAct:
                 // ペリフェラルのアドバタイズが有効
@@ -104,7 +107,6 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         if peripheral.state == .connected {
             // 検出済みリストに登録されているものかをチェック
             if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
-                
                 switch found.state {
                 case .adConnecting:
                     peripheral.delegate = self
@@ -134,24 +136,93 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     
     // 接続したペリフェラルのサービスが見つかった時に呼び出される
-    // 指定したキャラクタリスティックのスキャンを要求する
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        let periphName = peripheral.name ?? peripheral.identifier.uuidString
-        print("サービス発見！" + periphName)
-        if error == nil{
-            for service in peripheral.services!{
-            //    if service.uuid.uuidString.lowercased() == SERVICE_UUID.uuidString.lowercased() && !deviceList.contains(periphName){
-                    peripheral.discoverCharacteristics([CBUUID(string: "beb5483e-36e1-4688-b7f5-ea07361b26a8")], for: service)
-                    print("ペリフェラル：" + periphName + "サービス" + service.uuid.uuidString.lowercased())
-                    // BLE無線機個体に存在するサービスを一つずつビューに投入していく
-                
-                /*
-                    BluetoothManagerDelegate?.DeviceDidDiscoverd(deviceName: periphName, deviceIdentifier: peripheral.identifier.uuidString)
+        // 既にペリフェラルが検出済みリストに登録されているかチェック
+        if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
+            if error == nil {
+                // 指定したキャラクタリスティックへの接続を要求する
+                switch found.state {
+                case .connAct:
+                    if let services = peripheral.services {
+                        for service in services {
+                            // あらかじめ指定したサービスが見つかった
+                            if service.uuid == CBUUID(string: service_uuid) {
+                                print("サービス発見。キャラクラリスティックへ接続します。")
+                                peripheral.discoverCharacteristics([CBUUID(string: characteristic_uuid)], for: service)
+                            }
+                        }
+                    }
+                    
+                default:
+                    break
                 }
-                 */
+                
+            } else {
+                // ステータスを変更する
+                // found.
+                centralManager?.cancelPeripheralConnection(peripheral)
+                
             }
         }
-        
     }
     
+    // 指定したキャラクタリスティックが見つかった時に呼び出される
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        // 既にペリフェラルが検出済みリストに登録されているかチェック
+        if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
+            if error == nil {
+                // 指定したキャラクタリスティックへの接続を要求する
+                switch found.state {
+                case .connAct:
+                    if let characteristics = service.characteristics {
+                        for characteristic in characteristics {
+                            // あらかじめ指定したキャラクタリスティックが見つかった
+                            if characteristic.uuid == CBUUID(string: characteristic_uuid) {
+                                print("キャラクタリスティック発見!")
+                                //Notificationを受け取るよっていうハンドラ
+                                peripheral.setNotifyValue(true, for: characteristic)
+                            }
+                        }
+                    }
+                    
+                default:
+                    break
+                }
+                
+            } else {
+                // ステータスを変更する
+                // found.
+                centralManager?.cancelPeripheralConnection(peripheral)
+            }
+        }
+    }
+    
+    // ペリフェラルからnotify通知があった時に呼び出される
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        // 既にペリフェラルが検出済みリストに登録されているかチェック
+        if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
+            if error == nil {
+                // 指定したキャラクタリスティックへの接続を要求する
+                switch found.state {
+                case .connAct:
+                    // あらかじめ指定したキャラクタリスティックが見つかった
+                    if characteristic.uuid == CBUUID(string: characteristic_uuid) {
+                        guard let data = characteristic.value else {
+                            return
+                        }
+                        print(String(data: data, encoding: .ascii)!)
+                    }
+                default:
+                    break
+                }
+                
+            } else {
+                // ステータスを変更する
+                // found.
+                centralManager?.cancelPeripheralConnection(peripheral)
+                
+            }
+        }
+    
+    }
 }

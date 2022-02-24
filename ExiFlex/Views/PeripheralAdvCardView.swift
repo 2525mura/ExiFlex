@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PeripheralAdvCardView: View {
 
-    let viewModel: PeripheralAdvViewModel
+    @ObservedObject private(set) var viewModel: PeripheralAdvViewModel
 
     var body: some View {
         HStack {
