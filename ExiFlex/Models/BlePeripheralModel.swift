@@ -16,6 +16,7 @@ class BlePeripheralModel {
     private (set) var peripheralName: String?
     private (set) var state: BlePeripheralState     // BLEペリフェラル状態
     private var lastAdvRecvDate: Date               // Advertise最終受信日時
+    private var peripheralConnect: CBPeripheral?
 
     init(rssi: Double, peripheralUuid: String, peripheralName: String?) {
         self.rssi = rssi
@@ -23,6 +24,7 @@ class BlePeripheralModel {
         self.peripheralName = peripheralName
         self.state = .adAct
         self.lastAdvRecvDate = Date()
+        self.peripheralConnect = nil
     }
     
     func advReceive(rssi: Double) {
@@ -50,7 +52,8 @@ class BlePeripheralModel {
         self.state = .adConnectReq
     }
     
-    func connecting() {
+    func connecting(peripheral: CBPeripheral) {
+        self.peripheralConnect = peripheral
         self.state = .adConnecting
     }
     

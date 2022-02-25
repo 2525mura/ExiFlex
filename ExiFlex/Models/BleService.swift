@@ -14,9 +14,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     var centralManager: CBCentralManager?
     var blePeripheralModels: [BlePeripheralModel] = []
-    var peripheralConnect: CBPeripheral?
-    // ペリフェラルのアドバタイズイベントをViewModelに通知するためのSubject
+    // ペリフェラルのAdvertiseイベントをViewModelに通知するためのSubject
     let peripheralAdvSubject = PassthroughSubject<BlePeripheralModel, Never>()
+    // キャラクタリスティックのNotifyイベントをViewModelに通知するためのSubject
+    let characteristicMsgNotifySubject = PassthroughSubject<BleCharacteristicMsgEntity, Never>()
     
     // MARK: ESP32 Ble UUID
     let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
@@ -70,9 +71,8 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 print("ペリフェラル再受信")
             case .adConnectReq:
                 // 接続要求状態であればスキャンを停止して接続する
-                self.peripheralConnect = peripheral
                 centralManager?.stopScan()
-                found.connecting()
+                found.connecting(peripheral: peripheral)
                 centralManager?.connect(peripheral)
                 print("ペリフェラル接続受付")
             default:
@@ -210,7 +210,12 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                         guard let data = characteristic.value else {
                             return
                         }
-                        print(String(data: data, encoding: .ascii)!)
+                        characteristicMsgNotifySubject.send(
+                            BleCharacteristicMsgEntity(peripheralUuid: peripheral.identifier.uuidString,
+                                                       serviceUuid: characteristic.service!.uuid.uuidString,
+                                                       characteristicUuid: characteristic.uuid.uuidString,
+                                                       characteristicData: String(data: data, encoding: .ascii)!)
+                        )
                     }
                 default:
                     break

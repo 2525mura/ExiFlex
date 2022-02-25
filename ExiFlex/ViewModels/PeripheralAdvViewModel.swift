@@ -15,7 +15,7 @@ final class PeripheralAdvViewModel: Identifiable, ObservableObject {
     @Published var blePower: Int
     @Published var rssi: Int
     @Published var state: BlePeripheralState
-    @Published private(set) var connViewModel: PeripheralConnViewModel
+    @Published var connViewModel: PeripheralConnViewModel
     
     init(peripheralUuid: String, peripheralName: String?, blePower: Int, rssi: Int, bleService: BleService) {
         self.peripheralUuid = peripheralUuid

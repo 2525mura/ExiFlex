@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */; };
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
 		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
 		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicMsgEntity.swift; sourceTree = "<group>"; };
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
 		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
 		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
@@ -89,9 +91,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C016BEEA27C912FD0012582B /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 		C02D7EF0278AE88700920A32 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C016BEEA27C912FD0012582B /* Entities */,
 				C0F3A79827AE50DC00F870BE /* Enums */,
 				C059CA6427906DF2008CB072 /* BleService.swift */,
 				C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */,
@@ -316,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,

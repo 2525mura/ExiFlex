@@ -22,6 +22,7 @@ final class PeripheralListViewModel: ObservableObject {
     
     // BleServiceからのBleペリフェラル更新通知を受け付ける処理
     func bind() {
+        // BlePeripheralModelが更新されたら通知されるパイプライン処理の実装
         let peripheralAdvSubscriber = bleService.peripheralAdvSubject.sink(receiveValue: { peripheral in
             // rssiの範囲は-100 〜 -30
             var blePower = Int(ceil((peripheral.rssi + 100.0) / 17.5))
@@ -43,8 +44,17 @@ final class PeripheralListViewModel: ObservableObject {
                 )
             }
         })
+        
+        // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
+        let characteristicMsgSubscriber = bleService.characteristicMsgNotifySubject.sink(receiveValue: { characteristicMsg in
+            if let found = self.devices.first(where: { return $0.peripheralUuid == characteristicMsg.peripheralUuid }) {
+                found.connViewModel.shutterCount+=1
+            }
+        })
+        
         cancellables += [
-            peripheralAdvSubscriber
+            peripheralAdvSubscriber,
+            characteristicMsgSubscriber
         ]
         
     }
