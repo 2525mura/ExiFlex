@@ -14,8 +14,9 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     var centralManager: CBCentralManager?
     var blePeripheralModels: [BlePeripheralModel] = []
-    // ペリフェラルのAdvertiseイベントをViewModelに通知するためのSubject
-    let peripheralAdvSubject = PassthroughSubject<BlePeripheralModel, Never>()
+    private var advHealthCheckTimer: Timer?
+    // ペリフェラルの状態変化イベントをViewModelに通知するためのSubject
+    let peripheralSubject = PassthroughSubject<BlePeripheralModel, Never>()
     // キャラクタリスティックのNotifyイベントをViewModelに通知するためのSubject
     let characteristicMsgNotifySubject = PassthroughSubject<BleCharacteristicMsgEntity, Never>()
     
@@ -28,6 +29,18 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     override init() {
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
+        // 各ペリフェラルのアドバタイズ最終受信日時を監視するタイマー
+        self.advHealthCheckTimer = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: true,
+            block:{[weak self] (time:Timer) in
+                for bleModel in self!.blePeripheralModels {
+                    let isStatusChanged = bleModel.healthCheck()
+                    if isStatusChanged && bleModel.state == .adLost {
+                    print("ペリフェラル消失")
+                }
+            }
+        })
     }
     
     // セントラルマネージャーが電源ONになったらペリフェラルのスキャンを開始する
@@ -43,17 +56,6 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
-    func advHealthCheck() {
-        // ペリフェラルのヘルスチェックを行う
-        for bleModel in blePeripheralModels {
-            let isStatusChanged = bleModel.healthCheck()
-            if isStatusChanged && bleModel.state == .adLost {
-                peripheralAdvSubject.send(bleModel)
-                print("ペリフェラル消失")
-            }
-        }
-    }
-    
     // ペリフェラルのアドバタイズを受信
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         // 既にペリフェラルが検出済みリストに登録されているかチェック
@@ -63,35 +65,37 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             case .adAct:
                 // ペリフェラルのアドバタイズが有効
                 found.advReceive(rssi: RSSI.doubleValue)
-                peripheralAdvSubject.send(found)
             case .adLost:
                 // アドバタイズロスト回復
                 found.advReceive(rssi: RSSI.doubleValue)
-                peripheralAdvSubject.send(found)
                 print("ペリフェラル再受信")
             case .adConnectReq:
                 // 接続要求状態であればスキャンを停止して接続する
-                centralManager?.stopScan()
+                //centralManager?.stopScan()
                 found.connecting(peripheral: peripheral)
                 centralManager?.connect(peripheral)
                 print("ペリフェラル接続受付")
+            case .connDisconnected:
+                // 切断後のアドバタイズ受信
+                found.advReceive(rssi: RSSI.doubleValue)
+                print("切断後のアドバタイズ受信")
             default:
                 break
             }
             
         } else {
             // リストに追加
-            let blePeripheral = BlePeripheralModel(rssi: RSSI.doubleValue, peripheralUuid: peripheral.identifier.uuidString, peripheralName: peripheral.name)
+            let blePeripheral = BlePeripheralModel(rssi: RSSI.doubleValue,
+                                                   peripheralUuid: peripheral.identifier.uuidString,
+                                                   peripheralName: peripheral.name,
+                                                   peripheralSubject: self.peripheralSubject)
             blePeripheralModels.append(blePeripheral)
-            peripheralAdvSubject.send(blePeripheral)
             if let services = peripheral.services {
                 print("ペリフェラル追加\(peripheral.name ?? "Unknown")" + String(RSSI.doubleValue) + String(services.count))
             } else {
                 print("ペリフェラル追加\(peripheral.name ?? "Unknown")" + String(RSSI.doubleValue))
             }
         }
-        
-        advHealthCheck()
     }
     
     // ViewModelから指定したペリフェラルに接続するための関数
@@ -99,6 +103,15 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheralUuid }) {
             print("ペリフェラル接続要求")
             found.connectReq()
+        }
+    }
+    
+    // ViewModelから指定したペリフェラルを切断するための関数
+    func disConnectPeripheral(peripheralUuid: String) {
+        if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheralUuid }) {
+            print("ペリフェラル切断要求")
+            let peripheral = found.disConnectReq()
+            centralManager?.cancelPeripheralConnection(peripheral!)
         }
     }
     
@@ -127,7 +140,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("ペリフェラルへの接続が切断されました")
+        if let found = blePeripheralModels.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
+            found.disConnected()
+            print("ペリフェラル切断済み")
+        }
     }
     // バックグラウンド実行から復帰した際に呼ばれる
     func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
