@@ -17,5 +17,6 @@ public enum BlePeripheralState {
     // コネクション通信（データチャネル）
     case connAct
     case connLost
-    case connClosed
+    case connDisconnecting
+    case connDisconnected
 }
