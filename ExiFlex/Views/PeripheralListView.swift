@@ -22,7 +22,7 @@ struct PeripheralListView: View {
                         viewModel: device.connViewModel).onAppear {
                         viewModel.connectDevice(device: device)
                     }.onDisappear {
-                        print("DisAppear")
+                        viewModel.disConnectDevice(device: device)
                     },
                     label: {
                         // リストに表示するビュー
