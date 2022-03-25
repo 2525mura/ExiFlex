@@ -10,6 +10,7 @@
 		C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */; };
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
 		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
+		C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */; };
 		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
 		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
 		C05CB36A2787280D00B28849 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* RootView.swift */; };
@@ -19,6 +20,7 @@
 		C05CB3832787280F00B28849 /* ExiFlexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3822787280F00B28849 /* ExiFlexUITests.swift */; };
 		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
 		C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */; };
+		C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06B169427D8F4E100E4ABDF /* CameraControlView.swift */; };
 		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
 		C0BF9872278C16160095CC65 /* PeripheralConnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9871278C16160095CC65 /* PeripheralConnView.swift */; };
 		C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */; };
@@ -47,6 +49,7 @@
 		C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicMsgEntity.swift; sourceTree = "<group>"; };
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
 		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
+		C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaView.swift; sourceTree = "<group>"; };
 		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3672787280D00B28849 /* ExiFlexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexApp.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		C05CB3822787280F00B28849 /* ExiFlexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITests.swift; sourceTree = "<group>"; };
 		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvCardView.swift; sourceTree = "<group>"; };
+		C06B169427D8F4E100E4ABDF /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
 		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
 		C0BF9871278C16160095CC65 /* PeripheralConnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralConnView.swift; sourceTree = "<group>"; };
 		C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListView.swift; sourceTree = "<group>"; };
@@ -175,6 +179,8 @@
 				C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */,
 				C0BF9871278C16160095CC65 /* PeripheralConnView.swift */,
 				C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */,
+				C06B169427D8F4E100E4ABDF /* CameraControlView.swift */,
+				C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,10 +335,12 @@
 			files = (
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
+				C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C0BF9872278C16160095CC65 /* PeripheralConnView.swift in Sources */,
+				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
 				C0C372AC27BFA8D0000678A6 /* PeripheralConnViewModel.swift in Sources */,
 				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,

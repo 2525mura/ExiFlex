@@ -23,7 +23,7 @@ final class PeripheralListViewModel: ObservableObject {
     // BleServiceからのBleペリフェラル更新通知を受け付ける処理
     func bind() {
         // BlePeripheralModelが更新されたら通知されるパイプライン処理の実装
-        let peripheralAdvSubscriber = bleService.peripheralAdvSubject.sink(receiveValue: { peripheral in
+        let peripheralAdvSubscriber = bleService.peripheralSubject.sink(receiveValue: { peripheral in
             // rssiの範囲は-100 〜 -30
             var blePower = Int(ceil((peripheral.rssi + 100.0) / 17.5))
             if blePower < 0 {blePower = 0}
@@ -61,9 +61,18 @@ final class PeripheralListViewModel: ObservableObject {
     
     // ペリフェラルをタップした時に呼ばれる関数
     func connectDevice(device: PeripheralAdvViewModel) {
-        
         bleService.connectPeripheral(peripheralUuid: device.peripheralUuid)
         if let found = devices.first(where: { return $0.peripheralUuid == device.peripheralUuid }) {
+ 
         }
     }
+    
+    // < をタップした時に呼ばれる関数
+    func disConnectDevice(device: PeripheralAdvViewModel) {
+        bleService.disConnectPeripheral(peripheralUuid: device.peripheralUuid)
+        if let found = devices.first(where: { return $0.peripheralUuid == device.peripheralUuid }) {
+
+        }
+    }
+    
 }

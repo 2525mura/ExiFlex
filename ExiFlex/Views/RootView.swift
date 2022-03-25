@@ -12,16 +12,16 @@ struct RootView: View {
         TabView {
             PeripheralListView()
                 .tabItem {
-                    Image(systemName: "list.dash")
-                    Text("BLE List")
+                    Image(systemName: "personalhotspot")
+                    Text("Connect")
                 }
             Text("Settings Page")
                 .font(.largeTitle)
                 .fontWeight(.heavy)
                 .underline()
                 .tabItem {
-                    Image(systemName: "gear")
-                    Text("Settings")
+                    Image(systemName: "film")
+                    Text("My Memory")
                 }
         }
     }
