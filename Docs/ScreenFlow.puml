@@ -1,0 +1,51 @@
+@startuml
+left to right direction
+title Exiflex user story
+
+state "タイトル表示" as titlelogo
+
+state "RootView" as rootview {
+    state "撮影画面" as cameraview {
+        state "BLE未接続" as ble_close
+        state "アドバタイズOn" as ble_ad_on
+        state "BLEアドバタイズ画面" as ble_ad
+        state "アドバタイズOff" as ble_ad_off
+        state "BLE接続中" as ble_conn_now
+        state "BLE接続済み" as ble_conn
+
+        ble_close --> ble_ad_on : BLE設定押下
+        ble_ad_on --> ble_ad : モーダル表示
+        ble_ad --> ble_ad_off : BLE選択
+        ble_ad --> ble_ad_off : キャンセル
+        ble_ad_off --> ble_conn_now : BLE選択
+        ble_conn_now --> ble_close : BLE接続失敗
+        ble_conn_now --> ble_conn : BLE接続成功
+        ble_ad_off --> ble_close : キャンセル
+        ble_ad_on <-down- ble_conn : BLE設定押下
+        ble_close <-- ble_conn : アプリ終了 / 通信ロスト
+
+    }
+
+    state "管理画面" as manageview {
+        state "ロール一覧表示" as rolles
+        state "ロール詳細表示" as roll_detail
+
+        rolles --> roll_detail
+        rolles <- roll_detail
+    }
+
+    cameraview --> manageview : 管理タブ
+    manageview -> cameraview : 撮影タブ
+
+}
+
+[*] --> titlelogo : アプリ起動
+titlelogo --> cameraview : 初回遷移
+
+
+
+
+
+[*] <-- ble_close : アプリ終了
+
+@enduml

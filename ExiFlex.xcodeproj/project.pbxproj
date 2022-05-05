@@ -66,6 +66,8 @@
 		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
 		C0BF9871278C16160095CC65 /* PeripheralConnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralConnView.swift; sourceTree = "<group>"; };
 		C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListView.swift; sourceTree = "<group>"; };
+		C0C005CD282385E500244FD8 /* BleWorkerState.puml */ = {isa = PBXFileReference; lastKnownFileType = text; path = BleWorkerState.puml; sourceTree = "<group>"; };
+		C0C005CE282385E500244FD8 /* ScreenFlow.puml */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenFlow.puml; sourceTree = "<group>"; };
 		C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralConnViewModel.swift; sourceTree = "<group>"; };
 		C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +119,7 @@
 		C05CB35B2787280D00B28849 = {
 			isa = PBXGroup;
 			children = (
+				C0C005CC282385E500244FD8 /* Docs */,
 				C05CB3662787280D00B28849 /* ExiFlex */,
 				C05CB3772787280F00B28849 /* ExiFlexTests */,
 				C05CB3812787280F00B28849 /* ExiFlexUITests */,
@@ -193,6 +196,15 @@
 				C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C0C005CC282385E500244FD8 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				C0C005CD282385E500244FD8 /* BleWorkerState.puml */,
+				C0C005CE282385E500244FD8 /* ScreenFlow.puml */,
+			);
+			path = Docs;
 			sourceTree = "<group>";
 		};
 		C0F3A79827AE50DC00F870BE /* Enums */ = {

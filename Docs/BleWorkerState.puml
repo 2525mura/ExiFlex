@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+title BleWorker user story
+
+state "BLE接続済み" as ble_conn {
+    state "アイドル状態" as idol
+    state "撮影メタデータ登録" as regist_meta
+    regist_meta : 現在日時を登録
+    regist_meta : タイトルを登録
+    regist_meta : 露出情報を登録
+    regist_meta : GPS情報を登録
+    regist_meta : フィルムViewに各種情報を追加
+    state "露出計再表示" as update_exposure
+    update_exposure : LuxからLVを計算
+    update_exposure : 感度、F値、SSからEVを計算
+    update_exposure : LVとEVの差分を表示
+
+    idol --> idol : 待機
+    idol --> regist_meta : シャッターイベント受信
+    idol <-- regist_meta : 完了
+    idol --> update_exposure : 露出計イベント受信
+    idol <-- update_exposure : 完了
+
+}
+
+@enduml
