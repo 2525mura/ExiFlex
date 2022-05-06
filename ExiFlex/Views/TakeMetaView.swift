@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TakeMetaView: View {
     var body: some View {
+        // 背景画像を主役にテキストを書き込むか
+        // それともテキストを主役に背景を合わせるか
         VStack {
             HStack {
                 Text("Title.").padding(.trailing, 10)

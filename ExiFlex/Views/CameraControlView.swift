@@ -12,7 +12,14 @@ struct CameraControlView: View {
     @State private var selectionValue = 0
     
     var body: some View {
+        // 縦に作っていった方が、僕にとってはやりやすい、なぜならスマホは縦画面だから。
         VStack {
+            HStack {
+                Spacer()
+                Text("BLE 接続成功")
+                Image(systemName: "personalhotspot").padding(.trailing, 10)
+            }
+            Text(" ")
             HStack {
                 Text("◀︎")
                     .foregroundColor(.gray)
@@ -38,7 +45,7 @@ struct CameraControlView: View {
                     Text("200").tag(200)
                     Text("400").tag(400)
                     Text("800").tag(800)
-                }.frame(width: 100, height: 100)
+                }.frame(width: 100, height: 150)
                     .clipped()
                     //.pickerStyle(WheelPickerStyle())
                 Picker(selection: $selectionValue, label: Text("")) {
@@ -47,12 +54,12 @@ struct CameraControlView: View {
                     Text("2.8").tag(200)
                     Text("4").tag(400)
                     Text("5.6").tag(800)
-                }.frame(width: 100, height: 100)
+                }.frame(width: 100, height: 150)
                     .clipped()
                     //.pickerStyle(WheelPickerStyle())
             }
-            
-            
+            // Spacer()は、VStack, HStackに1個だけ入れると最高にかっこいい
+            Spacer()
             ScrollView(.horizontal) {
                 HStack {
                     TakeMetaView()
