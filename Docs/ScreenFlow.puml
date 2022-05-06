@@ -10,17 +10,23 @@ state "RootView" as rootview {
         state "アドバタイズOn" as ble_ad_on
         state "BLEアドバタイズ画面" as ble_ad
         state "アドバタイズOff" as ble_ad_off
+        ble_ad_off : アドバタイズOff
+        ble_ad_off : 既に接続されているものを切断
+        ble_ad_off : 選択したペリフェラル以外を削除
+        state "アドバタイズOff Cancel" as ble_ad_off_cancel
+        ble_ad_off_cancel : アドバタイズOff
+        ble_ad_off_cancel : 接続済みペリフェラル以外を削除
         state "BLE接続中" as ble_conn_now
         state "BLE接続済み" as ble_conn
 
         ble_close --> ble_ad_on : BLE設定押下
         ble_ad_on --> ble_ad : モーダル表示
-        ble_ad --> ble_ad_off : BLE選択
-        ble_ad --> ble_ad_off : キャンセル
-        ble_ad_off --> ble_conn_now : BLE選択
+        ble_ad --> ble_ad_off : ペリフェラル選択
+        ble_ad --> ble_ad_off_cancel : キャンセル
+        ble_ad_off --> ble_conn_now : ペリフェラル選択
         ble_conn_now --> ble_close : BLE接続失敗
         ble_conn_now --> ble_conn : BLE接続成功
-        ble_ad_off --> ble_close : キャンセル
+        ble_ad_off_cancel --> ble_close : キャンセル
         ble_ad_on <-down- ble_conn : BLE設定押下
         ble_close <-- ble_conn : アプリ終了 / 通信ロスト
 

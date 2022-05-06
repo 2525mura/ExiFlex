@@ -29,18 +29,12 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     override init() {
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
-        // 各ペリフェラルのアドバタイズ最終受信日時を監視するタイマー
-        self.advHealthCheckTimer = Timer.scheduledTimer(
-            withTimeInterval: 1,
-            repeats: true,
-            block:{[weak self] (time:Timer) in
-                for bleModel in self!.blePeripheralModels {
-                    let isStatusChanged = bleModel.healthCheck()
-                    if isStatusChanged && bleModel.state == .adLost {
-                    print("ペリフェラル消失")
-                }
-            }
-        })
+    }
+    
+    @objc private func advHealthCheckFunc() {
+        for bleModel in self.blePeripheralModels {
+            bleModel.advHealthCheck(notifier: self.peripheralSubject)
+        }
     }
     
     // セントラルマネージャーが電源ONになったらペリフェラルのスキャンを開始する
@@ -49,11 +43,31 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         switch central.state {
         // どんなサービスでもスキャン対象とする、アドバタイズを2回以上受信した場合も通知する
         case CBManagerState.poweredOn:
-            centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+            // とりあえずここでスタートする
+            startAdvertiseScan()
             break
         default:
             break
         }
+    }
+    
+    
+    func startAdvertiseScan() {
+        centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+        // 各ペリフェラルのアドバタイズ最終受信日時を監視するタイマー
+        self.advHealthCheckTimer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(self.advHealthCheckFunc),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+    
+    
+    func stopAdvertiseScan() {
+        self.advHealthCheckTimer?.invalidate()
+        centralManager?.stopScan()
     }
     
     // ペリフェラルのアドバタイズを受信
@@ -64,31 +78,32 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             switch found.state {
             case .adAct:
                 // ペリフェラルのアドバタイズが有効
-                found.advReceive(rssi: RSSI.doubleValue)
+                found.advReceive(rssi: RSSI.doubleValue, notifier: self.peripheralSubject)
             case .adLost:
                 // アドバタイズロスト回復
-                found.advReceive(rssi: RSSI.doubleValue)
+                found.advReceive(rssi: RSSI.doubleValue, notifier: self.peripheralSubject)
                 print("ペリフェラル再受信")
             case .adConnectReq:
-                // 接続要求状態であればスキャンを停止して接続する
-                //centralManager?.stopScan()
+                // スキャン停止する
+                stopAdvertiseScan()
                 found.connecting(peripheral: peripheral)
                 centralManager?.connect(peripheral)
                 print("ペリフェラル接続受付")
             case .connDisconnected:
                 // 切断後のアドバタイズ受信
-                found.advReceive(rssi: RSSI.doubleValue)
+                found.advReceive(rssi: RSSI.doubleValue, notifier: self.peripheralSubject)
                 print("切断後のアドバタイズ受信")
             default:
                 break
             }
             
         } else {
-            // リストに追加
+            // リストになければペリフェラルを追加
             let blePeripheral = BlePeripheralModel(rssi: RSSI.doubleValue,
                                                    peripheralUuid: peripheral.identifier.uuidString,
-                                                   peripheralName: peripheral.name,
-                                                   peripheralSubject: self.peripheralSubject)
+                                                   peripheralName: peripheral.name
+            )
+            self.peripheralSubject.send(blePeripheral)
             blePeripheralModels.append(blePeripheral)
             if let services = peripheral.services {
                 print("ペリフェラル追加\(peripheral.name ?? "Unknown")" + String(RSSI.doubleValue) + String(services.count))

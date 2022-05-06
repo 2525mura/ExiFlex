@@ -18,41 +18,39 @@ class BlePeripheralModel {
     private (set) var state: BlePeripheralState     // BLEペリフェラル状態
     private var lastAdvRecvDate: Date               // Advertise最終受信日時
     private var peripheralConnect: CBPeripheral?
-    private var peripheralSubject: PassthroughSubject<BlePeripheralModel, Never>
 
-    init(rssi: Double, peripheralUuid: String, peripheralName: String?, peripheralSubject: PassthroughSubject<BlePeripheralModel, Never>) {
+    init(rssi: Double, peripheralUuid: String, peripheralName: String?) {
         self.rssi = rssi
         self.peripheralUuid = peripheralUuid
         self.peripheralName = peripheralName
         self.state = .adAct
         self.lastAdvRecvDate = Date()
         self.peripheralConnect = nil
-        self.peripheralSubject = peripheralSubject
-        self.peripheralSubject.send(self)
     }
     
-    func advReceive(rssi: Double) {
+    func advReceive(rssi: Double, notifier: PassthroughSubject<BlePeripheralModel, Never>?) {
+        // RSSIが変化した、または、アドバタイズ有効でない状態から復帰した場合
         if (self.rssi != rssi) || (self.state != .adAct) {
             self.rssi = rssi
             self.state = .adAct
             self.lastAdvRecvDate = Date()
-            self.peripheralSubject.send(self)
+            notifier?.send(self)
         }
     }
     
-    // stateに変化があったらtrue を返す
-    func healthCheck() -> Bool {
+    // ViewModelからタイマー実行される。stateに変化があったらtrue を返す
+    func advHealthCheck(notifier: PassthroughSubject<BlePeripheralModel, Never>?) {
         switch self.state {
         case .adAct:
+            // 最後にアドバタイズされてから5秒以上経っていたら、アドバタイズ有効から無功に切り替える
             if Date().timeIntervalSince(self.lastAdvRecvDate) > 5 {
                 self.rssi = -100
                 self.state = .adLost
-                self.peripheralSubject.send(self)
-                return true
+                notifier?.send(self)
             }
-            return false
         default:
-            return false
+            break
+            
         }
     }
     
@@ -76,6 +74,7 @@ class BlePeripheralModel {
     
     func disConnected() {
         self.state = .connDisconnected
+        self.peripheralConnect = nil
     }
     
 }
