@@ -8,18 +8,29 @@
 import SwiftUI
 
 struct CameraControlView: View {
-    
-    @State private var selectionValue = 0
+    // 参照型のViewModelの場合は、ObservableObjectサブクラスのインスタンスを代入する
+    // 自身のViewでインスタンス生成して代入する場合はStateObject、親Viewから貰う場合はObservedObject
+    @StateObject private var viewModel: CameraControlViewModel = CameraControlViewModel()
+    @State private var isoValue = 100
+    @State private var fValue = 28
+    @State private var ssValue = 125
+    @State private var showingModal = false
     
     var body: some View {
-        // 縦に作っていった方が、僕にとってはやりやすい、なぜならスマホは縦画面だから。
+        // memo: 縦画面の場合、第一階層はVStackにするとレイアウトが整いやすい
         VStack {
             HStack {
+                // memo: Spacer()は、VStack, HStackに1個だけ入れるとレイアウトが整う
                 Spacer()
                 Text("BLE 接続成功")
-                Image(systemName: "personalhotspot").padding(.trailing, 10)
+                Button(action: {
+                    self.showingModal.toggle()
+                }) {
+                    Image(systemName: "antenna.radiowaves.left.and.right").padding(.trailing, 10)
+                }.sheet(isPresented: $showingModal) {
+                    PeripheralListView(viewModel: viewModel.peripheralListVm)
+                }
             }
-            Text(" ")
             HStack {
                 Text("◀︎")
                     .foregroundColor(.gray)
@@ -31,37 +42,46 @@ struct CameraControlView: View {
                 Text("▶︎")
                     .foregroundColor(.gray)
                     .font(.system(size: 30))
-            }
+            }.padding(.top, 10)
             Text("露出オーバーです")
-
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
                 // カラム数の指定
                 Text("ISO")
-                Text("Exp")
+                Text("F num")
                 Text("SS")
-                Picker(selection: $selectionValue, label: Text("")) {
+                Picker(selection: $isoValue, label: Text("")) {
                     Text("50").tag(50)
                     Text("100").tag(100)
                     Text("200").tag(200)
                     Text("400").tag(400)
                     Text("800").tag(800)
-                }.frame(width: 100, height: 150)
-                    .clipped()
-                    //.pickerStyle(WheelPickerStyle())
-                Picker(selection: $selectionValue, label: Text("")) {
-                    Text("1.4").tag(50)
-                    Text("2").tag(100)
-                    Text("2.8").tag(200)
-                    Text("4").tag(400)
-                    Text("5.6").tag(800)
-                }.frame(width: 100, height: 150)
-                    .clipped()
-                    //.pickerStyle(WheelPickerStyle())
+                }.frame(width: 100, height: 150).clipped()
+                Picker(selection: $fValue, label: Text("")) {
+                    Text("1.4").tag(14)
+                    Text("2").tag(20)
+                    Text("2.8").tag(28)
+                    Text("4").tag(40)
+                    Text("5.6").tag(56)
+                    Text("8").tag(80)
+                    Text("11").tag(110)
+                    Text("16").tag(160)
+                }.frame(width: 100, height: 150).clipped()
+                Picker(selection: $ssValue, label: Text("")) {
+                    Text("1").tag(1)
+                    Text("2").tag(2)
+                    Text("4").tag(4)
+                    Text("8").tag(8)
+                    Text("15").tag(15)
+                    Text("30").tag(30)
+                    Text("60").tag(60)
+                    Text("125").tag(125)
+                    Text("250").tag(250)
+                    Text("500").tag(500)
+                }.frame(width: 100, height: 150).clipped()
             }
-            // Spacer()は、VStack, HStackに1個だけ入れると最高にかっこいい
             Spacer()
             ScrollView(.horizontal) {
-                HStack {
+                LazyHStack {
                     TakeMetaView()
                     TakeMetaView()
                     TakeMetaView()
