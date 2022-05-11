@@ -9,34 +9,35 @@ import SwiftUI
 
 struct PeripheralListView: View {
     
-    // 代入出来るインスタンスはObservableObject継承クラスのインスタンス
-    @StateObject private var viewModel: PeripheralListViewModel = PeripheralListViewModel()
+    @ObservedObject private(set) var viewModel: PeripheralListViewModel
+    @Environment(\.presentationMode) var presentation
     
     var body: some View {
-        NavigationView {
-            List(self.viewModel.devices) { device in
-                NavigationLink(
-                    // タップ後に表示するビュー。リストに表示するビューと一緒に生成される。
-                    // タップ後に生成されるわけではない。
-                    destination: PeripheralConnView(
-                        viewModel: device.connViewModel).onAppear {
-                        viewModel.connectDevice(device: device)
-                    }.onDisappear {
-                        viewModel.disConnectDevice(device: device)
-                    },
-                    label: {
-                        // リストに表示するビュー
-                        PeripheralAdvCardView(viewModel: device)
-                    }
-                )
+        VStack {
+            Button(action: {
+                self.viewModel.stopAdvertiseScan()
+                self.presentation.wrappedValue.dismiss()
+            }, label: {
+              Text("キャンセル")
+            })
+            NavigationView {
+                List(self.viewModel.devices) { peripheral in
+                    // ペリフェラルに接続する
+                    Button(action: {
+                        self.viewModel.disConnectPeripheralAll()
+                        self.viewModel.connectPeripheral(peripheral: peripheral)
+                        self.presentation.wrappedValue.dismiss()
+                    }, label: {
+                        PeripheralAdvCardView(viewModel: peripheral)
+                    })
+                }.navigationBarTitle("BLEデバイス一覧")
             }
-            .navigationBarTitle("BLEデバイス一覧")
         }
     }
 }
 
 struct PeripheralListView_Previews: PreviewProvider {
     static var previews: some View {
-        PeripheralListView()
+        PeripheralListView(viewModel: PeripheralListViewModel(bleService: BleService()))
     }
 }

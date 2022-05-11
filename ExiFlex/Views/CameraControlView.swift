@@ -25,9 +25,13 @@ struct CameraControlView: View {
                 Text("BLE 接続成功")
                 Button(action: {
                     self.showingModal.toggle()
-                }) {
+                    // TrueならAdvertiseスキャンを開始する
+                    if self.showingModal {
+                        self.viewModel.startAdvertiseScan()
+                    }
+                }, label: {
                     Image(systemName: "antenna.radiowaves.left.and.right").padding(.trailing, 10)
-                }.sheet(isPresented: $showingModal) {
+                }).sheet(isPresented: $showingModal) {
                     PeripheralListView(viewModel: viewModel.peripheralListVm)
                 }
             }
