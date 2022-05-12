@@ -8,19 +8,17 @@
 import Foundation
 import Combine
 
-
 final class PeripheralListViewModel: ObservableObject {
 
     let bleService: BleService
-    @Published private(set) var devices: [PeripheralAdvViewModel] = []
+    @Published private(set) var peripherals: [PeripheralAdvViewModel] = []
     private var cancellables: [AnyCancellable] = []
     
-    init() {
-        self.bleService = BleService()
-        bind()
+    init(bleService: BleService) {
+        self.bleService = bleService
     }
     
-    // BleServiceからのBleペリフェラル更新通知を受け付ける処理
+    // BleServiceからのアドバタイズ更新通知を受け付ける処理
     func bind() {
         // BlePeripheralModelが更新されたら通知されるパイプライン処理の実装
         let peripheralAdvSubscriber = bleService.peripheralSubject.sink(receiveValue: { peripheral in
@@ -30,12 +28,12 @@ final class PeripheralListViewModel: ObservableObject {
             if blePower > 4 {blePower = 4}
             let rssi = Int(peripheral.rssi)
             // 既にペリフェラルが検出済みリストに登録されているかチェック
-            if let found = self.devices.first(where: { return $0.peripheralUuid == peripheral.peripheralUuid }) {
+            if let found = self.peripherals.first(where: { return $0.peripheralUuid == peripheral.peripheralUuid }) {
                 found.blePower = blePower
                 found.rssi = rssi
                 found.state = peripheral.state
             } else {
-                self.devices.append(
+                self.peripherals.append(
                     PeripheralAdvViewModel(peripheralUuid: peripheral.peripheralUuid,
                                            peripheralName: peripheral.peripheralName,
                                            blePower: blePower,
@@ -45,34 +43,32 @@ final class PeripheralListViewModel: ObservableObject {
             }
         })
         
-        // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
-        let characteristicMsgSubscriber = bleService.characteristicMsgNotifySubject.sink(receiveValue: { characteristicMsg in
-            if let found = self.devices.first(where: { return $0.peripheralUuid == characteristicMsg.peripheralUuid }) {
-                found.connViewModel.shutterCount+=1
-            }
-        })
-        
         cancellables += [
-            peripheralAdvSubscriber,
-            characteristicMsgSubscriber
+            peripheralAdvSubscriber
         ]
         
     }
     
-    // ペリフェラルをタップした時に呼ばれる関数
-    func connectDevice(device: PeripheralAdvViewModel) {
-        bleService.connectPeripheral(peripheralUuid: device.peripheralUuid)
-        if let found = devices.first(where: { return $0.peripheralUuid == device.peripheralUuid }) {
- 
-        }
+    // ペリフェラル選択のキャンセルボタンを押した時に呼ばれる関数
+    func stopAdvertiseScan() {
+        self.bleService.stopAdvertiseScan()
     }
     
-    // < をタップした時に呼ばれる関数
-    func disConnectDevice(device: PeripheralAdvViewModel) {
-        bleService.disConnectPeripheral(peripheralUuid: device.peripheralUuid)
-        if let found = devices.first(where: { return $0.peripheralUuid == device.peripheralUuid }) {
-
-        }
+    // ペリフェラルをタップした時に呼ばれる関数
+    func connectPeripheral(peripheral: PeripheralAdvViewModel) {
+        self.bleService.connectPeripheral(peripheralUuid: peripheral.peripheralUuid)
     }
+    
+    // 全ての接続済みペリフェラルを切断するための関数
+    func disConnectPeripheralAll() {
+        self.bleService.disConnectPeripheralAll()
+    }
+    
+    func removeAllPeripherals() {
+        // ここでパイプラインを止める
+        cancellables[0].cancel()
+        self.peripherals.removeAll()
+    }
+    
     
 }

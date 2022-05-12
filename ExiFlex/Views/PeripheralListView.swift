@@ -17,16 +17,18 @@ struct PeripheralListView: View {
             Button(action: {
                 self.viewModel.stopAdvertiseScan()
                 self.presentation.wrappedValue.dismiss()
+                self.viewModel.removeAllPeripherals()
             }, label: {
               Text("キャンセル")
             })
             NavigationView {
-                List(self.viewModel.devices) { peripheral in
+                List(self.viewModel.peripherals) { peripheral in
                     // ペリフェラルに接続する
                     Button(action: {
                         self.viewModel.disConnectPeripheralAll()
                         self.viewModel.connectPeripheral(peripheral: peripheral)
                         self.presentation.wrappedValue.dismiss()
+                        self.viewModel.removeAllPeripherals()
                     }, label: {
                         PeripheralAdvCardView(viewModel: peripheral)
                     })

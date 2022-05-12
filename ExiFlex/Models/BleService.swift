@@ -43,8 +43,6 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         switch central.state {
         // どんなサービスでもスキャン対象とする、アドバタイズを2回以上受信した場合も通知する
         case CBManagerState.poweredOn:
-            // とりあえずここでスタートする
-            startAdvertiseScan()
             break
         default:
             break
@@ -64,10 +62,23 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         )
     }
     
+    // PeripheralListView表示時にPeripheralModelを全て送信する関数
+    func flushPeripherals() {
+        for peripheral in blePeripheralModels {
+            self.peripheralSubject.send(peripheral)
+        }
+    }
     
     func stopAdvertiseScan() {
+        // ヘルスチェックタイマーを止めてからAdvertise scanを停止する
         self.advHealthCheckTimer?.invalidate()
         centralManager?.stopScan()
+        // 接続要求または接続中または接続済みのペリフェラル以外を削除する
+        for index in (0..<blePeripheralModels.count).reversed() {
+            if !(blePeripheralModels[index].state == .adConnectReq || blePeripheralModels[index].state == .adConnecting || blePeripheralModels[index].state == .connAct) {
+                blePeripheralModels.remove(at: index)
+            }
+        }
     }
     
     // ペリフェラルのアドバタイズを受信
@@ -127,6 +138,16 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             print("ペリフェラル切断要求")
             let peripheral = found.disConnectReq()
             centralManager?.cancelPeripheralConnection(peripheral!)
+        }
+    }
+    
+    // ViewModelから全てのペリフェラルを切断するための関数
+    func disConnectPeripheralAll() {
+        for peripheralModel in blePeripheralModels {
+            if peripheralModel.state == .connAct {
+                let peripheral = peripheralModel.disConnectReq()
+                centralManager?.cancelPeripheralConnection(peripheral!)
+            }
         }
     }
     

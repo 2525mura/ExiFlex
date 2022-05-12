@@ -26,6 +26,7 @@
 		C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */; };
 		C0C372AC27BFA8D0000678A6 /* PeripheralConnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */; };
 		C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */; };
+		C0FA4C69282938B40026DEFF /* CameraControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA4C68282938B40026DEFF /* CameraControlViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		C0C005CE282385E500244FD8 /* ScreenFlow.puml */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenFlow.puml; sourceTree = "<group>"; };
 		C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralConnViewModel.swift; sourceTree = "<group>"; };
 		C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralState.swift; sourceTree = "<group>"; };
+		C0FA4C68282938B40026DEFF /* CameraControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +196,7 @@
 				C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */,
 				C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */,
 				C0C372AB27BFA8D0000678A6 /* PeripheralConnViewModel.swift */,
+				C0FA4C68282938B40026DEFF /* CameraControlViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
 				C0C372AC27BFA8D0000678A6 /* PeripheralConnViewModel.swift in Sources */,
+				C0FA4C69282938B40026DEFF /* CameraControlViewModel.swift in Sources */,
 				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,
 				C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */,
 				C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */,
