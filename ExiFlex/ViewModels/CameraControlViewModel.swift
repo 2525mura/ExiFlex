@@ -13,6 +13,12 @@ final class CameraControlViewModel: ObservableObject {
     let bleService: BleService
     var peripheralListVm: PeripheralListViewModel
     private var cancellables: [AnyCancellable] = []
+    // 画面部品の状態変数
+    @Published var isoValue: String = "100"
+    @Published var fValue: String = "2.8"
+    @Published var ssValue: String = "125"
+    @Published private(set) var takeMetas: [TakeMetaViewModel] = []
+    @Published var lastId: UUID = UUID()
     
     init() {
         self.bleService = BleService()
@@ -24,9 +30,11 @@ final class CameraControlViewModel: ObservableObject {
     func bind() {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
         let characteristicMsgSubscriber = bleService.characteristicMsgNotifySubject.sink(receiveValue: { characteristicMsg in
-            //if let found = self.devices.first(where: { return $0.peripheralUuid == characteristicMsg.peripheralUuid }) {
-                //found.connViewModel.shutterCount+=1
-            //}
+            if characteristicMsg.characteristicData=="SHUTTER" {
+                let takeMetaViewModel = TakeMetaViewModel(isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue)
+                self.takeMetas.append(takeMetaViewModel)
+                self.lastId = takeMetaViewModel.id
+            }
         })
         
         cancellables += [
@@ -39,7 +47,6 @@ final class CameraControlViewModel: ObservableObject {
         self.bleService.flushPeripherals()
         self.bleService.startAdvertiseScan()
     }
-    
     
 }
 

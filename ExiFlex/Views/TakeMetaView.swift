@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct TakeMetaView: View {
+    
+    @ObservedObject private(set) var viewModel: TakeMetaViewModel
+    
     var body: some View {
-        // 背景画像を主役にテキストを書き込むか
-        // それともテキストを主役に背景を合わせるか
+        
+        // テキストを主役に背景を合わせる
         VStack {
             HStack {
                 Text("Title.").padding(.trailing, 10)
@@ -37,9 +40,9 @@ struct TakeMetaView: View {
             Divider()
             HStack {
                 Text("CAMERA").padding(.trailing, 10)
-                Text("1/500s").padding(.trailing, 10)
-                Text("F3.5").padding(.trailing, 10)
-                Text("ISO100")
+                Text("1/\(self.viewModel.ssValue)s").padding(.trailing, 10)
+                Text("F\(self.viewModel.fValue)").padding(.trailing, 10)
+                Text("ISO\(self.viewModel.isoValue)")
                 Spacer()
             }
             Divider()
@@ -60,6 +63,8 @@ struct TakeMetaView: View {
 
 struct TakeMetaView_Previews: PreviewProvider {
     static var previews: some View {
-        TakeMetaView().previewLayout(.sizeThatFits)
+        TakeMetaView(
+            viewModel: TakeMetaViewModel(isoValue: "100", fValue: "2.8", ssValue: "125")
+        ).previewLayout(.sizeThatFits)
     }
 }

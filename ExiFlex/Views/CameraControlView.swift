@@ -11,9 +11,6 @@ struct CameraControlView: View {
     // 参照型のViewModelの場合は、ObservableObjectサブクラスのインスタンスを代入する
     // 自身のViewでインスタンス生成して代入する場合はStateObject、親Viewから貰う場合はObservedObject
     @StateObject private var viewModel: CameraControlViewModel = CameraControlViewModel()
-    @State private var isoValue = 100
-    @State private var fValue = 28
-    @State private var ssValue = 125
     @State private var showingModal = false
     
     var body: some View {
@@ -53,44 +50,49 @@ struct CameraControlView: View {
                 Text("ISO")
                 Text("F num")
                 Text("SS")
-                Picker(selection: $isoValue, label: Text("")) {
-                    Text("50").tag(50)
-                    Text("100").tag(100)
-                    Text("200").tag(200)
-                    Text("400").tag(400)
-                    Text("800").tag(800)
+                Picker(selection: self.$viewModel.isoValue, label: Text("")) {
+                    Text("50").tag("50")
+                    Text("100").tag("100")
+                    Text("200").tag("200")
+                    Text("400").tag("400")
+                    Text("800").tag("800")
                 }.frame(width: 100, height: 150).clipped()
-                Picker(selection: $fValue, label: Text("")) {
-                    Text("1.4").tag(14)
-                    Text("2").tag(20)
-                    Text("2.8").tag(28)
-                    Text("4").tag(40)
-                    Text("5.6").tag(56)
-                    Text("8").tag(80)
-                    Text("11").tag(110)
-                    Text("16").tag(160)
+                Picker(selection: self.$viewModel.fValue, label: Text("")) {
+                    Text("1.4").tag("1.4")
+                    Text("2").tag("2")
+                    Text("2.8").tag("2.8")
+                    Text("4").tag("4")
+                    Text("5.6").tag("5.6")
+                    Text("8").tag("8")
+                    Text("11").tag("11")
+                    Text("16").tag("16")
                 }.frame(width: 100, height: 150).clipped()
-                Picker(selection: $ssValue, label: Text("")) {
-                    Text("1").tag(1)
-                    Text("2").tag(2)
-                    Text("4").tag(4)
-                    Text("8").tag(8)
-                    Text("15").tag(15)
-                    Text("30").tag(30)
-                    Text("60").tag(60)
-                    Text("125").tag(125)
-                    Text("250").tag(250)
-                    Text("500").tag(500)
+                Picker(selection: self.$viewModel.ssValue, label: Text("")) {
+                    Text("1").tag("1")
+                    Text("2").tag("2")
+                    Text("4").tag("4")
+                    Text("8").tag("8")
+                    Text("15").tag("15")
+                    Text("30").tag("30")
+                    Text("60").tag("60")
+                    Text("125").tag("125")
+                    Text("250").tag("250")
+                    Text("500").tag("500")
                 }.frame(width: 100, height: 150).clipped()
             }
             Spacer()
-            ScrollView(.horizontal) {
-                LazyHStack {
-                    TakeMetaView()
-                    TakeMetaView()
-                    TakeMetaView()
+            ScrollViewReader { render in
+                ScrollView(.horizontal) {
+                    LazyHStack {
+                        ForEach(self.viewModel.takeMetas) { takeMetaViewModel in
+                            TakeMetaView(viewModel: takeMetaViewModel)
+                        }
+                    }
+                }.onChange(of: self.viewModel.lastId) { id in
+                    withAnimation {
+                        render.scrollTo(id)
+                    }
                 }
-                
             }
         }
     }
