@@ -22,6 +22,7 @@
 		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
 		C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */; };
 		C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06B169427D8F4E100E4ABDF /* CameraControlView.swift */; };
+		C08CECA6283E8AE6002C9EFB /* ExiFlexNotifier.ino in Resources */ = {isa = PBXBuildFile; fileRef = C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */; };
 		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
 		C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */; };
 		C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */; };
@@ -64,6 +65,7 @@
 		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvCardView.swift; sourceTree = "<group>"; };
 		C06B169427D8F4E100E4ABDF /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
+		C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ExiFlexNotifier.ino; sourceTree = "<group>"; };
 		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
 		C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListView.swift; sourceTree = "<group>"; };
 		C0C005CD282385E500244FD8 /* BleWorkerState.puml */ = {isa = PBXFileReference; lastKnownFileType = text; path = BleWorkerState.puml; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		C05CB35B2787280D00B28849 = {
 			isa = PBXGroup;
 			children = (
+				C08CECA3283E8A77002C9EFB /* Firmware */,
 				C0C005CC282385E500244FD8 /* Docs */,
 				C05CB3662787280D00B28849 /* ExiFlex */,
 				C05CB3772787280F00B28849 /* ExiFlexTests */,
@@ -185,6 +188,22 @@
 				C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		C08CECA3283E8A77002C9EFB /* Firmware */ = {
+			isa = PBXGroup;
+			children = (
+				C08CECA4283E8AD0002C9EFB /* ExiFlexNotifier */,
+			);
+			path = Firmware;
+			sourceTree = "<group>";
+		};
+		C08CECA4283E8AD0002C9EFB /* ExiFlexNotifier */ = {
+			isa = PBXGroup;
+			children = (
+				C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */,
+			);
+			path = ExiFlexNotifier;
 			sourceTree = "<group>";
 		};
 		C0A5B55F27888B860016A026 /* ViewModels */ = {
@@ -283,6 +302,7 @@
 				TargetAttributes = {
 					C05CB3632787280D00B28849 = {
 						CreatedOnToolsVersion = 13.2.1;
+						LastSwiftMigration = 1320;
 					};
 					C05CB3732787280F00B28849 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -319,6 +339,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C08CECA6283E8AE6002C9EFB /* ExiFlexNotifier.ino in Resources */,
 				C05CB36F2787280F00B28849 /* Preview Assets.xcassets in Resources */,
 				C05CB36C2787280F00B28849 /* Assets.xcassets in Resources */,
 			);
@@ -516,6 +537,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ExiFlex/Preview Content\"";
@@ -537,6 +559,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.love-flexaret.ExiFlex";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -547,6 +570,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ExiFlex/Preview Content\"";
