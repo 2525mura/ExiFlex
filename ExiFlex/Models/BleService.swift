@@ -22,7 +22,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // MARK: ESP32 Ble UUID
     let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-    let characteristic_uuid = "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+    var characteristicUuids: [CBUUID] = []
     
     // MARK: - Init
     // セントラルマネージャを起動する
@@ -37,6 +37,11 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
+    func setCharacteristicUuids(uuids: [String]) {
+        for uuid in uuids {
+            self.characteristicUuids.append(CBUUID(string: uuid))
+        }
+    }
     // セントラルマネージャーが電源ONになったらペリフェラルのスキャンを開始する
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
 
@@ -200,7 +205,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                             // あらかじめ指定したサービスが見つかった
                             if service.uuid == CBUUID(string: service_uuid) {
                                 print("サービス発見。キャラクラリスティックへ接続します。")
-                                peripheral.discoverCharacteristics([CBUUID(string: characteristic_uuid)], for: service)
+                                peripheral.discoverCharacteristics(self.characteristicUuids, for: service)
                             }
                         }
                     }
@@ -229,7 +234,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     if let characteristics = service.characteristics {
                         for characteristic in characteristics {
                             // あらかじめ指定したキャラクタリスティックが見つかった
-                            if characteristic.uuid == CBUUID(string: characteristic_uuid) {
+                            if self.characteristicUuids.contains(characteristic.uuid) {
                                 print("キャラクタリスティック発見!")
                                 //Notificationを受け取るよっていうハンドラ
                                 peripheral.setNotifyValue(true, for: characteristic)
@@ -258,7 +263,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 switch found.state {
                 case .connAct:
                     // あらかじめ指定したキャラクタリスティックが見つかった
-                    if characteristic.uuid == CBUUID(string: characteristic_uuid) {
+                    if self.characteristicUuids.contains(characteristic.uuid) {
                         guard let data = characteristic.value else {
                             return
                         }

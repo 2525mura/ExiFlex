@@ -28,6 +28,7 @@
 // BLEドライバー
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristicShutter = NULL;
+BLECharacteristic* pCharacteristicLux = NULL;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 // メインタイマー（1ms周期）
@@ -45,6 +46,7 @@ unsigned int luxWaitCounter = 0;
 
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
 
 
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -100,7 +102,7 @@ bool initLuxSensor() {
   //0xDB： 37サイクル(約  101ms)
   //0xC0： 64サイクル(約  175ms)
   //0x00：256サイクル(約  699ms)
-  byte atime_cnt = 0xC0;
+  byte atime_cnt = 0xDB;
   
   if (TSL2572.CheckID()) {
     //ゲインを設定
@@ -124,8 +126,8 @@ void mesureLux() {
     uint16_t lux = TSL2572.GetLux16();
     String out = "LUX:" + String(lux, DEC);
     // Serial.println(out);
-    pCharacteristicShutter->setValue(out.c_str());
-    pCharacteristicShutter->notify();
+    pCharacteristicLux->setValue(out.c_str());
+    pCharacteristicLux->notify();
     //自動ゲイン調整
     TSL2572.SetGainAuto();
 }
@@ -155,7 +157,7 @@ void setup() {
   // Create the BLE Service
   BLEService *pService = pServer->createService(SERVICE_UUID);
 
-  // Create a BLE Characteristic
+  // Create a BLE Characteristic for shutter
   pCharacteristicShutter = pService->createCharacteristic(
                       CHARACTERISTIC_UUID,
                       BLECharacteristic::PROPERTY_READ   |
@@ -167,6 +169,14 @@ void setup() {
   // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
   // Create a BLE Descriptor
   pCharacteristicShutter->addDescriptor(new BLE2902());
+
+  // Create a BLE Characteristic for lux sensor
+  pCharacteristicLux = pService->createCharacteristic(
+                      CHARACTERISTIC_LUX_UUID,
+                      BLECharacteristic::PROPERTY_WRITE  |
+                      BLECharacteristic::PROPERTY_NOTIFY
+                    );
+  pCharacteristicLux->addDescriptor(new BLE2902());
 
   // Start the service
   pService->start();
@@ -184,7 +194,7 @@ void loop() {
     // notify changed value
     if (deviceConnected) {
       // Luxセンサー送信処理
-      if (luxWaitCounter < 100) {
+      if (luxWaitCounter < 11) {
         luxWaitCounter++;
       } else {
         luxWaitCounter = 0;
