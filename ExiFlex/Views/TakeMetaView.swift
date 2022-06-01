@@ -15,42 +15,39 @@ struct TakeMetaView: View {
         
         // テキストを主役に背景を合わせる
         VStack {
-            HStack {
-                Text("Title.").padding(.trailing, 10)
-                Text("アコスタさいたまスーパーアリーナ").lineLimit(1)
-                Spacer()
-            }
+            Text("タイトル").lineLimit(1)
             Divider()
             HStack {
                 VStack {
-                    Text("SCENE")
-                    Text("1")
+                    Text("被写体")
+                    Text("名無しさん")
                 }
                 Spacer()
                 VStack {
-                    Text("TAKE")
-                    Text("1")
+                    Text("TAKE").padding(.trailing, 20)
+                    Text("1/36").padding(.trailing, 20)
                 }
                 Spacer()
                 VStack {
                     Text("ROLL")
-                    Text("1")
+                    Text("0054111")
                 }
             }
             Divider()
             HStack {
-                Text("CAMERA").padding(.trailing, 10)
-                Text("1/\(self.viewModel.ssValue)s").padding(.trailing, 10)
-                Text("F\(self.viewModel.fValue)").padding(.trailing, 10)
+                Text("撮影情報").padding(.trailing, 10)
                 Text("ISO\(self.viewModel.isoValue)")
+                Text("F\(self.viewModel.fValue)").padding(.trailing, 10)
+                Text("1/\(self.viewModel.ssValue)s").padding(.trailing, 10)
                 Spacer()
             }
             Divider()
             HStack {
-                Text("DATE").padding(.trailing, 10)
-                Text("2022/03/21").padding(.trailing, 10)
+                Text("日付").padding(.trailing, 10)
+                Text("2022/03/21 10:00").padding(.trailing, 10)
                 Spacer()
-                Text("GPS ON")
+                Text("✨")
+                Text("🛰")
             }.padding(.vertical, 2)
         }.padding(.horizontal, 20)
             .padding(.vertical, 50)
