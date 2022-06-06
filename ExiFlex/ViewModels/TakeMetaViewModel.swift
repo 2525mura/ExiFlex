@@ -15,11 +15,21 @@ final class TakeMetaViewModel: Identifiable, ObservableObject {
     @Published var isoValue: String
     @Published var fValue: String
     @Published var ssValue: String
+    let takeDate: Date
+    let takeDateStr: String
     
     init(isoValue: String, fValue: String, ssValue: String) {
         self.isoValue = isoValue
         self.fValue = fValue
         self.ssValue = ssValue
+        
+        // 撮影日時
+        let f = DateFormatter()
+        f.timeStyle = .short
+        f.dateStyle = .medium
+        f.locale = Locale(identifier: "ja_JP")
+        self.takeDate = Date()
+        self.takeDateStr = f.string(from: self.takeDate)
     }
     
 }

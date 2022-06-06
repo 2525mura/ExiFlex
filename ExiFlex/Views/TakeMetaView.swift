@@ -44,7 +44,7 @@ struct TakeMetaView: View {
             Divider()
             HStack {
                 Text("日付").padding(.trailing, 10)
-                Text("2022/03/21 10:00").padding(.trailing, 10)
+                Text(self.viewModel.takeDateStr).padding(.trailing, 10)
                 Spacer()
                 Text("✨")
                 Text("🛰")
