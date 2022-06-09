@@ -18,6 +18,7 @@ final class CameraControlViewModel: ObservableObject {
     var isoValue: String = "100"
     var fValue: String = "2.8"
     var ssValue: String = "125"
+    var takeCount: Int = 0
     // Picker選択値から計算されたEV値
     var evValue: Double = 0
     // LUXセンサーから測定されたLV値
@@ -42,8 +43,14 @@ final class CameraControlViewModel: ObservableObject {
                 where: { $0.value.caseInsensitiveCompare(characteristicMsg.characteristicUuid) == .orderedSame }
             ) {
                 if characteristicTag.key == "shutter" {
-                    let takeMetaViewModel = TakeMetaViewModel(isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue)
+                    let takeMetaViewModel = TakeMetaViewModel(
+                        isoValue: self.isoValue,
+                        fValue: self.fValue,
+                        ssValue: self.ssValue,
+                        takeCount: self.takeCount
+                    )
                     self.takeMetas.append(takeMetaViewModel)
+                    self.takeCount += 1
                     self.lastId = takeMetaViewModel.id
                 } else if characteristicTag.key == "lux" {
                     // LUX -> LV計算

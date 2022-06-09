@@ -15,13 +15,15 @@ final class TakeMetaViewModel: Identifiable, ObservableObject {
     @Published var isoValue: String
     @Published var fValue: String
     @Published var ssValue: String
+    var takeCount: Int
     let takeDate: Date
     let takeDateStr: String
     
-    init(isoValue: String, fValue: String, ssValue: String) {
+    init(isoValue: String, fValue: String, ssValue: String, takeCount: Int) {
         self.isoValue = isoValue
         self.fValue = fValue
         self.ssValue = ssValue
+        self.takeCount = takeCount
         
         // 撮影日時
         let f = DateFormatter()

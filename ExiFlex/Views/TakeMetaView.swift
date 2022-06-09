@@ -25,7 +25,7 @@ struct TakeMetaView: View {
                 Spacer()
                 VStack {
                     Text("TAKE").padding(.trailing, 20)
-                    Text("1/36").padding(.trailing, 20)
+                    Text("\(self.viewModel.takeCount)/36").padding(.trailing, 20)
                 }
                 Spacer()
                 VStack {
@@ -61,7 +61,7 @@ struct TakeMetaView: View {
 struct TakeMetaView_Previews: PreviewProvider {
     static var previews: some View {
         TakeMetaView(
-            viewModel: TakeMetaViewModel(isoValue: "100", fValue: "2.8", ssValue: "125")
+            viewModel: TakeMetaViewModel(isoValue: "100", fValue: "2.8", ssValue: "125", takeCount: 0)
         ).previewLayout(.sizeThatFits)
     }
 }
