@@ -102,7 +102,7 @@ bool initLuxSensor() {
   //0xDB： 37サイクル(約  101ms)
   //0xC0： 64サイクル(約  175ms)
   //0x00：256サイクル(約  699ms)
-  byte atime_cnt = 0xDB;
+  byte atime_cnt = 0xC0;
   
   if (TSL2572.CheckID()) {
     //ゲインを設定
@@ -129,7 +129,7 @@ void mesureLux() {
     pCharacteristicLux->setValue(out.c_str());
     pCharacteristicLux->notify();
     //自動ゲイン調整
-    TSL2572.SetGainAuto();
+    // TSL2572.SetGainAuto();
 }
 
 void setup() {
@@ -194,7 +194,7 @@ void loop() {
     // notify changed value
     if (deviceConnected) {
       // Luxセンサー送信処理
-      if (luxWaitCounter < 11) {
+      if (luxWaitCounter < 20) {
         luxWaitCounter++;
       } else {
         luxWaitCounter = 0;
