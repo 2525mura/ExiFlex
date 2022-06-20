@@ -142,6 +142,9 @@ void setup() {
   timerAlarmWrite(mainTimer, 1000, true);
   timerAlarmEnable(mainTimer);
   // シャッター割り込みを登録
+  pinMode(15, INPUT_PULLUP);
+  attachInterrupt(15, onShutter, FALLING);
+  // デバッグ用（基板スイッチ）
   pinMode(0, INPUT_PULLUP);
   attachInterrupt(0, onShutter, FALLING);
   // Luxセンサー初期化
