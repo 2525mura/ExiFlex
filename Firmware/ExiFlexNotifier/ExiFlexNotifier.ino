@@ -24,6 +24,7 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include "AE_TSL2572.h"
+#include "MU_S11059.h"
 
 // BLEドライバー
 BLEServer* pServer = NULL;
@@ -40,6 +41,9 @@ unsigned int antiChatteringCounter = 0;
 AE_TSL2572 TSL2572;
 bool luxSensorConnected = false;
 unsigned int luxWaitCounter = 0;
+// Colorセンサー
+MU_S11059 S11059;
+unsigned int colorWaitCounter = 0;
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
@@ -132,6 +136,15 @@ void mesureLux() {
     // TSL2572.SetGainAuto();
 }
 
+void mesureColor() {
+    //TSL2572.GetLux16()で照度を取得
+    ColorLux colorLux = S11059.GetLux();
+    String out = "R:" + String(colorLux.lux_r, DEC) + " G:" + String(colorLux.lux_g, DEC) + " B:" + String(colorLux.lux_b, DEC) + " IR:" + String(colorLux.lux_ir, DEC);
+    //Serial.println(out);
+    //pCharacteristicLux->setValue(out.c_str());
+    //pCharacteristicLux->notify();
+}
+
 void setup() {
   // ペリフェラル初期化
   Serial.begin(115200);
@@ -149,6 +162,8 @@ void setup() {
   attachInterrupt(0, onShutter, FALLING);
   // Luxセンサー初期化
   luxSensorConnected = initLuxSensor();
+  // Colorセンサー初期化
+  S11059.SetIntegralTime(MU_S11059::S11059_INTTIME_175, 285);
   
   // Create the BLE Device
   BLEDevice::init("ESP32");
@@ -204,6 +219,13 @@ void loop() {
         if (luxSensorConnected) {
             mesureLux();
         }
+      }
+      // Colorセンサー送信処理
+      if (colorWaitCounter < 20) {
+        colorWaitCounter++;
+      } else {
+        colorWaitCounter = 0;
+          mesureColor();
       }
       delay(10); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
     }
