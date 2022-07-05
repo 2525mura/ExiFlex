@@ -12,5 +12,6 @@ struct BleCharacteristicMsgEntity {
     let peripheralUuid: String
     let serviceUuid: String
     let characteristicUuid: String
+    let characteristicAlias: String
     let characteristicData: String
 }

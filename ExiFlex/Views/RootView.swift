@@ -8,21 +8,40 @@
 import SwiftUI
 
 struct RootView: View {
+    
+    @StateObject private var viewModel: RootViewModel = RootViewModel()
+    @State private var showingModal = false
+    
     var body: some View {
-        TabView {
-            CameraControlView()
-                .tabItem {
-                    Image(systemName: "personalhotspot")
-                    Text("Connect")
+        VStack {
+            HStack {
+                // memo: Spacer()は、VStack, HStackに1個だけ入れるとレイアウトが整う
+                Spacer()
+                Text("BLE 接続成功")
+                Button(action: {
+                    self.showingModal.toggle()
+                    // TrueならAdvertiseスキャンを開始する
+                    if self.showingModal {
+                        self.viewModel.startAdvertiseScan()
+                    }
+                }, label: {
+                    Image(systemName: "antenna.radiowaves.left.and.right").padding(.trailing, 10)
+                }).sheet(isPresented: $showingModal) {
+                    PeripheralListView(viewModel: viewModel.peripheralListVm)
                 }
-            Text("Settings Page")
-                .font(.largeTitle)
-                .fontWeight(.heavy)
-                .underline()
-                .tabItem {
-                    Image(systemName: "film")
-                    Text("My Memory")
-                }
+            }
+            TabView {
+                CameraControlView(viewModel: viewModel.cameraControlViewModel)
+                    .tabItem {
+                        Image(systemName: "personalhotspot")
+                        Text("Connect")
+                    }
+                Cie1931xyView(viewModel: viewModel.cie1931xyViewModel)
+                    .tabItem {
+                        Image(systemName: "film")
+                        Text("My Memory")
+                    }
+            }
         }
     }
 }

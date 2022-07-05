@@ -10,8 +10,7 @@ import SwiftUI
 struct CameraControlView: View {
     // 参照型のViewModelの場合は、ObservableObjectサブクラスのインスタンスを代入する
     // 自身のViewでインスタンス生成して代入する場合はStateObject、親Viewから貰う場合はObservedObject
-    @StateObject private var viewModel: CameraControlViewModel = CameraControlViewModel()
-    @State private var showingModal = false
+    @ObservedObject private(set) var viewModel: CameraControlViewModel
     @State private var isoValue: String = "100"
     @State private var fValue: String = "2.8"
     @State private var ssValue: String = "125"
@@ -19,22 +18,6 @@ struct CameraControlView: View {
     var body: some View {
         // memo: 縦画面の場合、第一階層はVStackにするとレイアウトが整いやすい
         VStack {
-            HStack {
-                // memo: Spacer()は、VStack, HStackに1個だけ入れるとレイアウトが整う
-                Spacer()
-                Text("BLE 接続成功")
-                Button(action: {
-                    self.showingModal.toggle()
-                    // TrueならAdvertiseスキャンを開始する
-                    if self.showingModal {
-                        self.viewModel.startAdvertiseScan()
-                    }
-                }, label: {
-                    Image(systemName: "antenna.radiowaves.left.and.right").padding(.trailing, 10)
-                }).sheet(isPresented: $showingModal) {
-                    PeripheralListView(viewModel: viewModel.peripheralListVm)
-                }
-            }
             HStack {
                 if viewModel.dEv >= 0.5 {
                     Text("▶︎")
@@ -133,6 +116,6 @@ struct CameraControlView: View {
 
 struct CameraControlView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraControlView()
+        CameraControlView(viewModel: CameraControlViewModel(bleService: BleService()))
     }
 }

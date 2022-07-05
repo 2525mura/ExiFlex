@@ -23,6 +23,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     // MARK: ESP32 Ble UUID
     let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
     var characteristicUuids: [CBUUID] = []
+    var characteristicAliases: [CBUUID:String] = [:]
     
     // MARK: - Init
     // セントラルマネージャを起動する
@@ -37,10 +38,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
-    func setCharacteristicUuids(uuids: [String]) {
-        for uuid in uuids {
-            self.characteristicUuids.append(CBUUID(string: uuid))
-        }
+    func addCharacteristicUuid(uuid: String, alias: String) {
+        let cbUuid = CBUUID(string: uuid)
+        self.characteristicUuids.append(cbUuid)
+        self.characteristicAliases[cbUuid] = alias
     }
     // セントラルマネージャーが電源ONになったらペリフェラルのスキャンを開始する
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -271,6 +272,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                             BleCharacteristicMsgEntity(peripheralUuid: peripheral.identifier.uuidString,
                                                        serviceUuid: characteristic.service!.uuid.uuidString,
                                                        characteristicUuid: characteristic.uuid.uuidString,
+                                                       characteristicAlias: self.characteristicAliases[characteristic.uuid]!,
                                                        characteristicData: String(data: data, encoding: .ascii)!)
                         )
                     }

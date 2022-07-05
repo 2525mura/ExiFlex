@@ -11,9 +11,7 @@ import Combine
 final class CameraControlViewModel: ObservableObject {
 
     let bleService: BleService
-    var peripheralListVm: PeripheralListViewModel
     private var cancellables: [AnyCancellable] = []
-    let characteristicUuids = ["shutter": "beb5483e-36e1-4688-b7f5-ea07361b26a8", "lux": "16cf81e3-0212-58b9-0380-0dbc6b54c51d"]
     // 画面部品の状態変数
     var isoValue: String = "100"
     var fValue: String = "2.8"
@@ -28,10 +26,10 @@ final class CameraControlViewModel: ObservableObject {
     @Published private(set) var takeMetas: [TakeMetaViewModel] = []
     @Published var lastId: UUID = UUID()
     
-    init() {
-        self.bleService = BleService()
-        self.bleService.setCharacteristicUuids(uuids: [String](self.characteristicUuids.values))
-        peripheralListVm = PeripheralListViewModel(bleService: bleService)
+    init(bleService: BleService) {
+        self.bleService = bleService
+        self.bleService.addCharacteristicUuid(uuid: "beb5483e-36e1-4688-b7f5-ea07361b26a8", alias: "shutter")
+        self.bleService.addCharacteristicUuid(uuid: "16cf81e3-0212-58b9-0380-0dbc6b54c51d", alias: "lux")
         bind()
     }
     
@@ -39,23 +37,19 @@ final class CameraControlViewModel: ObservableObject {
     func bind() {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
         let characteristicMsgSubscriber = bleService.characteristicMsgNotifySubject.sink(receiveValue: { characteristicMsg in
-            if let characteristicTag = self.characteristicUuids.first(
-                where: { $0.value.caseInsensitiveCompare(characteristicMsg.characteristicUuid) == .orderedSame }
-            ) {
-                if characteristicTag.key == "shutter" {
-                    let takeMetaViewModel = TakeMetaViewModel(
-                        isoValue: self.isoValue,
-                        fValue: self.fValue,
-                        ssValue: self.ssValue,
-                        takeCount: self.takeCount
-                    )
-                    self.takeMetas.append(takeMetaViewModel)
-                    self.takeCount += 1
-                    self.lastId = takeMetaViewModel.id
-                } else if characteristicTag.key == "lux" {
-                    // LUX -> LV計算
-                    self.onChangeLv(recvStr: characteristicMsg.characteristicData)
-                }
+            if characteristicMsg.characteristicAlias == "shutter" {
+                let takeMetaViewModel = TakeMetaViewModel(
+                    isoValue: self.isoValue,
+                    fValue: self.fValue,
+                    ssValue: self.ssValue,
+                    takeCount: self.takeCount
+                )
+                self.takeMetas.append(takeMetaViewModel)
+                self.takeCount += 1
+                self.lastId = takeMetaViewModel.id
+            } else if characteristicMsg.characteristicAlias == "lux" {
+                // LUX -> LV計算
+                self.onChangeLv(recvStr: characteristicMsg.characteristicData)
             }
         })
         
@@ -86,12 +80,6 @@ final class CameraControlViewModel: ObservableObject {
         self.lvValue = log2(doubleLux / 2.5)
         self.dEv = lvValue - evValue
         print("Lux:\(doubleLux), LV:\(String(format: "%.1f", self.lvValue)), dEV:\(String(format: "%.1f", self.dEv))")
-    }
-    
-    func startAdvertiseScan() {
-        self.peripheralListVm.bind()
-        self.bleService.flushPeripherals()
-        self.bleService.startAdvertiseScan()
     }
     
 }

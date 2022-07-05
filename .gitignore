@@ -1,0 +1,6 @@
+.DS_Store
+# XCode Setting
+xcuserdata/
+UserInterfaceState.xcuserstate
+# VSCode Setting
+.vscode
