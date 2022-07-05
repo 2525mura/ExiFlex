@@ -12,6 +12,8 @@
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
 		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
 		C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */; };
+		C03B5498286C927300E5F0E8 /* Cie1931xyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */; };
+		C03B549A286C928200E5F0E8 /* Cie1931xyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */; };
 		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
 		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
 		C05CB36A2787280D00B28849 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* RootView.swift */; };
@@ -52,6 +54,8 @@
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
 		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
 		C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaView.swift; sourceTree = "<group>"; };
+		C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyView.swift; sourceTree = "<group>"; };
+		C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyViewModel.swift; sourceTree = "<group>"; };
 		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3672787280D00B28849 /* ExiFlexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexApp.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */,
 				C06B169427D8F4E100E4ABDF /* CameraControlView.swift */,
 				C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */,
+				C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */,
 				C0FA4C68282938B40026DEFF /* CameraControlViewModel.swift */,
 				C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */,
+				C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -378,8 +384,10 @@
 				C0FA4C69282938B40026DEFF /* CameraControlViewModel.swift in Sources */,
 				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,
 				C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */,
+				C03B5498286C927300E5F0E8 /* Cie1931xyView.swift in Sources */,
 				C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */,
 				C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */,
+				C03B549A286C928200E5F0E8 /* Cie1931xyViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
