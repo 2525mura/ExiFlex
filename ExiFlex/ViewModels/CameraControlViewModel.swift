@@ -10,7 +10,7 @@ import Combine
 
 final class CameraControlViewModel: ObservableObject {
 
-    let bleService: BleService
+    private let bleService: BleService
     private var cancellables: [AnyCancellable] = []
     // 画面部品の状態変数
     var isoValue: String = "100"
@@ -36,7 +36,7 @@ final class CameraControlViewModel: ObservableObject {
     // BleServiceからのキャラクタリスティック受信を受け付ける処理
     func bind() {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
-        let characteristicMsgSubscriber = bleService.characteristicMsgNotifySubject.sink(receiveValue: { characteristicMsg in
+        let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
             if characteristicMsg.characteristicAlias == "shutter" {
                 let takeMetaViewModel = TakeMetaViewModel(
                     isoValue: self.isoValue,
@@ -79,7 +79,6 @@ final class CameraControlViewModel: ObservableObject {
         let doubleLux = Double(recvStr[startIndex...endIndex])!
         self.lvValue = log2(doubleLux / 2.5)
         self.dEv = lvValue - evValue
-        print("Lux:\(doubleLux), LV:\(String(format: "%.1f", self.lvValue)), dEV:\(String(format: "%.1f", self.dEv))")
     }
     
 }

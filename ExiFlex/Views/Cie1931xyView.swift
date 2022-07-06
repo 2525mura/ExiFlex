@@ -12,14 +12,17 @@ struct Cie1931xyView: View {
     @ObservedObject private(set) var viewModel: Cie1931xyViewModel
     
     var body: some View {
-        Image(uiImage: self.viewModel.plotImage)
-            .resizable().aspectRatio(contentMode:.fit)
+        VStack {
+            Text(viewModel.luxMonitor)
+            Image(uiImage: self.viewModel.plotImage)
+                .resizable().aspectRatio(contentMode:.fit)
+        }
     }
 }
 
 struct Cie1931xyView_Previews: PreviewProvider {
     static var previews: some View {
-        Cie1931xyView(viewModel: Cie1931xyViewModel())
+        Cie1931xyView(viewModel: Cie1931xyViewModel(bleService: BleService()))
             .previewLayout(.sizeThatFits)
     }
 }

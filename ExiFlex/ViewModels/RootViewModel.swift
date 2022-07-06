@@ -9,7 +9,7 @@ import Foundation
 
 class RootViewModel: ObservableObject {
     
-    let bleService: BleService
+    private let bleService: BleService
     var peripheralListVm: PeripheralListViewModel
     var cameraControlViewModel: CameraControlViewModel
     var cie1931xyViewModel: Cie1931xyViewModel
@@ -18,7 +18,7 @@ class RootViewModel: ObservableObject {
         self.bleService = BleService()
         self.peripheralListVm = PeripheralListViewModel(bleService: bleService)
         self.cameraControlViewModel = CameraControlViewModel(bleService: bleService)
-        self.cie1931xyViewModel = Cie1931xyViewModel()
+        self.cie1931xyViewModel = Cie1931xyViewModel(bleService: self.bleService)
     }
     
     func startAdvertiseScan() {

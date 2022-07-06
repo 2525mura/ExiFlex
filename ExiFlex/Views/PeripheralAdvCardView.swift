@@ -69,8 +69,7 @@ struct PeripheralAdvCardView_Previews: PreviewProvider {
             PeripheralAdvCardView(viewModel: .init(peripheralUuid: "xx:xx:xx:xx:xx:xx",
                                                    peripheralName: "My BLE 1",
                                                    blePower: 1,
-                                                   rssi: -40,
-                                                   bleService: .init())).previewLayout(.sizeThatFits)
+                                                   rssi: -40)).previewLayout(.sizeThatFits)
         }
     }
 }

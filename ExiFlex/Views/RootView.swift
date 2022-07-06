@@ -33,13 +33,13 @@ struct RootView: View {
             TabView {
                 CameraControlView(viewModel: viewModel.cameraControlViewModel)
                     .tabItem {
-                        Image(systemName: "personalhotspot")
-                        Text("Connect")
+                        Image(systemName: "film")
+                        Text("EV Meter")
                     }
                 Cie1931xyView(viewModel: viewModel.cie1931xyViewModel)
                     .tabItem {
-                        Image(systemName: "film")
-                        Text("My Memory")
+                        Image(systemName: "cloud.sun")
+                        Text("Light Meter")
                     }
             }
         }

@@ -10,7 +10,7 @@ import Combine
 
 final class PeripheralListViewModel: ObservableObject {
 
-    let bleService: BleService
+    private let bleService: BleService
     @Published private(set) var peripherals: [PeripheralAdvViewModel] = []
     private var cancellables: [AnyCancellable] = []
     
@@ -37,8 +37,7 @@ final class PeripheralListViewModel: ObservableObject {
                     PeripheralAdvViewModel(peripheralUuid: peripheral.peripheralUuid,
                                            peripheralName: peripheral.peripheralName,
                                            blePower: blePower,
-                                           rssi: rssi,
-                                           bleService: self.bleService)
+                                           rssi: rssi)
                 )
             }
         })

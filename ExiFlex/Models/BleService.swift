@@ -16,9 +16,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var blePeripheralModels: [BlePeripheralModel] = []
     private var advHealthCheckTimer: Timer?
     // ペリフェラルの状態変化イベントをViewModelに通知するためのSubject
-    let peripheralSubject = PassthroughSubject<BlePeripheralModel, Never>()
+    let peripheralSubject: PassthroughSubject<BlePeripheralModel, Never>
     // キャラクタリスティックのNotifyイベントをViewModelに通知するためのSubject
-    let characteristicMsgNotifySubject = PassthroughSubject<BleCharacteristicMsgEntity, Never>()
+    private let characteristicMsgNotifySubject: PassthroughSubject<BleCharacteristicMsgEntity, Never>
+    let characteristicSharedPublisher: Publishers.Share<AnyPublisher<BleCharacteristicMsgEntity, Never>>
     
     // MARK: ESP32 Ble UUID
     let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
@@ -28,6 +29,9 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     // MARK: - Init
     // セントラルマネージャを起動する
     override init() {
+        self.peripheralSubject = PassthroughSubject<BlePeripheralModel, Never>()
+        self.characteristicMsgNotifySubject = PassthroughSubject<BleCharacteristicMsgEntity, Never>()
+        self.characteristicSharedPublisher = self.characteristicMsgNotifySubject.eraseToAnyPublisher().share()
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
     }

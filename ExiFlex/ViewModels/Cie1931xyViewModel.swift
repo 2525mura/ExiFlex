@@ -6,31 +6,39 @@
 //
 
 import Foundation
+import Combine
 import UIKit
 
 class Cie1931xyViewModel: ObservableObject {
 
+    private let bleService: BleService
+    private var cancellables: [AnyCancellable] = []
     private let chartOrigin: CGPoint
     private let chartUnitScale: CGPoint
     private let cursorSize: Double
     private let chartImage: UIImage
     private var cursorImage: UIImage
     @Published var plotImage: UIImage
+    @Published var luxMonitor: String
 
-    init(chartImageName: String = "cie1931xy",
+    init(bleService: BleService,
+         chartImageName: String = "cie1931xy",
          chartOrigin: CGPoint = CGPoint(x: 135, y: 1033),
          chartUnitScale: CGPoint = CGPoint(x: 1184, y: 1184),
          cursorSize: Double = 10.0) {
         // chartImageName: チャート画像名
         // chartOrigin: CGPoint(チャート画像の原点ピクセル座標x, チャート画像の原点ピクセル座標y)
         // chartUnitScale: CGSize(xが1変化した場合の増加ピクセル数, yが1変化した場合の増加ピクセル数)
+        self.bleService = bleService
         self.chartOrigin = chartOrigin
         self.chartUnitScale = chartUnitScale
         self.cursorSize = cursorSize
         self.chartImage = UIImage(named: chartImageName)!
         self.cursorImage = UIImage()
         self.plotImage = UIImage()
+        self.luxMonitor = "0.0 lx"
         plot(chromaticity: CGPoint(x: 0.0, y: 0.0))
+        bind()
     }
 
     // 2つのUIImageを1つのUIImageに合成
@@ -64,5 +72,29 @@ class Cie1931xyViewModel: ObservableObject {
         self.plotImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
     }
-
+    
+    // BleServiceからのキャラクタリスティック受信を受け付ける処理
+    func bind() {
+        // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
+        let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
+            if characteristicMsg.characteristicAlias == "lux" {
+                self.onChangeLv(recvStr: characteristicMsg.characteristicData)
+            }
+        })
+        
+        cancellables += [
+            characteristicMsgSubscriber
+        ]
+    }
+    
+    func onChangeLv(recvStr: String) {
+        if recvStr == "LUX:0" {
+            return
+        }
+        let startIndex = recvStr.index(recvStr.startIndex, offsetBy: 4)
+        let endIndex = recvStr.index(recvStr.endIndex, offsetBy: -1)
+        let doubleLux = Double(recvStr[startIndex...endIndex])!
+        self.luxMonitor = "\(String(format: "%.1f", doubleLux)) lx"
+    }
+    
 }
