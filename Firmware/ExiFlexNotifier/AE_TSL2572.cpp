@@ -12,6 +12,8 @@ AE_TSL2572::AE_TSL2572() {
 
   adc0 = 0;
   adc1 = 0;
+  // I2c pin assign
+  Wire1.begin(18, 19);
 }
 
 bool AE_TSL2572::CheckID() {
@@ -30,19 +32,19 @@ void AE_TSL2572::Reset() {
 }
 
 void AE_TSL2572::WriteReg(uint8_t reg, uint8_t dat) {
-  Wire.beginTransmission(TSL2572_ADR);
-  Wire.write(reg);
-  Wire.write(dat);
-  Wire.endTransmission();
+  Wire1.beginTransmission(TSL2572_ADR);
+  Wire1.write(reg);
+  Wire1.write(dat);
+  Wire1.endTransmission();
 }
 
 uint8_t AE_TSL2572::ReadReg(uint8_t reg) {
   uint8_t dat;
-  Wire.beginTransmission(TSL2572_ADR);
-  Wire.write(TSL2572_COMMAND | TSL2572_TYPE_INC | reg);
-  Wire.endTransmission();
-  Wire.requestFrom(TSL2572_ADR, (uint8_t)1);
-  dat = Wire.read();
+  Wire1.beginTransmission(TSL2572_ADR);
+  Wire1.write(TSL2572_COMMAND | TSL2572_TYPE_INC | reg);
+  Wire1.endTransmission();
+  Wire1.requestFrom(TSL2572_ADR, (uint8_t)1);
+  dat = Wire1.read();
   return dat;
 }
 
@@ -125,13 +127,13 @@ void AE_TSL2572::SetGainAuto(){
 
 void AE_TSL2572::ReadAdc() {
   uint8_t dat[4];
-  Wire.beginTransmission(TSL2572_ADR);
-  Wire.write(TSL2572_COMMAND | TSL2572_TYPE_INC | TSL2572_C0DATA);
-  Wire.endTransmission();
+  Wire1.beginTransmission(TSL2572_ADR);
+  Wire1.write(TSL2572_COMMAND | TSL2572_TYPE_INC | TSL2572_C0DATA);
+  Wire1.endTransmission();
 
-  Wire.requestFrom(TSL2572_ADR, (uint8_t)4);
+  Wire1.requestFrom(TSL2572_ADR, (uint8_t)4);
   for (int i = 0; i < 4; i++) {
-    dat[i] = Wire.read();
+    dat[i] = Wire1.read();
   }
   adc0 = (dat[1] << 8) | dat[0];
   adc1 = (dat[3] << 8) | dat[2];

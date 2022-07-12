@@ -24,12 +24,13 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include "AE_TSL2572.h"
-#include "MU_S11059.h"
+#include "DFRobot_TCS3430.h"
 
 // BLEドライバー
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristicShutter = NULL;
 BLECharacteristic* pCharacteristicLux = NULL;
+BLECharacteristic* pCharacteristicXYZ = NULL;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 // メインタイマー（1ms周期）
@@ -41,9 +42,10 @@ unsigned int antiChatteringCounter = 0;
 AE_TSL2572 TSL2572;
 bool luxSensorConnected = false;
 unsigned int luxWaitCounter = 0;
-// Colorセンサー
-MU_S11059 S11059;
-unsigned int colorWaitCounter = 0;
+// XYZセンサー
+DFRobot_TCS3430 TCS3430;
+bool xyzSensorConnected = false;
+unsigned int xyzWaitCounter = 0;
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
@@ -51,6 +53,7 @@ unsigned int colorWaitCounter = 0;
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
+#define CHARACTERISTIC_XYZ_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
 
 
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -136,13 +139,15 @@ void mesureLux() {
     // TSL2572.SetGainAuto();
 }
 
-void mesureColor() {
-    //TSL2572.GetLux16()で照度を取得
-    ColorLux colorLux = S11059.GetLux();
-    String out = "R:" + String(colorLux.lux_r, DEC) + " G:" + String(colorLux.lux_g, DEC) + " B:" + String(colorLux.lux_b, DEC) + " IR:" + String(colorLux.lux_ir, DEC);
+void mesureXYZ() {
+    // XYZ 3刺激値を取得
+    uint16_t XData = TCS3430.getXData();
+    uint16_t YData = TCS3430.getYData();
+    uint16_t ZData = TCS3430.getZData();
+    String out = "X:" + String(XData, DEC) + " Y:" + String(YData, DEC) + " Z:" + String(ZData, DEC);
     //Serial.println(out);
-    //pCharacteristicLux->setValue(out.c_str());
-    //pCharacteristicLux->notify();
+    pCharacteristicXYZ->setValue(out.c_str());
+    pCharacteristicXYZ->notify();
 }
 
 void setup() {
@@ -162,8 +167,8 @@ void setup() {
   attachInterrupt(0, onShutter, FALLING);
   // Luxセンサー初期化
   luxSensorConnected = initLuxSensor();
-  // Colorセンサー初期化
-  S11059.SetIntegralTime(MU_S11059::S11059_INTTIME_175, 285);
+  // XYZセンサー初期化
+  xyzSensorConnected = TCS3430.begin();
   
   // Create the BLE Device
   BLEDevice::init("ESP32");
@@ -196,6 +201,14 @@ void setup() {
                     );
   pCharacteristicLux->addDescriptor(new BLE2902());
 
+  // Create a BLE Characteristic for XYZ sensor
+  pCharacteristicXYZ = pService->createCharacteristic(
+                      CHARACTERISTIC_XYZ_UUID,
+                      BLECharacteristic::PROPERTY_WRITE  |
+                      BLECharacteristic::PROPERTY_NOTIFY
+                    );
+  pCharacteristicXYZ->addDescriptor(new BLE2902());
+
   // Start the service
   pService->start();
 
@@ -217,15 +230,17 @@ void loop() {
       } else {
         luxWaitCounter = 0;
         if (luxSensorConnected) {
-            mesureLux();
+          mesureLux();
         }
       }
-      // Colorセンサー送信処理
-      if (colorWaitCounter < 20) {
-        colorWaitCounter++;
+      // XYZセンサー送信処理
+      if (xyzWaitCounter < 20) {
+        xyzWaitCounter++;
       } else {
-        colorWaitCounter = 0;
-          mesureColor();
+        xyzWaitCounter = 0;
+        if (xyzSensorConnected) {
+          mesureXYZ();
+        }
       }
       delay(10); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
     }
