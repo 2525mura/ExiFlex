@@ -13,7 +13,12 @@ struct Cie1931xyView: View {
     
     var body: some View {
         VStack {
-            Text(viewModel.luxMonitor)
+            Text("\(viewModel.luxMonitor, specifier: "%.1f") lx")
+            HStack {
+                Text("X: \(viewModel.cieX, specifier: "%.1f")").padding()
+                Text("Y: \(viewModel.cieY, specifier: "%.1f")").padding()
+                Text("Z: \(viewModel.cieZ, specifier: "%.1f")").padding()
+            }
             Image(uiImage: self.viewModel.plotImage)
                 .resizable().aspectRatio(contentMode:.fit)
         }

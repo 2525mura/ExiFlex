@@ -74,9 +74,7 @@ final class CameraControlViewModel: ObservableObject {
         if recvStr == "LUX:0" {
             return
         }
-        let startIndex = recvStr.index(recvStr.startIndex, offsetBy: 4)
-        let endIndex = recvStr.index(recvStr.endIndex, offsetBy: -1)
-        let doubleLux = Double(recvStr[startIndex...endIndex])!
+        let doubleLux = Double(recvStr.split(separator: ":")[1])!
         self.lvValue = log2(doubleLux / 2.5)
         self.dEv = lvValue - evValue
     }

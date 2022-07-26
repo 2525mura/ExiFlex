@@ -19,7 +19,10 @@ class Cie1931xyViewModel: ObservableObject {
     private let chartImage: UIImage
     private var cursorImage: UIImage
     @Published var plotImage: UIImage
-    @Published var luxMonitor: String
+    @Published var luxMonitor: Double
+    @Published var cieX: Double
+    @Published var cieY: Double
+    @Published var cieZ: Double
 
     init(bleService: BleService,
          chartImageName: String = "cie1931xy",
@@ -36,8 +39,12 @@ class Cie1931xyViewModel: ObservableObject {
         self.chartImage = UIImage(named: chartImageName)!
         self.cursorImage = UIImage()
         self.plotImage = UIImage()
-        self.luxMonitor = "0.0 lx"
+        self.luxMonitor = 0.0
+        self.cieX = 0.0
+        self.cieY = 0.0
+        self.cieZ = 0.0
         plot(chromaticity: CGPoint(x: 0.0, y: 0.0))
+        self.bleService.addCharacteristicUuid(uuid: "67f46ec5-3d54-54c2-ae2d-fb318a4973b0", alias: "xyz")
         bind()
     }
 
@@ -78,7 +85,9 @@ class Cie1931xyViewModel: ObservableObject {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
         let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
             if characteristicMsg.characteristicAlias == "lux" {
-                self.onChangeLv(recvStr: characteristicMsg.characteristicData)
+                self.onChangeLux(recvStr: characteristicMsg.characteristicData)
+            } else if characteristicMsg.characteristicAlias == "xyz" {
+                self.onChangeXYZ(recvStr: characteristicMsg.characteristicData)
             }
         })
         
@@ -87,14 +96,20 @@ class Cie1931xyViewModel: ObservableObject {
         ]
     }
     
-    func onChangeLv(recvStr: String) {
+    func onChangeLux(recvStr: String) {
         if recvStr == "LUX:0" {
             return
         }
-        let startIndex = recvStr.index(recvStr.startIndex, offsetBy: 4)
-        let endIndex = recvStr.index(recvStr.endIndex, offsetBy: -1)
-        let doubleLux = Double(recvStr[startIndex...endIndex])!
-        self.luxMonitor = "\(String(format: "%.1f", doubleLux)) lx"
+        self.luxMonitor = Double(recvStr.split(separator: ":")[1])!
+    }
+    
+    func onChangeXYZ(recvStr: String) {
+        let recvStrSplit = recvStr.split(separator: " ")
+        self.cieX = Double(recvStrSplit[0].split(separator: ":")[1])!
+        self.cieY = Double(recvStrSplit[1].split(separator: ":")[1])!
+        self.cieZ = Double(recvStrSplit[2].split(separator: ":")[1])!
+        let sumXYZ = self.cieX + self.cieY + self.cieZ
+        plot(chromaticity: CGPoint(x: self.cieX / sumXYZ, y: self.cieY / sumXYZ))
     }
     
 }
