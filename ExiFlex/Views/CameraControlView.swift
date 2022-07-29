@@ -14,6 +14,7 @@ struct CameraControlView: View {
     @State private var isoValue: String = "100"
     @State private var fValue: String = "2.8"
     @State private var ssValue: String = "125"
+    @State private var showingModalFilm = false
     
     var body: some View {
         // memo: 縦画面の場合、第一階層はVStackにするとレイアウトが整いやすい
@@ -97,16 +98,43 @@ struct CameraControlView: View {
                 }.frame(width: 100, height: 150).clipped()
             }
             Spacer()
-            ScrollViewReader { render in
-                ScrollView(.horizontal) {
-                    LazyHStack {
-                        ForEach(self.viewModel.takeMetas) { takeMetaViewModel in
-                            TakeMetaView(viewModel: takeMetaViewModel)
+            if self.viewModel.isFilmLoaded {
+                Button(action: {
+                    self.viewModel.ejectFilm()
+                }, label: {
+                    Image(systemName: "eject.circle")
+                })
+                ScrollViewReader { render in
+                    ScrollView(.horizontal) {
+                        LazyHStack {
+                            ForEach(self.viewModel.takeMetas) { takeMetaViewModel in
+                                TakeMetaView(viewModel: takeMetaViewModel)
+                            }
+                        }
+                    }.onChange(of: self.viewModel.lastId) { id in
+                        withAnimation {
+                            render.scrollTo(id)
                         }
                     }
-                }.onChange(of: self.viewModel.lastId) { id in
-                    withAnimation {
-                        render.scrollTo(id)
+                }
+            } else {
+                Button(action: {
+                    self.showingModalFilm.toggle()
+                }, label: {
+                    Image("film_set").resizable()
+                        .aspectRatio(contentMode:.fill).frame(width:320, height:240)
+                }).sheet(isPresented: $showingModalFilm) {
+                    NavigationView {
+                        List(self.viewModel.rollViewModels) { roll in
+                            
+                            Button(action: {
+                                self.viewModel.setFilm(viewModels: roll.takeMetaViewModels)
+                                self.showingModalFilm = false
+                            }, label: {
+                                Text(roll.rollName)
+                            })
+                            
+                        }.navigationBarTitle("フィルム棚")
                     }
                 }
             }

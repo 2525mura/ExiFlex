@@ -24,6 +24,7 @@
 		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
 		C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */; };
 		C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06B169427D8F4E100E4ABDF /* CameraControlView.swift */; };
+		C0806E6A2890A8210011E42F /* RollViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0806E692890A8210011E42F /* RollViewModel.swift */; };
 		C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BDE1228748D8D007F15B2 /* RootViewModel.swift */; };
 		C08CECA6283E8AE6002C9EFB /* ExiFlexNotifier.ino in Resources */ = {isa = PBXBuildFile; fileRef = C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */; };
 		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
@@ -70,6 +71,7 @@
 		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvCardView.swift; sourceTree = "<group>"; };
 		C06B169427D8F4E100E4ABDF /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
+		C0806E692890A8210011E42F /* RollViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollViewModel.swift; sourceTree = "<group>"; };
 		C08BDE1228748D8D007F15B2 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ExiFlexNotifier.ino; sourceTree = "<group>"; };
 		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */,
 				C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */,
 				C08BDE1228748D8D007F15B2 /* RootViewModel.swift */,
+				C0806E692890A8210011E42F /* RollViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
+				C0806E6A2890A8210011E42F /* RollViewModel.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,

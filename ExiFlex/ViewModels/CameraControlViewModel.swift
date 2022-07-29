@@ -23,13 +23,21 @@ final class CameraControlViewModel: ObservableObject {
     var lvValue: Double = 0
     // LV - EV
     @Published var dEv: Double = 0
-    @Published private(set) var takeMetas: [TakeMetaViewModel] = []
+    private(set) var rollViewModels: [RollViewModel] = []
+    @Published var takeMetas: [TakeMetaViewModel] = []
     @Published var lastId: UUID = UUID()
+    @Published var isFilmLoaded: Bool
     
     init(bleService: BleService) {
         self.bleService = bleService
         self.bleService.addCharacteristicUuid(uuid: "beb5483e-36e1-4688-b7f5-ea07361b26a8", alias: "shutter")
         self.bleService.addCharacteristicUuid(uuid: "16cf81e3-0212-58b9-0380-0dbc6b54c51d", alias: "lux")
+        self.isFilmLoaded = false
+        
+        // ダミー。最終的にはストレージからロードする
+        let roll: RollViewModel = RollViewModel(rollName: "First")
+        self.rollViewModels.append(roll)
+
         bind()
     }
     
@@ -77,6 +85,16 @@ final class CameraControlViewModel: ObservableObject {
         let doubleLux = Double(recvStr.split(separator: ":")[1])!
         self.lvValue = log2(doubleLux / 2.5)
         self.dEv = lvValue - evValue
+    }
+    
+    func setFilm(viewModels: [TakeMetaViewModel]) {
+        self.takeMetas = viewModels
+        self.isFilmLoaded = true
+    }
+    
+    func ejectFilm() {
+        self.takeMetas = []
+        self.isFilmLoaded = false
     }
     
 }
