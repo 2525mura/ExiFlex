@@ -50,7 +50,6 @@ struct TakeMetaView: View {
                 Text("🛰")
             }.padding(.vertical, 2)
         }.padding(.horizontal, 20)
-            .padding(.vertical, 50)
             .frame(width:320, height:240)
             .background(Image("film_frame")
                             .resizable()

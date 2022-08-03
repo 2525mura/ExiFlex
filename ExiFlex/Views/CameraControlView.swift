@@ -106,11 +106,11 @@ struct CameraControlView: View {
                 })
                 ScrollViewReader { render in
                     ScrollView(.horizontal) {
-                        LazyHStack {
+                        LazyHStack(alignment: .top) {
                             ForEach(self.viewModel.selectedRoll.takeMetaViewModels) { takeMetaViewModel in
                                 TakeMetaView(viewModel: takeMetaViewModel)
                             }
-                        }
+                        }.frame(maxHeight: 250)
                     }.onChange(of: self.viewModel.lastId) { id in
                         withAnimation {
                             render.scrollTo(id)
@@ -129,8 +129,9 @@ struct CameraControlView: View {
                             
                             HStack {
                                 Text(roll.rollName)
-                            }.onTapGesture {
-                                self.viewModel.setFilm(selectedRollId: roll.id)
+                                Spacer()
+                            }.contentShape(Rectangle()).onTapGesture {
+                                self.viewModel.setFilm(selectedRoll: roll)
                                 self.showingModalFilm = false
                             }
                             

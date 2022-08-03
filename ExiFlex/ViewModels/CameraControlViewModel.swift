@@ -22,8 +22,8 @@ final class CameraControlViewModel: ObservableObject {
     var lvValue: Double = 0
     // LV - EV
     @Published var dEv: Double = 0
-    private(set) var rollViewModels: [RollViewModel] = []
-    var selectedRoll: RollViewModel
+    @Published private(set) var rollViewModels: [RollViewModel]
+    @Published private(set) var selectedRoll: RollViewModel
     @Published var lastId: UUID = UUID()
     @Published var isFilmLoaded: Bool
     
@@ -32,12 +32,16 @@ final class CameraControlViewModel: ObservableObject {
         self.bleService.addCharacteristicUuid(uuid: "beb5483e-36e1-4688-b7f5-ea07361b26a8", alias: "shutter")
         self.bleService.addCharacteristicUuid(uuid: "16cf81e3-0212-58b9-0380-0dbc6b54c51d", alias: "lux")
         self.isFilmLoaded = false
-        
+        self.rollViewModels = []
+        self.selectedRoll = RollViewModel(rollName: "padding")
         // ダミー。最終的にはストレージからロードする
-        let roll: RollViewModel = RollViewModel(rollName: "First")
-        self.rollViewModels.append(roll)
-        self.selectedRoll = roll
-
+        self.rollViewModels.append(
+            RollViewModel(rollName: "First")
+        )
+        self.rollViewModels.append(
+            RollViewModel(rollName: "Second")
+        )
+        // ダミーここまで
         bind()
     }
     
@@ -87,12 +91,11 @@ final class CameraControlViewModel: ObservableObject {
         self.dEv = lvValue - evValue
     }
     
-    func setFilm(selectedRollId: UUID) {
-        if let foundRoll = self.rollViewModels.first(where: { return $0.id == selectedRollId }) {
-            self.selectedRoll = foundRoll
-            self.isFilmLoaded = true
-        } else {
-            self.isFilmLoaded = false
+    func setFilm(selectedRoll: RollViewModel) {
+        self.selectedRoll = selectedRoll
+        self.isFilmLoaded = true
+        if let lastTakeMeta = self.selectedRoll.takeMetaViewModels.last {
+            self.lastId = lastTakeMeta.id
         }
     }
     
