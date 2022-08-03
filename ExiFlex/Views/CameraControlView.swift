@@ -107,7 +107,7 @@ struct CameraControlView: View {
                 ScrollViewReader { render in
                     ScrollView(.horizontal) {
                         LazyHStack {
-                            ForEach(self.viewModel.takeMetas) { takeMetaViewModel in
+                            ForEach(self.viewModel.selectedRoll.takeMetaViewModels) { takeMetaViewModel in
                                 TakeMetaView(viewModel: takeMetaViewModel)
                             }
                         }
@@ -127,12 +127,12 @@ struct CameraControlView: View {
                     NavigationView {
                         List(self.viewModel.rollViewModels) { roll in
                             
-                            Button(action: {
-                                self.viewModel.setFilm(viewModels: roll.takeMetaViewModels)
-                                self.showingModalFilm = false
-                            }, label: {
+                            HStack {
                                 Text(roll.rollName)
-                            })
+                            }.onTapGesture {
+                                self.viewModel.setFilm(selectedRollId: roll.id)
+                                self.showingModalFilm = false
+                            }
                             
                         }.navigationBarTitle("フィルム棚")
                     }

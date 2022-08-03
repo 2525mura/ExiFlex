@@ -16,7 +16,6 @@ final class CameraControlViewModel: ObservableObject {
     var isoValue: String = "100"
     var fValue: String = "2.8"
     var ssValue: String = "125"
-    var takeCount: Int = 0
     // Picker選択値から計算されたEV値
     var evValue: Double = 0
     // LUXセンサーから測定されたLV値
@@ -24,7 +23,7 @@ final class CameraControlViewModel: ObservableObject {
     // LV - EV
     @Published var dEv: Double = 0
     private(set) var rollViewModels: [RollViewModel] = []
-    @Published var takeMetas: [TakeMetaViewModel] = []
+    var selectedRoll: RollViewModel
     @Published var lastId: UUID = UUID()
     @Published var isFilmLoaded: Bool
     
@@ -37,6 +36,7 @@ final class CameraControlViewModel: ObservableObject {
         // ダミー。最終的にはストレージからロードする
         let roll: RollViewModel = RollViewModel(rollName: "First")
         self.rollViewModels.append(roll)
+        self.selectedRoll = roll
 
         bind()
     }
@@ -45,15 +45,15 @@ final class CameraControlViewModel: ObservableObject {
     func bind() {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
         let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
-            if characteristicMsg.characteristicAlias == "shutter" {
+            if characteristicMsg.characteristicAlias == "shutter" && self.isFilmLoaded {
+                self.selectedRoll.takeCount += 1
                 let takeMetaViewModel = TakeMetaViewModel(
                     isoValue: self.isoValue,
                     fValue: self.fValue,
                     ssValue: self.ssValue,
-                    takeCount: self.takeCount
+                    takeCount: self.selectedRoll.takeCount
                 )
-                self.takeMetas.append(takeMetaViewModel)
-                self.takeCount += 1
+                self.selectedRoll.takeMetaViewModels.append(takeMetaViewModel)
                 self.lastId = takeMetaViewModel.id
             } else if characteristicMsg.characteristicAlias == "lux" {
                 // LUX -> LV計算
@@ -87,13 +87,16 @@ final class CameraControlViewModel: ObservableObject {
         self.dEv = lvValue - evValue
     }
     
-    func setFilm(viewModels: [TakeMetaViewModel]) {
-        self.takeMetas = viewModels
-        self.isFilmLoaded = true
+    func setFilm(selectedRollId: UUID) {
+        if let foundRoll = self.rollViewModels.first(where: { return $0.id == selectedRollId }) {
+            self.selectedRoll = foundRoll
+            self.isFilmLoaded = true
+        } else {
+            self.isFilmLoaded = false
+        }
     }
     
     func ejectFilm() {
-        self.takeMetas = []
         self.isFilmLoaded = false
     }
     

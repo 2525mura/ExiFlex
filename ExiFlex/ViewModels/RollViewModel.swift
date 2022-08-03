@@ -11,13 +11,15 @@ final class RollViewModel: Identifiable {
     
     let id: UUID = UUID()
     let rollName: String
-    let takeMetaViewModels: [TakeMetaViewModel]
+    var takeMetaViewModels: [TakeMetaViewModel]
     var takeCount: Int
     
     init(rollName: String) {
         self.rollName = rollName
-        self.takeMetaViewModels = []
         self.takeCount = 0
+        self.takeMetaViewModels = [
+            TakeMetaViewModel(isoValue: "N/A", fValue: "N/A", ssValue: "N/A", takeCount: self.takeCount)
+        ]
     }
     
 }

@@ -23,6 +23,7 @@ class Cie1931xyViewModel: ObservableObject {
     @Published var cieX: Double
     @Published var cieY: Double
     @Published var cieZ: Double
+    @Published var cieIR1: Double
 
     init(bleService: BleService,
          chartImageName: String = "cie1931xy",
@@ -43,6 +44,7 @@ class Cie1931xyViewModel: ObservableObject {
         self.cieX = 0.0
         self.cieY = 0.0
         self.cieZ = 0.0
+        self.cieIR1 = 0.0
         plot(chromaticity: CGPoint(x: 0.0, y: 0.0))
         self.bleService.addCharacteristicUuid(uuid: "67f46ec5-3d54-54c2-ae2d-fb318a4973b0", alias: "xyz")
         bind()
@@ -108,6 +110,7 @@ class Cie1931xyViewModel: ObservableObject {
         self.cieX = Double(recvStrSplit[0].split(separator: ":")[1])!
         self.cieY = Double(recvStrSplit[1].split(separator: ":")[1])!
         self.cieZ = Double(recvStrSplit[2].split(separator: ":")[1])!
+        self.cieIR1 = Double(recvStrSplit[3].split(separator: ":")[1])!
         let sumXYZ = self.cieX + self.cieY + self.cieZ
         plot(chromaticity: CGPoint(x: self.cieX / sumXYZ, y: self.cieY / sumXYZ))
     }
