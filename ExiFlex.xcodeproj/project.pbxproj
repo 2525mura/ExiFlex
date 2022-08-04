@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */; };
 		C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */; };
+		C01E5524289BEE61004FFBA2 /* FilmType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01E5523289BEE61004FFBA2 /* FilmType.swift */; };
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
 		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
 		C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */; };
@@ -53,6 +54,7 @@
 /* Begin PBXFileReference section */
 		C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaViewModel.swift; sourceTree = "<group>"; };
 		C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicMsgEntity.swift; sourceTree = "<group>"; };
+		C01E5523289BEE61004FFBA2 /* FilmType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmType.swift; sourceTree = "<group>"; };
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
 		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
 		C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaView.swift; sourceTree = "<group>"; };
@@ -115,11 +117,20 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
+		C01E5522289BED3C004FFBA2 /* EnumsView */ = {
+			isa = PBXGroup;
+			children = (
+				C01E5523289BEE61004FFBA2 /* FilmType.swift */,
+			);
+			path = EnumsView;
+			sourceTree = "<group>";
+		};
 		C02D7EF0278AE88700920A32 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				C016BEEA27C912FD0012582B /* Entities */,
 				C0F3A79827AE50DC00F870BE /* Enums */,
+				C01E5522289BED3C004FFBA2 /* EnumsView */,
 				C059CA6427906DF2008CB072 /* BleService.swift */,
 				C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */,
 			);
@@ -382,6 +393,7 @@
 				C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */,
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
+				C01E5524289BEE61004FFBA2 /* FilmType.swift in Sources */,
 				C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,

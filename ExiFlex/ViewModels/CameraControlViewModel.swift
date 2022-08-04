@@ -50,14 +50,7 @@ final class CameraControlViewModel: ObservableObject {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
         let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
             if characteristicMsg.characteristicAlias == "shutter" && self.isFilmLoaded {
-                self.selectedRoll.takeCount += 1
-                let takeMetaViewModel = TakeMetaViewModel(
-                    isoValue: self.isoValue,
-                    fValue: self.fValue,
-                    ssValue: self.ssValue,
-                    takeCount: self.selectedRoll.takeCount
-                )
-                self.selectedRoll.takeMetaViewModels.append(takeMetaViewModel)
+                let takeMetaViewModel = self.selectedRoll.take(isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue)
                 self.lastId = takeMetaViewModel.id
             } else if characteristicMsg.characteristicAlias == "lux" {
                 // LUX -> LV計算
@@ -95,12 +88,34 @@ final class CameraControlViewModel: ObservableObject {
         self.selectedRoll = selectedRoll
         self.isFilmLoaded = true
         if let lastTakeMeta = self.selectedRoll.takeMetaViewModels.last {
-            self.lastId = lastTakeMeta.id
+            // 見つかったコマがリーダーでない場合
+            if !lastTakeMeta.isLeader {
+                // set後1秒後にフィルムの最後をアニメーション表示する
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.lastId = lastTakeMeta.id
+                }
+            }
         }
     }
     
     func ejectFilm() {
-        self.isFilmLoaded = false
+        if let firstTakeMeta = self.selectedRoll.takeMetaViewModels.first {
+            self.lastId = firstTakeMeta.id
+        }
+        
+        if let lastTakeMeta = self.selectedRoll.takeMetaViewModels.last {
+            // 見つかったコマがリーダーでない場合
+            if !lastTakeMeta.isLeader {
+                // アニメーションが終わるのを待ってからeject状態にする
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.isFilmLoaded = false
+                }
+            } else {
+                self.isFilmLoaded = false
+            }
+        } else {
+            self.isFilmLoaded = false
+        }
     }
     
 }

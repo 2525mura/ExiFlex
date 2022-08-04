@@ -18,12 +18,16 @@ final class TakeMetaViewModel: Identifiable, ObservableObject {
     var takeCount: Int
     let takeDate: Date
     let takeDateStr: String
+    let isLeader: Bool
+    let refRoll: RollViewModel
     
-    init(isoValue: String, fValue: String, ssValue: String, takeCount: Int) {
+    init(refRoll: RollViewModel, isoValue: String, fValue: String, ssValue: String, takeCount: Int, isLeader: Bool = false) {
+        self.refRoll = refRoll
         self.isoValue = isoValue
         self.fValue = fValue
         self.ssValue = ssValue
         self.takeCount = takeCount
+        self.isLeader = isLeader
         
         // 撮影日時
         let f = DateFormatter()
