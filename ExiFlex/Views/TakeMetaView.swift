@@ -14,46 +14,51 @@ struct TakeMetaView: View {
     var body: some View {
         
         // テキストを主役に背景を合わせる
-        VStack {
-            Text("タイトル").lineLimit(1)
-            Divider()
-            HStack {
-                VStack {
-                    Text("被写体")
-                    Text("名無しさん")
+        if self.viewModel.isLeader {
+            Image("film_leader").resizable().frame(width:320, height:240)
+                .aspectRatio(contentMode:.fill)
+        } else {
+            VStack {
+                Text("タイトル").lineLimit(1)
+                Divider()
+                HStack {
+                    VStack {
+                        Text("被写体")
+                        Text("名無しさん")
+                    }
+                    Spacer()
+                    VStack {
+                        Text("TAKE").padding(.trailing, 20)
+                        Text("\(self.viewModel.takeCount)/36").padding(.trailing, 20)
+                    }
+                    Spacer()
+                    VStack {
+                        Text("ROLL")
+                        Text("0054111")
+                    }
                 }
-                Spacer()
-                VStack {
-                    Text("TAKE").padding(.trailing, 20)
-                    Text("\(self.viewModel.takeCount)/36").padding(.trailing, 20)
+                Divider()
+                HStack {
+                    Text("撮影情報").padding(.trailing, 10)
+                    Text("ISO\(self.viewModel.isoValue)")
+                    Text("F\(self.viewModel.fValue)").padding(.trailing, 10)
+                    Text("1/\(self.viewModel.ssValue)s").padding(.trailing, 10)
+                    Spacer()
                 }
-                Spacer()
-                VStack {
-                    Text("ROLL")
-                    Text("0054111")
-                }
-            }
-            Divider()
-            HStack {
-                Text("撮影情報").padding(.trailing, 10)
-                Text("ISO\(self.viewModel.isoValue)")
-                Text("F\(self.viewModel.fValue)").padding(.trailing, 10)
-                Text("1/\(self.viewModel.ssValue)s").padding(.trailing, 10)
-                Spacer()
-            }
-            Divider()
-            HStack {
-                Text("日付").padding(.trailing, 10)
-                Text(self.viewModel.takeDateStr).padding(.trailing, 10)
-                Spacer()
-                Text("✨")
-                Text("🛰")
-            }.padding(.vertical, 2)
-        }.padding(.horizontal, 20)
-            .frame(width:320, height:240)
-            .background(Image("film_frame")
-                            .resizable()
-                            .aspectRatio(contentMode:.fill))
+                Divider()
+                HStack {
+                    Text("日付").padding(.trailing, 10)
+                    Text(self.viewModel.takeDateStr).padding(.trailing, 10)
+                    Spacer()
+                    Text("✨")
+                    Text("🛰")
+                }.padding(.vertical, 2)
+            }.padding(.horizontal, 20)
+                .frame(width:320, height:240)
+                .background(Image("film_frame")
+                                .resizable()
+                                .aspectRatio(contentMode:.fill))
+        }
     }
 }
 
