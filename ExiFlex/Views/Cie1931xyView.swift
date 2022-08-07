@@ -13,7 +13,10 @@ struct Cie1931xyView: View {
     
     var body: some View {
         VStack {
-            Text("\(viewModel.luxMonitor, specifier: "%.1f") lx")
+            HStack {
+                Text("\(viewModel.luxMonitor, specifier: "%.1f") lx").frame(width: 75)
+                Text("CT: \(viewModel.colorTemp, specifier: "%.0f") K").frame(width: 100)
+            }
             HStack {
                 Text("X: \(viewModel.cieX, specifier: "%.0f")").frame(width: 75)
                 Text("Y: \(viewModel.cieY, specifier: "%.0f")").frame(width: 75)

@@ -18,12 +18,14 @@ class Cie1931xyViewModel: ObservableObject {
     private let cursorSize: Double
     private let chartImage: UIImage
     private var cursorImage: UIImage
+    private let tcs3430Utility: Tcs3430Utility
     @Published var plotImage: UIImage
     @Published var luxMonitor: Double
     @Published var cieX: Double
     @Published var cieY: Double
     @Published var cieZ: Double
     @Published var cieIR1: Double
+    @Published var colorTemp: Double
 
     init(bleService: BleService,
          chartImageName: String = "cie1931xy",
@@ -39,12 +41,14 @@ class Cie1931xyViewModel: ObservableObject {
         self.cursorSize = cursorSize
         self.chartImage = UIImage(named: chartImageName)!
         self.cursorImage = UIImage()
+        self.tcs3430Utility = Tcs3430Utility()
         self.plotImage = UIImage()
         self.luxMonitor = 0.0
         self.cieX = 0.0
         self.cieY = 0.0
         self.cieZ = 0.0
         self.cieIR1 = 0.0
+        self.colorTemp = 0.0
         plot(chromaticity: CGPoint(x: 0.0, y: 0.0))
         self.bleService.addCharacteristicUuid(uuid: "67f46ec5-3d54-54c2-ae2d-fb318a4973b0", alias: "xyz")
         bind()
@@ -107,12 +111,21 @@ class Cie1931xyViewModel: ObservableObject {
     
     func onChangeXYZ(recvStr: String) {
         let recvStrSplit = recvStr.split(separator: " ")
-        self.cieX = Double(recvStrSplit[0].split(separator: ":")[1])!
-        self.cieY = Double(recvStrSplit[1].split(separator: ":")[1])!
-        self.cieZ = Double(recvStrSplit[2].split(separator: ":")[1])!
-        self.cieIR1 = Double(recvStrSplit[3].split(separator: ":")[1])!
-        let sumXYZ = self.cieX + self.cieY + self.cieZ
-        plot(chromaticity: CGPoint(x: self.cieX / sumXYZ, y: self.cieY / sumXYZ))
+        let ir1 = Double(recvStrSplit[3].split(separator: ":")[1])!
+        // 測定データを校正して各種パラメータを算出
+        let tristimulus = tcs3430Utility.getTristimulus(
+            X: Double(recvStrSplit[0].split(separator: ":")[1])!,
+            Y: Double(recvStrSplit[1].split(separator: ":")[1])!,
+            Z: Double(recvStrSplit[2].split(separator: ":")[1])!,
+            IR: ir1
+        )
+        // パラメータをViewに設定
+        self.cieX = tristimulus.X
+        self.cieY = tristimulus.Y
+        self.cieZ = tristimulus.Z
+        self.cieIR1 = ir1
+        self.colorTemp = tristimulus.colorTemp
+        plot(chromaticity: CGPoint(x: tristimulus.x, y: tristimulus.y))
     }
     
 }
