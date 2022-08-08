@@ -16,9 +16,10 @@ struct TakeMetaView: View {
         // テキストを主役に背景を合わせる
         if self.viewModel.isLeader {
             Image("film_leader").resizable().frame(width:320, height:240)
-                .aspectRatio(contentMode:.fill)
+                .aspectRatio(contentMode:.fill).padding(.leading, 50)
         } else {
             VStack {
+                Spacer().frame(height: 25)
                 Text("タイトル").lineLimit(1)
                 Divider()
                 HStack {
@@ -52,7 +53,12 @@ struct TakeMetaView: View {
                     Spacer()
                     Text("✨")
                     Text("🛰")
-                }.padding(.vertical, 2)
+                }
+                Spacer().frame(height: 12)
+                HStack {
+                    Text("\(self.viewModel.takeCount, specifier: "%02d")").font(.caption).foregroundColor(.white).padding(.leading, 2.5)
+                    Spacer()
+                }
             }.padding(.horizontal, 20)
                 .frame(width:320, height:240)
                 .background(Image("film_frame")
