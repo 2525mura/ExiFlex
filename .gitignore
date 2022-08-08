@@ -4,3 +4,5 @@ xcuserdata/
 UserInterfaceState.xcuserstate
 # VSCode Setting
 .vscode
+# CocoaPods Dependencies
+Pods/

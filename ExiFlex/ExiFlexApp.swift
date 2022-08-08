@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct ExiFlexApp: App {
+    
+    // AppDelegateと接続するアダプタを宣言
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             RootView()
