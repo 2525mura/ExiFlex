@@ -18,6 +18,7 @@
 		C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */; };
 		C03B5498286C927300E5F0E8 /* Cie1931xyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */; };
 		C03B549A286C928200E5F0E8 /* Cie1931xyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */; };
+		C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */; };
 		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
 		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
 		C05CB36A2787280D00B28849 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3692787280D00B28849 /* RootView.swift */; };
@@ -75,6 +76,7 @@
 		C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaView.swift; sourceTree = "<group>"; };
 		C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyView.swift; sourceTree = "<group>"; };
 		C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyViewModel.swift; sourceTree = "<group>"; };
+		C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapsViewModel.swift; sourceTree = "<group>"; };
 		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3672787280D00B28849 /* ExiFlexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexApp.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */,
 				C08BDE1228748D8D007F15B2 /* RootViewModel.swift */,
 				C0806E692890A8210011E42F /* RollViewModel.swift */,
+				C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -565,6 +568,7 @@
 				C06A97A2289F818A0046A971 /* Tcs3430Utility.swift in Sources */,
 				C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */,
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
+				C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
 				C01E5524289BEE61004FFBA2 /* FilmType.swift in Sources */,
 				C06A97A4289FCD2B0046A971 /* TristimulusEntity.swift in Sources */,

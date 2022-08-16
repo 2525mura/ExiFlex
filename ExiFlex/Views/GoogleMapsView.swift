@@ -10,21 +10,50 @@ import GoogleMaps
 
 struct GoogleMapsView: UIViewRepresentable {
     
-    // 緯度経度は東京駅を設定しています
-    let mapView = GMSMapView(
-        frame: .zero, camera: GMSCameraPosition.camera(withLatitude: 35.681111, longitude: 139.766667, zoom: 15.0)
-    )
+    typealias UIViewType = GMSMapView
+    @ObservedObject private(set) var viewModel: GoogleMapsViewModel
+    let gmsMapView = GMSMapView(frame: .zero)
     
     func makeUIView(context: Context) -> GMSMapView {
-        return mapView
+        // マーカーが1個でもあれば、先頭マーカーの座標をセットする
+        if let markerFirst = self.viewModel.markers.first {
+            let camera = GMSCameraPosition.camera(withLatitude: markerFirst.position.latitude, longitude: markerFirst.position.longitude, zoom: 8)
+            self.gmsMapView.camera = camera
+        }
+        return self.gmsMapView
     }
 
     func updateUIView(_ mapView: GMSMapView, context: Context) {
+        // show markers
+        self.viewModel.markers.forEach { $0.map = mapView }
+        // animate to selectedMarker
+        self.viewModel.selectedMarker?.map = mapView
+        animateToSelectedMarker(mapView: mapView)
     }
+    
+    private func animateToSelectedMarker(mapView: GMSMapView) {
+        guard let selectedMarker = self.viewModel.selectedMarker else {
+            return
+        }
+        
+        if mapView.selectedMarker != selectedMarker {
+            mapView.selectedMarker = selectedMarker
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                mapView.animate(toZoom: 8)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    mapView.animate(with: GMSCameraUpdate.setTarget(selectedMarker.position))
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        mapView.animate(toZoom: 12)
+                    })
+                }
+            }
+        }
+    }
+    
 }
 
 struct GoogleMapsView_Previews: PreviewProvider {
     static var previews: some View {
-        GoogleMapsView()
+        GoogleMapsView(viewModel: GoogleMapsViewModel())
     }
 }
