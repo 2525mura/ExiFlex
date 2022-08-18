@@ -16,6 +16,8 @@
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
 		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
 		C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */; };
+		C038AF4328AD317100A559EC /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C038AF4228AD317100A559EC /* AlbumView.swift */; };
+		C038AF4528AD336B00A559EC /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C038AF4428AD336B00A559EC /* AlbumViewModel.swift */; };
 		C03B5498286C927300E5F0E8 /* Cie1931xyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */; };
 		C03B549A286C928200E5F0E8 /* Cie1931xyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */; };
 		C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */; };
@@ -74,6 +76,8 @@
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
 		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
 		C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaView.swift; sourceTree = "<group>"; };
+		C038AF4228AD317100A559EC /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
+		C038AF4428AD336B00A559EC /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyView.swift; sourceTree = "<group>"; };
 		C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyViewModel.swift; sourceTree = "<group>"; };
 		C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapsViewModel.swift; sourceTree = "<group>"; };
@@ -263,6 +267,7 @@
 				C02DCF7727DA50C800A36AE7 /* TakeMetaView.swift */,
 				C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */,
 				C07FB62C28A14B0200653460 /* GoogleMapsView.swift */,
+				C038AF4228AD317100A559EC /* AlbumView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 				C08BDE1228748D8D007F15B2 /* RootViewModel.swift */,
 				C0806E692890A8210011E42F /* RollViewModel.swift */,
 				C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */,
+				C038AF4428AD336B00A559EC /* AlbumViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -569,8 +575,10 @@
 				C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */,
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */,
+				C038AF4328AD317100A559EC /* AlbumView.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
 				C01E5524289BEE61004FFBA2 /* FilmType.swift in Sources */,
+				C038AF4528AD336B00A559EC /* AlbumViewModel.swift in Sources */,
 				C06A97A4289FCD2B0046A971 /* TristimulusEntity.swift in Sources */,
 				C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,

@@ -33,7 +33,7 @@ final class CameraControlViewModel: ObservableObject {
         self.bleService.addCharacteristicUuid(uuid: "16cf81e3-0212-58b9-0380-0dbc6b54c51d", alias: "lux")
         self.isFilmLoaded = false
         self.rollViewModels = []
-        self.selectedRoll = RollViewModel(rollName: "padding")
+        self.selectedRoll = RollViewModel(rollName: "init_filler")
         // ダミー。最終的にはストレージからロードする
         self.rollViewModels.append(
             RollViewModel(rollName: "First")
