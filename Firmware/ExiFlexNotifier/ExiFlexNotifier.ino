@@ -144,7 +144,8 @@ void mesureXYZ() {
     uint16_t XData = TCS3430.getXData();
     uint16_t YData = TCS3430.getYData();
     uint16_t ZData = TCS3430.getZData();
-    String out = "X:" + String(XData, DEC) + " Y:" + String(YData, DEC) + " Z:" + String(ZData, DEC);
+    uint16_t IR1Data = TCS3430.getIR1Data();
+    String out = "X:" + String(XData, DEC) + " Y:" + String(YData, DEC) + " Z:" + String(ZData, DEC) + " IR1:" + String(IR1Data, DEC);
     //Serial.println(out);
     pCharacteristicXYZ->setValue(out.c_str());
     pCharacteristicXYZ->notify();
@@ -169,6 +170,8 @@ void setup() {
   luxSensorConnected = initLuxSensor();
   // XYZセンサー初期化
   xyzSensorConnected = TCS3430.begin();
+  // 4X Gain
+  TCS3430.setALSGain(1);
   
   // Create the BLE Device
   BLEDevice::init("ESP32");
