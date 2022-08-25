@@ -34,12 +34,17 @@ struct RootView: View {
                 CameraControlView(viewModel: viewModel.cameraControlViewModel)
                     .tabItem {
                         Image(systemName: "film")
-                        Text("EV Meter")
+                        Text("Take")
                     }
                 Cie1931xyView(viewModel: viewModel.cie1931xyViewModel)
                     .tabItem {
                         Image(systemName: "cloud.sun")
                         Text("Light Meter")
+                    }
+                AlbumView(viewModel: viewModel.albumViewModel)
+                    .tabItem {
+                        Image(systemName: "books.vertical")
+                        Text("Album")
                     }
             }
         }

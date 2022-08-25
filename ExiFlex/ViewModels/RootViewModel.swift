@@ -13,12 +13,14 @@ class RootViewModel: ObservableObject {
     var peripheralListVm: PeripheralListViewModel
     var cameraControlViewModel: CameraControlViewModel
     var cie1931xyViewModel: Cie1931xyViewModel
+    var albumViewModel: AlbumViewModel
     
     init() {
         self.bleService = BleService()
         self.peripheralListVm = PeripheralListViewModel(bleService: bleService)
         self.cameraControlViewModel = CameraControlViewModel(bleService: bleService)
         self.cie1931xyViewModel = Cie1931xyViewModel(bleService: self.bleService)
+        self.albumViewModel = AlbumViewModel()
     }
     
     func startAdvertiseScan() {
