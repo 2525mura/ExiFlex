@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TakeMetaView: View {
     
-    @ObservedObject private(set) var viewModel: TakeMetaViewModel
+    @ObservedObject private(set) var viewModel: TakeMeta
     
     var body: some View {
         
@@ -30,7 +30,7 @@ struct TakeMetaView: View {
                     Spacer()
                     VStack {
                         Text("TAKE").padding(.trailing, 20)
-                        Text("\(self.viewModel.takeCount)/36").padding(.trailing, 20)
+                        Text("\(self.viewModel.takeNo)/36").padding(.trailing, 20)
                     }
                     Spacer()
                     VStack {
@@ -41,9 +41,9 @@ struct TakeMetaView: View {
                 Divider()
                 HStack {
                     Text("撮影情報").padding(.trailing, 10)
-                    Text("ISO\(self.viewModel.isoValue)")
-                    Text("F\(self.viewModel.fValue)").padding(.trailing, 10)
-                    Text("1/\(self.viewModel.ssValue)s").padding(.trailing, 10)
+                    Text("ISO\(self.viewModel.isoValueUnwrap)")
+                    Text("F\(self.viewModel.fValueUnwrap)").padding(.trailing, 10)
+                    Text("1/\(self.viewModel.ssValueUnwrap)s").padding(.trailing, 10)
                     Spacer()
                 }
                 Divider()
@@ -51,12 +51,11 @@ struct TakeMetaView: View {
                     Text("日付").padding(.trailing, 10)
                     Text(self.viewModel.takeDateStr).padding(.trailing, 10)
                     Spacer()
-                    Text("✨")
                     Text("🛰")
                 }
                 Spacer().frame(height: 12)
                 HStack {
-                    Text("\(self.viewModel.takeCount, specifier: "%02d")").font(.caption).foregroundColor(.white).padding(.leading, 2.5)
+                    Text("\(self.viewModel.takeNo, specifier: "%02d")").font(.caption).foregroundColor(.white).padding(.leading, 2.5)
                     Spacer()
                 }
             }.padding(.horizontal, 20)
@@ -68,6 +67,7 @@ struct TakeMetaView: View {
     }
 }
 
+/*
 struct TakeMetaView_Previews: PreviewProvider {
     static var previews: some View {
         TakeMetaView(
@@ -75,3 +75,4 @@ struct TakeMetaView_Previews: PreviewProvider {
         ).previewLayout(.sizeThatFits)
     }
 }
+*/
