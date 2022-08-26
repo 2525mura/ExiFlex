@@ -12,6 +12,8 @@
 		B5FD3C42E99D93F931414121 /* Pods_ExiFlexTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */; };
 		C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */; };
 		C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */; };
+		C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C01DB3F528B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld */; };
+		C01DB3F928B50991001CCD1D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01DB3F828B50991001CCD1D /* Persistence.swift */; };
 		C01E5524289BEE61004FFBA2 /* FilmType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01E5523289BEE61004FFBA2 /* FilmType.swift */; };
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
 		C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */; };
@@ -35,6 +37,10 @@
 		C06A97A2289F818A0046A971 /* Tcs3430Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A97A1289F818A0046A971 /* Tcs3430Utility.swift */; };
 		C06A97A4289FCD2B0046A971 /* TristimulusEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A97A3289FCD2B0046A971 /* TristimulusEntity.swift */; };
 		C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06B169427D8F4E100E4ABDF /* CameraControlView.swift */; };
+		C070FBCB28B7C34A00CA3C8B /* Roll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C070FBC728B7C34A00CA3C8B /* Roll+CoreDataClass.swift */; };
+		C070FBCC28B7C34A00CA3C8B /* Roll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C070FBC828B7C34A00CA3C8B /* Roll+CoreDataProperties.swift */; };
+		C070FBCD28B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C070FBC928B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift */; };
+		C070FBCE28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C070FBCA28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift */; };
 		C07FB62D28A14B0200653460 /* GoogleMapsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FB62C28A14B0200653460 /* GoogleMapsView.swift */; };
 		C0806E6A2890A8210011E42F /* RollViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0806E692890A8210011E42F /* RollViewModel.swift */; };
 		C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BDE1228748D8D007F15B2 /* RootViewModel.swift */; };
@@ -72,6 +78,8 @@
 		B2B597E38CD41B6E7AA02E98 /* Pods-ExiFlex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlex.debug.xcconfig"; path = "Target Support Files/Pods-ExiFlex/Pods-ExiFlex.debug.xcconfig"; sourceTree = "<group>"; };
 		C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaViewModel.swift; sourceTree = "<group>"; };
 		C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicMsgEntity.swift; sourceTree = "<group>"; };
+		C01DB3F628B504C1001CCD1D /* ExiFlexDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExiFlexDataModel.xcdatamodel; sourceTree = "<group>"; };
+		C01DB3F828B50991001CCD1D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		C01E5523289BEE61004FFBA2 /* FilmType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmType.swift; sourceTree = "<group>"; };
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
 		C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListViewModel.swift; sourceTree = "<group>"; };
@@ -98,6 +106,10 @@
 		C06A97A1289F818A0046A971 /* Tcs3430Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tcs3430Utility.swift; sourceTree = "<group>"; };
 		C06A97A3289FCD2B0046A971 /* TristimulusEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TristimulusEntity.swift; sourceTree = "<group>"; };
 		C06B169427D8F4E100E4ABDF /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
+		C070FBC728B7C34A00CA3C8B /* Roll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C070FBC828B7C34A00CA3C8B /* Roll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C070FBC928B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TakeMeta+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C070FBCA28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TakeMeta+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C07FB62C28A14B0200653460 /* GoogleMapsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapsView.swift; sourceTree = "<group>"; };
 		C0806E692890A8210011E42F /* RollViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollViewModel.swift; sourceTree = "<group>"; };
 		C08BDE1228748D8D007F15B2 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
@@ -172,6 +184,18 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
+		C01DB3F428B5047B001CCD1D /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				C070FBC728B7C34A00CA3C8B /* Roll+CoreDataClass.swift */,
+				C070FBC828B7C34A00CA3C8B /* Roll+CoreDataProperties.swift */,
+				C070FBC928B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift */,
+				C070FBCA28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift */,
+				C01DB3F528B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		C01E5522289BED3C004FFBA2 /* EnumsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +207,7 @@
 		C02D7EF0278AE88700920A32 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C01DB3F428B5047B001CCD1D /* Repository */,
 				C06A979E289F7FC10046A971 /* Math */,
 				C016BEEA27C912FD0012582B /* Entities */,
 				C0F3A79827AE50DC00F870BE /* Enums */,
@@ -228,6 +253,7 @@
 				C05CB36B2787280F00B28849 /* Assets.xcassets */,
 				C05CB36D2787280F00B28849 /* Preview Content */,
 				C05F2A7528A146A100D282D5 /* AppDelegate.swift */,
+				C01DB3F828B50991001CCD1D /* Persistence.swift */,
 			);
 			path = ExiFlex;
 			sourceTree = "<group>";
@@ -573,7 +599,11 @@
 				C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */,
 				C06A97A2289F818A0046A971 /* Tcs3430Utility.swift in Sources */,
 				C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */,
+				C070FBCC28B7C34A00CA3C8B /* Roll+CoreDataProperties.swift in Sources */,
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
+				C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */,
+				C070FBCD28B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift in Sources */,
+				C070FBCB28B7C34A00CA3C8B /* Roll+CoreDataClass.swift in Sources */,
 				C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */,
 				C038AF4328AD317100A559EC /* AlbumView.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
@@ -582,6 +612,7 @@
 				C06A97A4289FCD2B0046A971 /* TristimulusEntity.swift in Sources */,
 				C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */,
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
+				C070FBCE28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
 				C0806E6A2890A8210011E42F /* RollViewModel.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
@@ -596,6 +627,7 @@
 				C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */,
 				C03B549A286C928200E5F0E8 /* Cie1931xyViewModel.swift in Sources */,
 				C05F2A7628A146A100D282D5 /* AppDelegate.swift in Sources */,
+				C01DB3F928B50991001CCD1D /* Persistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -935,6 +967,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C01DB3F528B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C01DB3F628B504C1001CCD1D /* ExiFlexDataModel.xcdatamodel */,
+			);
+			currentVersion = C01DB3F628B504C1001CCD1D /* ExiFlexDataModel.xcdatamodel */;
+			path = ExiFlexDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C05CB35C2787280D00B28849 /* Project object */;
 }
