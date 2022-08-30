@@ -10,12 +10,13 @@ import SwiftUI
 @main
 struct ExiFlexApp: App {
     
+    let persistenceController = PersistenceController.shared
     // AppDelegateと接続するアダプタを宣言
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView().environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

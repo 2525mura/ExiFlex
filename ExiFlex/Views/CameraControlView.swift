@@ -11,13 +11,19 @@ struct CameraControlView: View {
     // 参照型のViewModelの場合は、ObservableObjectサブクラスのインスタンスを代入する
     // 自身のViewでインスタンス生成して代入する場合はStateObject、親Viewから貰う場合はObservedObject
     @ObservedObject private(set) var viewModel: CameraControlViewModel
+    @Environment(\.managedObjectContext) var viewContext
     @State private var isoValue: String = "100"
     @State private var fValue: String = "2.8"
     @State private var ssValue: String = "125"
     @State private var showingModalFilm = false
     
+    @FetchRequest(
+        entity: Roll.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Roll.createdAt, ascending: true)],
+        predicate: nil
+    ) private var rolls: FetchedResults<Roll>
+    
     var body: some View {
-        // memo: 縦画面の場合、第一階層はVStackにするとレイアウトが整いやすい
         VStack {
             HStack {
                 if viewModel.dEv >= 0.5 {
@@ -107,8 +113,8 @@ struct CameraControlView: View {
                 ScrollViewReader { render in
                     ScrollView(.horizontal) {
                         LazyHStack(alignment: .top) {
-                            ForEach(self.viewModel.selectedRoll.takeMetaViewModels) { takeMetaViewModel in
-                                TakeMetaView(viewModel: takeMetaViewModel)
+                            ForEach(self.viewModel.selectedRoll!.takeMetasList) { takeMeta in
+                                TakeMetaView(viewModel: takeMeta).id(takeMeta.id)
                             }
                         }.frame(maxHeight: 250)
                     }.onChange(of: self.viewModel.lastId) { id in
@@ -124,18 +130,25 @@ struct CameraControlView: View {
                     Image("film_set").resizable()
                         .aspectRatio(contentMode:.fill).frame(width:320, height:240)
                 }).sheet(isPresented: $showingModalFilm) {
-                    NavigationView {
-                        List(self.viewModel.rollViewModels) { roll in
-                            
-                            HStack {
-                                Text(roll.rollName)
-                                Spacer()
-                            }.contentShape(Rectangle()).onTapGesture {
-                                self.viewModel.setFilm(selectedRoll: roll)
-                                self.showingModalFilm = false
-                            }
-                            
-                        }.navigationBarTitle("フィルム棚")
+                    VStack {
+                        Button(action: {
+                            self.viewModel.addFilm(viewContext: viewContext)
+                        }, label: {
+                            Text("フィルム追加")
+                        })
+                        NavigationView {
+                            List(rolls) { roll in
+                                
+                                HStack {
+                                    Text(roll.rollName!)
+                                    Spacer()
+                                }.contentShape(Rectangle()).onTapGesture {
+                                    self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
+                                    self.showingModalFilm = false
+                                }
+                                
+                            }.navigationBarTitle("フィルム棚")
+                        }
                     }
                 }
             }
