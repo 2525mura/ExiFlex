@@ -137,16 +137,27 @@ struct CameraControlView: View {
                             Text("フィルム追加")
                         })
                         NavigationView {
-                            List(rolls) { roll in
-                                
-                                HStack {
-                                    Text(roll.rollName!)
-                                    Spacer()
-                                }.contentShape(Rectangle()).onTapGesture {
-                                    self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
-                                    self.showingModalFilm = false
+                            List {
+                                ForEach(rolls) { roll in
+                                    HStack {
+                                        Text(roll.rollName!)
+                                        Spacer()
+                                    }.contentShape(Rectangle()).onTapGesture {
+                                        self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
+                                        self.showingModalFilm = false
+                                    }
                                 }
-                                
+                                .onDelete { (offsets) in
+                                    for index in offsets {
+                                        let delRoll = rolls[index]
+                                        viewContext.delete(delRoll)
+                                    }
+                                    do {
+                                        try viewContext.save()
+                                    } catch {
+                                        // handle the Core Data error
+                                    }
+                                }
                             }.navigationBarTitle("フィルム棚")
                         }
                     }

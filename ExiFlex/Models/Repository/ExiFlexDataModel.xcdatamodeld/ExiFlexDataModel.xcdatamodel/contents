@@ -5,7 +5,7 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="rollName" optional="YES" attributeType="String"/>
         <attribute name="takeCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="takeMetas" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TakeMeta" inverseName="refRoll" inverseEntity="TakeMeta"/>
+        <relationship name="takeMetas" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TakeMeta" inverseName="refRoll" inverseEntity="TakeMeta"/>
     </entity>
     <entity name="TakeMeta" representedClassName="TakeMeta" syncable="YES">
         <attribute name="fValue" optional="YES" attributeType="String"/>
