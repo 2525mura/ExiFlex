@@ -11,6 +11,7 @@ struct PeripheralListView: View {
     
     @ObservedObject private(set) var viewModel: PeripheralListViewModel
     @Environment(\.presentationMode) var presentation
+    @State private var withNameless = true
     
     var body: some View {
         VStack {
@@ -21,17 +22,22 @@ struct PeripheralListView: View {
             }, label: {
               Text("キャンセル")
             })
+            Toggle(isOn: $withNameless) {
+                Text("無名ペリフェラルを表示する")
+            }.padding(.horizontal)
             NavigationView {
                 List(self.viewModel.peripherals) { peripheral in
-                    // ペリフェラルに接続する
-                    Button(action: {
-                        self.viewModel.disConnectPeripheralAll()
-                        self.viewModel.connectPeripheral(peripheral: peripheral)
-                        self.presentation.wrappedValue.dismiss()
-                        self.viewModel.removeAllPeripherals()
-                    }, label: {
-                        PeripheralAdvCardView(viewModel: peripheral)
-                    })
+                    if withNameless || (peripheral.peripheralName != nil) {
+                        // ペリフェラルに接続する
+                        Button(action: {
+                            self.viewModel.disConnectPeripheralAll()
+                            self.viewModel.connectPeripheral(peripheral: peripheral)
+                            self.presentation.wrappedValue.dismiss()
+                            self.viewModel.removeAllPeripherals()
+                        }, label: {
+                            PeripheralAdvCardView(viewModel: peripheral)
+                        })
+                    }
                 }.navigationBarTitle("BLEデバイス一覧")
             }
         }
