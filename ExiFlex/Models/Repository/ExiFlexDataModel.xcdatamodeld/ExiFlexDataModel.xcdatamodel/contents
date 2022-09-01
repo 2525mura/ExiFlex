@@ -12,6 +12,9 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isLeader" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isoValue" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="locationActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="ssValue" optional="YES" attributeType="String"/>
         <attribute name="takeDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="takeNo" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -19,6 +22,6 @@
     </entity>
     <elements>
         <element name="Roll" positionX="-373.5079956054687" positionY="-263.3954467773438" width="128" height="104"/>
-        <element name="TakeMeta" positionX="-415.5508422851564" positionY="-21.49298095703119" width="128" height="149"/>
+        <element name="TakeMeta" positionX="-415.5508422851564" positionY="-21.49298095703119" width="128" height="208"/>
     </elements>
 </model>

@@ -51,7 +51,9 @@ struct TakeMetaView: View {
                     Text("日付").padding(.trailing, 10)
                     Text(self.viewModel.takeDateStr).padding(.trailing, 10)
                     Spacer()
-                    Text("🛰")
+                    if self.viewModel.locationActive {
+                        Text("🛰")
+                    }
                 }
                 Spacer().frame(height: 12)
                 HStack {

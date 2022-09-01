@@ -20,6 +20,9 @@ extension TakeMeta {
     @NSManaged public var id: UUID?
     @NSManaged public var isLeader: Bool
     @NSManaged public var isoValue: String?
+    @NSManaged public var latitude: Double
+    @NSManaged public var locationActive: Bool
+    @NSManaged public var longitude: Double
     @NSManaged public var ssValue: String?
     @NSManaged public var takeDate: Date?
     @NSManaged public var takeNo: Int64

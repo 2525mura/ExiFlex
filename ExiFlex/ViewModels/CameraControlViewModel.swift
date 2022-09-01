@@ -45,7 +45,7 @@ final class CameraControlViewModel: ObservableObject {
         let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
             if characteristicMsg.characteristicAlias == "shutter" && self.isFilmLoaded {
                 if let context = self.viewContext {
-                    let takeMeta = self.selectedRoll!.take(viewContext: context, isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue)
+                    let takeMeta = self.selectedRoll!.take(viewContext: context, isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue, location: self.nowLocation)
                     self.lastId = takeMeta.id!
                 }
             } else if characteristicMsg.characteristicAlias == "lux" {
