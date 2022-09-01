@@ -169,6 +169,6 @@ struct CameraControlView: View {
 
 struct CameraControlView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraControlView(viewModel: CameraControlViewModel(bleService: BleService()))
+        CameraControlView(viewModel: CameraControlViewModel(bleService: BleService(), locationService: LocationService()))
     }
 }

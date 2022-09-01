@@ -8,11 +8,14 @@
 import Foundation
 import Combine
 import CoreData
+import CoreLocation
 
 final class CameraControlViewModel: ObservableObject {
 
     private let bleService: BleService
+    private let locationService: LocationService
     private var cancellables: [AnyCancellable] = []
+    private var nowLocation: CLLocation?
     // 画面部品の状態変数
     var isoValue: String = "100"
     var fValue: String = "2.8"
@@ -28,17 +31,17 @@ final class CameraControlViewModel: ObservableObject {
     @Published var lastId: UUID = UUID()
     @Published var isFilmLoaded: Bool
     
-    init(bleService: BleService) {
+    init(bleService: BleService, locationService: LocationService) {
         self.bleService = bleService
+        self.locationService = locationService
         self.bleService.addCharacteristicUuid(uuid: "beb5483e-36e1-4688-b7f5-ea07361b26a8", alias: "shutter")
         self.bleService.addCharacteristicUuid(uuid: "16cf81e3-0212-58b9-0380-0dbc6b54c51d", alias: "lux")
         self.isFilmLoaded = false
         bind()
     }
     
-    // BleServiceからのキャラクタリスティック受信を受け付ける処理
     func bind() {
-        // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
+        // BleServiceからのキャラクタリスティック受信を受け付ける処理
         let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
             if characteristicMsg.characteristicAlias == "shutter" && self.isFilmLoaded {
                 if let context = self.viewContext {
@@ -51,8 +54,14 @@ final class CameraControlViewModel: ObservableObject {
             }
         })
         
+        // LocationServiceからの位置情報受信を受け付ける処理
+        let locationSubscriber = locationService.locationSharedPublisher.sink(receiveValue: { location in
+            self.nowLocation = location
+        })
+        
         cancellables += [
-            characteristicMsgSubscriber
+            characteristicMsgSubscriber,
+            locationSubscriber
         ]
     }
     

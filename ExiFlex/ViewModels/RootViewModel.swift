@@ -10,6 +10,7 @@ import Foundation
 class RootViewModel: ObservableObject {
     
     private let bleService: BleService
+    private let locationService: LocationService
     var peripheralListVm: PeripheralListViewModel
     var cameraControlViewModel: CameraControlViewModel
     var cie1931xyViewModel: Cie1931xyViewModel
@@ -17,8 +18,9 @@ class RootViewModel: ObservableObject {
     
     init() {
         self.bleService = BleService()
+        self.locationService = LocationService()
         self.peripheralListVm = PeripheralListViewModel(bleService: bleService)
-        self.cameraControlViewModel = CameraControlViewModel(bleService: bleService)
+        self.cameraControlViewModel = CameraControlViewModel(bleService: bleService, locationService: locationService)
         self.cie1931xyViewModel = Cie1931xyViewModel(bleService: self.bleService)
         self.albumViewModel = AlbumViewModel()
     }

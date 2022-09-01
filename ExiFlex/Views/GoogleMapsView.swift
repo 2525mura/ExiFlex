@@ -20,6 +20,8 @@ struct GoogleMapsView: UIViewRepresentable {
             let camera = GMSCameraPosition.camera(withLatitude: markerFirst.position.latitude, longitude: markerFirst.position.longitude, zoom: 8)
             self.gmsMapView.camera = camera
         }
+        // 現在地を表示する
+        self.gmsMapView.isMyLocationEnabled = true
         return self.gmsMapView
     }
 
