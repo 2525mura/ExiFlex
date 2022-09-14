@@ -10,25 +10,31 @@ import SwiftUI
 struct AlbumView: View {
     
     @ObservedObject private(set) var viewModel: AlbumViewModel
+    @Environment(\.managedObjectContext) var viewContext
     @State private var showingModalFilm = false
+    
+    @FetchRequest(
+        entity: Roll.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Roll.createdAt, ascending: true)],
+        predicate: nil
+    ) private var rolls: FetchedResults<Roll>
     
     var body: some View {
         
         VStack {
-            GoogleMapsView(viewModel: viewModel.googleMapsViewModel)            
+            GoogleMapsView(viewModel: self.viewModel.googleMapsViewModel).frame(height: 250)
             if self.viewModel.isFilmLoaded {
+                Text(self.viewModel.selectedRoll!.rollName ?? "N/A")
                 Button(action: {
                     self.viewModel.ejectFilm()
                 }, label: {
                     Image(systemName: "eject.circle")
                 })
-                ScrollViewReader { render in
-                    ScrollView(.horizontal) {
-                        LazyHStack(alignment: .top) {
-                            ForEach(self.viewModel.selectedRoll.takeMetaViewModels) { takeMetaViewModel in
-                                TakeMetaView(viewModel: takeMetaViewModel)
-                            }
-                        }.frame(maxHeight: 250)
+                ScrollView {
+                    LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
+                        ForEach(self.viewModel.selectedRoll!.takeMetasList) { takeMeta in
+                            TakeMetaArcView(viewModel: takeMeta)
+                        }
                     }
                 }
             } else {
@@ -39,16 +45,14 @@ struct AlbumView: View {
                         .aspectRatio(contentMode:.fill).frame(width:320, height:240)
                 }).sheet(isPresented: $showingModalFilm) {
                     NavigationView {
-                        List(self.viewModel.rollViewModels) { roll in
-                            
+                        List(rolls) { roll in
                             HStack {
-                                Text(roll.rollName)
+                                Text(roll.rollName!)
                                 Spacer()
                             }.contentShape(Rectangle()).onTapGesture {
-                                self.viewModel.setFilm(selectedRoll: roll)
+                                self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
                                 self.showingModalFilm = false
                             }
-                            
                         }.navigationBarTitle("アルバム棚")
                     }
                 }

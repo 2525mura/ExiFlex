@@ -22,5 +22,13 @@ class GoogleMapsViewModel: ObservableObject {
             self.selectedMarker = self.markers[0]
         })
     }
-
+    
+    func addMarker(position: CLLocationCoordinate2D) {
+        self.markers.append(GMSMarker(position: position))
+    }
+    
+    func clearMarkers() {
+        self.markers.removeAll()
+    }
+    
 }

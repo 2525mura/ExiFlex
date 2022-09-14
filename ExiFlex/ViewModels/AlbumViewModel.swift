@@ -6,35 +6,36 @@
 //
 
 import Foundation
+import CoreData
+import CoreLocation
 
 class AlbumViewModel: ObservableObject {
     
     @Published var googleMapsViewModel: GoogleMapsViewModel
     @Published var isFilmLoaded: Bool
-    @Published private(set) var rollViewModels: [RollViewModel]
-    @Published private(set) var selectedRoll: RollViewModel
+    private(set) var viewContext: NSManagedObjectContext?
+    @Published private(set) var selectedRoll: Roll?
     
     init() {
         self.googleMapsViewModel = GoogleMapsViewModel()
         self.isFilmLoaded = false
-        self.rollViewModels = []
-        self.selectedRoll = RollViewModel(rollName: "init_filler")
-        // ダミー。最終的にはストレージからロードする
-        self.rollViewModels.append(
-            RollViewModel(rollName: "First")
-        )
-        self.rollViewModels.append(
-            RollViewModel(rollName: "Second")
-        )
-        // ダミーここまで
     }
     
-    func setFilm(selectedRoll: RollViewModel) {
+    func setFilm(viewContext: NSManagedObjectContext, selectedRoll: Roll) {
+        self.viewContext = viewContext
         self.selectedRoll = selectedRoll
         self.isFilmLoaded = true
+        // マーカーを設定(要修正)
+        selectedRoll.takeMetasList.forEach { takeMeta in
+            if takeMeta.locationActive {
+                self.googleMapsViewModel.addMarker(position: CLLocationCoordinate2D(latitude: takeMeta.latitude, longitude: takeMeta.longitude))
+            }
+        }
     }
     
     func ejectFilm() {
+        // マーカーを削除
+        self.googleMapsViewModel.clearMarkers()
         self.isFilmLoaded = false
     }
 

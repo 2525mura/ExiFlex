@@ -10,7 +10,6 @@
 		71729A50C268E4D43C99D3F8 /* Pods_ExiFlex_ExiFlexUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4BD80F9C41832B07ED0C16 /* Pods_ExiFlex_ExiFlexUITests.framework */; };
 		A889836B170E651C5B60C991 /* Pods_ExiFlex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA5E1D70A4E502BAEEA76B5 /* Pods_ExiFlex.framework */; };
 		B5FD3C42E99D93F931414121 /* Pods_ExiFlexTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */; };
-		C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */; };
 		C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */; };
 		C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C01DB3F528B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld */; };
 		C01DB3F928B50991001CCD1D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01DB3F828B50991001CCD1D /* Persistence.swift */; };
@@ -22,6 +21,7 @@
 		C038AF4528AD336B00A559EC /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C038AF4428AD336B00A559EC /* AlbumViewModel.swift */; };
 		C03B5498286C927300E5F0E8 /* Cie1931xyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */; };
 		C03B549A286C928200E5F0E8 /* Cie1931xyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */; };
+		C03C079F28D029BE0023E4CC /* TakeMetaArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C079E28D029BE0023E4CC /* TakeMetaArcView.swift */; };
 		C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */; };
 		C059CA6527906DF2008CB072 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C059CA6427906DF2008CB072 /* BleService.swift */; };
 		C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3672787280D00B28849 /* ExiFlexApp.swift */; };
@@ -42,7 +42,6 @@
 		C070FBCD28B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C070FBC928B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift */; };
 		C070FBCE28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C070FBCA28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift */; };
 		C07FB62D28A14B0200653460 /* GoogleMapsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FB62C28A14B0200653460 /* GoogleMapsView.swift */; };
-		C0806E6A2890A8210011E42F /* RollViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0806E692890A8210011E42F /* RollViewModel.swift */; };
 		C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BDE1228748D8D007F15B2 /* RootViewModel.swift */; };
 		C08CECA6283E8AE6002C9EFB /* ExiFlexNotifier.ino in Resources */ = {isa = PBXBuildFile; fileRef = C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */; };
 		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
@@ -77,7 +76,6 @@
 		8312B0CD64E731AAD4867B35 /* Pods-ExiFlex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlex.release.xcconfig"; path = "Target Support Files/Pods-ExiFlex/Pods-ExiFlex.release.xcconfig"; sourceTree = "<group>"; };
 		AAA5E1D70A4E502BAEEA76B5 /* Pods_ExiFlex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B597E38CD41B6E7AA02E98 /* Pods-ExiFlex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlex.debug.xcconfig"; path = "Target Support Files/Pods-ExiFlex/Pods-ExiFlex.debug.xcconfig"; sourceTree = "<group>"; };
-		C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaViewModel.swift; sourceTree = "<group>"; };
 		C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicMsgEntity.swift; sourceTree = "<group>"; };
 		C01DB3F628B504C1001CCD1D /* ExiFlexDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExiFlexDataModel.xcdatamodel; sourceTree = "<group>"; };
 		C01DB3F828B50991001CCD1D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -89,6 +87,7 @@
 		C038AF4428AD336B00A559EC /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyView.swift; sourceTree = "<group>"; };
 		C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cie1931xyViewModel.swift; sourceTree = "<group>"; };
+		C03C079E28D029BE0023E4CC /* TakeMetaArcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeMetaArcView.swift; sourceTree = "<group>"; };
 		C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapsViewModel.swift; sourceTree = "<group>"; };
 		C059CA6427906DF2008CB072 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		C05CB3642787280D00B28849 /* ExiFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExiFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,7 +111,6 @@
 		C070FBC928B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TakeMeta+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C070FBCA28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TakeMeta+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C07FB62C28A14B0200653460 /* GoogleMapsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapsView.swift; sourceTree = "<group>"; };
-		C0806E692890A8210011E42F /* RollViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollViewModel.swift; sourceTree = "<group>"; };
 		C08BDE1228748D8D007F15B2 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ExiFlexNotifier.ino; sourceTree = "<group>"; };
 		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
@@ -297,6 +295,7 @@
 				C03B5497286C927300E5F0E8 /* Cie1931xyView.swift */,
 				C07FB62C28A14B0200653460 /* GoogleMapsView.swift */,
 				C038AF4228AD317100A559EC /* AlbumView.swift */,
+				C03C079E28D029BE0023E4CC /* TakeMetaArcView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -331,10 +330,8 @@
 				C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */,
 				C02D7EF3278AEAE200920A32 /* PeripheralListViewModel.swift */,
 				C0FA4C68282938B40026DEFF /* CameraControlViewModel.swift */,
-				C00FE2E8282EA656009F3DA1 /* TakeMetaViewModel.swift */,
 				C03B5499286C928200E5F0E8 /* Cie1931xyViewModel.swift */,
 				C08BDE1228748D8D007F15B2 /* RootViewModel.swift */,
-				C0806E692890A8210011E42F /* RollViewModel.swift */,
 				C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */,
 				C038AF4428AD336B00A559EC /* AlbumViewModel.swift */,
 			);
@@ -601,7 +598,6 @@
 				C07FB62D28A14B0200653460 /* GoogleMapsView.swift in Sources */,
 				C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */,
 				C06A97A2289F818A0046A971 /* Tcs3430Utility.swift in Sources */,
-				C00FE2E9282EA656009F3DA1 /* TakeMetaViewModel.swift in Sources */,
 				C070FBCC28B7C34A00CA3C8B /* Roll+CoreDataProperties.swift in Sources */,
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */,
@@ -610,6 +606,7 @@
 				C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */,
 				C038AF4328AD317100A559EC /* AlbumView.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
+				C03C079F28D029BE0023E4CC /* TakeMetaArcView.swift in Sources */,
 				C01E5524289BEE61004FFBA2 /* FilmType.swift in Sources */,
 				C038AF4528AD336B00A559EC /* AlbumViewModel.swift in Sources */,
 				C06A97A4289FCD2B0046A971 /* TristimulusEntity.swift in Sources */,
@@ -617,7 +614,6 @@
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C070FBCE28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
-				C0806E6A2890A8210011E42F /* RollViewModel.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
