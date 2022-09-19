@@ -12,23 +12,28 @@ import GoogleMaps
 
 class GoogleMapsViewModel: ObservableObject {
 
-    @Published var markers: [GMSMarker]
-    @Published var selectedMarker: GMSMarker?
+    @Published var markers: [UUID: GMSMarker]
+    @Published var selectedMarkerId: UUID?
 
     init() {
-        // ダミーデータをセットする
-        self.markers = [GMSMarker(position: CLLocationCoordinate2D(latitude: 35.6684411, longitude: 139.6004407))]
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
-            self.selectedMarker = self.markers[0]
-        })
+        self.markers = [:]
     }
     
-    func addMarker(position: CLLocationCoordinate2D) {
-        self.markers.append(GMSMarker(position: position))
+    func addMarker(id: UUID, position: CLLocationCoordinate2D) {
+        self.markers[id] = GMSMarker(position: position)
     }
     
-    func clearMarkers() {
+    func clearMarker(id: UUID) {
+        self.markers[id]!.map = nil
+        self.markers.removeValue(forKey: id)
+    }
+    
+    func clearMarkerAll() {
         self.markers.removeAll()
+    }
+    
+    func selectMarker(id: UUID) {
+        self.selectedMarkerId = id
     }
     
 }

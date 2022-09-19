@@ -15,26 +15,27 @@ struct GoogleMapsView: UIViewRepresentable {
     let gmsMapView = GMSMapView(frame: .zero)
     
     func makeUIView(context: Context) -> GMSMapView {
-        // マーカーが1個でもあれば、先頭マーカーの座標をセットする
-        if let markerFirst = self.viewModel.markers.first {
-            let camera = GMSCameraPosition.camera(withLatitude: markerFirst.position.latitude, longitude: markerFirst.position.longitude, zoom: 8)
-            self.gmsMapView.camera = camera
-        }
         // 現在地を表示する
         self.gmsMapView.isMyLocationEnabled = true
         return self.gmsMapView
     }
 
     func updateUIView(_ mapView: GMSMapView, context: Context) {
-        // show markers
-        self.viewModel.markers.forEach { $0.map = mapView }
-        // animate to selectedMarker
-        self.viewModel.selectedMarker?.map = mapView
-        animateToSelectedMarker(mapView: mapView)
+        if self.viewModel.markers.count == 0 {
+            mapView.clear()
+        } else {
+            // show markers
+            self.viewModel.markers.forEach { $0.value.map = mapView }
+            // animate to selectedMarker
+            animateToSelectedMarker(mapView: mapView)
+        }
     }
     
     private func animateToSelectedMarker(mapView: GMSMapView) {
-        guard let selectedMarker = self.viewModel.selectedMarker else {
+        guard let id = self.viewModel.selectedMarkerId else {
+            return
+        }
+        guard let selectedMarker = self.viewModel.markers[id] else {
             return
         }
         
