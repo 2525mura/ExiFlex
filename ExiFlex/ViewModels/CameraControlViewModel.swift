@@ -92,7 +92,7 @@ final class CameraControlViewModel: ObservableObject {
         self.isFilmLoaded = true
         if let lastTakeMeta = self.selectedRoll!.takeMetasList.last {
             // 見つかったコマがリーダーでない場合
-            if !lastTakeMeta.isLeader {
+            if lastTakeMeta.frameType != .leader {
                 // set後1秒後にフィルムの最後をアニメーション表示する
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.lastId = lastTakeMeta.id!
@@ -108,7 +108,7 @@ final class CameraControlViewModel: ObservableObject {
         
         if let lastTakeMeta = self.selectedRoll!.takeMetasList.last {
             // 見つかったコマがリーダーでない場合
-            if !lastTakeMeta.isLeader {
+            if lastTakeMeta.frameType != .leader {
                 // アニメーションが終わるのを待ってからeject状態にする
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.isFilmLoaded = false

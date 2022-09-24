@@ -8,9 +8,9 @@
         <relationship name="takeMetas" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TakeMeta" inverseName="refRoll" inverseEntity="TakeMeta"/>
     </entity>
     <entity name="TakeMeta" representedClassName="TakeMeta" syncable="YES">
+        <attribute name="frameTypeValue" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="fValue" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isLeader" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isoValue" optional="YES" attributeType="String"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="locationActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

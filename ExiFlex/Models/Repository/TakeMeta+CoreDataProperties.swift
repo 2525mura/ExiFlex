@@ -18,7 +18,7 @@ extension TakeMeta {
 
     @NSManaged public var fValue: String?
     @NSManaged public var id: UUID?
-    @NSManaged public var isLeader: Bool
+    @NSManaged public var frameTypeValue: Int64
     @NSManaged public var isoValue: String?
     @NSManaged public var latitude: Double
     @NSManaged public var locationActive: Bool
@@ -29,6 +29,20 @@ extension TakeMeta {
     @NSManaged public var refRoll: Roll?
     
     // 以下カスタマイズ
+    var frameType: FrameType {
+        // To get a FrameType enum from frameTypeValue, initialize the
+        // FrameType type from the Int64 value frameTypeValue
+        get {
+            return FrameType(rawValue: self.frameTypeValue)!
+        }
+
+        // newValue will be of type FrameType, thus rawValue will
+        // be an Int64 value that can be saved in Core Data
+        set {
+            self.frameTypeValue = newValue.rawValue
+        }
+    }
+    
     public var takeDateStr: String {
         let f = DateFormatter()
         f.timeStyle = .short

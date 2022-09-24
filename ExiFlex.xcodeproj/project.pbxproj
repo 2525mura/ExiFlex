@@ -31,6 +31,7 @@
 		C05CB3792787280F00B28849 /* ExiFlexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3782787280F00B28849 /* ExiFlexTests.swift */; };
 		C05CB3832787280F00B28849 /* ExiFlexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3822787280F00B28849 /* ExiFlexUITests.swift */; };
 		C05CB3852787280F00B28849 /* ExiFlexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */; };
+		C05F26E028DF145800908B3B /* FrameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F26DF28DF145800908B3B /* FrameType.swift */; };
 		C05F2A7628A146A100D282D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F2A7528A146A100D282D5 /* AppDelegate.swift */; };
 		C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */; };
 		C06A97A0289F80030046A971 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A979F289F80030046A971 /* Matrix.swift */; };
@@ -100,6 +101,7 @@
 		C05CB37E2787280F00B28849 /* ExiFlexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExiFlexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05CB3822787280F00B28849 /* ExiFlexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITests.swift; sourceTree = "<group>"; };
 		C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExiFlexUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C05F26DF28DF145800908B3B /* FrameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameType.swift; sourceTree = "<group>"; };
 		C05F2A7528A146A100D282D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C064AD3B278734370014BFFD /* PeripheralAdvCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvCardView.swift; sourceTree = "<group>"; };
 		C06A979F289F80030046A971 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		C01DB3F428B5047B001CCD1D /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				C05F26DE28DF138900908B3B /* Enums */,
 				C070FBC728B7C34A00CA3C8B /* Roll+CoreDataClass.swift */,
 				C070FBC828B7C34A00CA3C8B /* Roll+CoreDataProperties.swift */,
 				C070FBC928B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift */,
@@ -282,6 +285,14 @@
 				C05CB3842787280F00B28849 /* ExiFlexUITestsLaunchTests.swift */,
 			);
 			path = ExiFlexUITests;
+			sourceTree = "<group>";
+		};
+		C05F26DE28DF138900908B3B /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				C05F26DF28DF145800908B3B /* FrameType.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		C064AD3827872D670014BFFD /* Views */ = {
@@ -614,6 +625,7 @@
 				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C070FBCE28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
+				C05F26E028DF145800908B3B /* FrameType.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,

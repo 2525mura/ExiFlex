@@ -14,7 +14,7 @@ struct TakeMetaView: View {
     var body: some View {
         
         // テキストを主役に背景を合わせる
-        if self.viewModel.isLeader {
+        if self.viewModel.frameType == .leader {
             Image("film_leader").resizable().frame(width:320, height:240)
                 .aspectRatio(contentMode:.fill).padding(.leading, 50)
         } else {
@@ -69,12 +69,9 @@ struct TakeMetaView: View {
     }
 }
 
-/*
 struct TakeMetaView_Previews: PreviewProvider {
     static var previews: some View {
-        TakeMetaView(
-            viewModel: TakeMetaViewModel(refRoll: RollViewModel(rollName: "myRoll"), isoValue: "100", fValue: "2.8", ssValue: "125", takeCount: 0)
-        ).previewLayout(.sizeThatFits)
+        TakeMetaView(viewModel: TakeMeta())
+            .previewLayout(.sizeThatFits)
     }
 }
-*/

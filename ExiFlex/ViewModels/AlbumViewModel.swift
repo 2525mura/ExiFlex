@@ -25,17 +25,25 @@ class AlbumViewModel: ObservableObject {
         self.viewContext = viewContext
         self.selectedRoll = selectedRoll
         self.isFilmLoaded = true
-        // マーカーを設定(要修正)
+        // GoogleMapのマーカーを設定
         selectedRoll.takeMetasList.forEach { takeMeta in
             if takeMeta.locationActive {
-                self.googleMapsViewModel.addMarker(position: CLLocationCoordinate2D(latitude: takeMeta.latitude, longitude: takeMeta.longitude))
+                self.googleMapsViewModel.addMarker(id: takeMeta.id!, position: CLLocationCoordinate2D(latitude: takeMeta.latitude, longitude: takeMeta.longitude))
             }
         }
+        // フィルムの先頭からスキャンして、最初に見つかった位置情報のマーカーに移動する
+        if let found = selectedRoll.takeMetasList.first(where: { return $0.locationActive }) {
+            self.selectMarker(id: found.id!)
+        }
+    }
+    
+    func selectMarker(id: UUID) {
+        self.googleMapsViewModel.selectMarker(id: id)
     }
     
     func ejectFilm() {
         // マーカーを削除
-        self.googleMapsViewModel.clearMarkers()
+        self.googleMapsViewModel.clearMarkerAll()
         self.isFilmLoaded = false
     }
 

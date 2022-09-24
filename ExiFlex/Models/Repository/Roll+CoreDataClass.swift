@@ -22,7 +22,7 @@ public class Roll: NSManagedObject {
         takeMeta.ssValue = "N/A"
         takeMeta.takeNo = -1
         takeMeta.takeDate = Date()
-        takeMeta.isLeader = true
+        takeMeta.frameType = .leader
         takeMeta.refRoll = self
         // ロール情報を更新
         self.addToTakeMetas(takeMeta)
@@ -39,7 +39,7 @@ public class Roll: NSManagedObject {
         takeMeta.ssValue = ssValue
         takeMeta.takeNo = self.takeCount
         takeMeta.takeDate = Date()
-        takeMeta.isLeader = false
+        takeMeta.frameType = .picture
         takeMeta.refRoll = self
         if let nowLocation = location {
             takeMeta.locationActive = true

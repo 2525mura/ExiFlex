@@ -34,6 +34,9 @@ struct AlbumView: View {
                     LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
                         ForEach(self.viewModel.selectedRoll!.takeMetasList) { takeMeta in
                             TakeMetaArcView(viewModel: takeMeta)
+                                .contentShape(Rectangle()).onTapGesture {
+                                    self.viewModel.selectMarker(id: takeMeta.id!)
+                            }
                         }
                     }
                 }
