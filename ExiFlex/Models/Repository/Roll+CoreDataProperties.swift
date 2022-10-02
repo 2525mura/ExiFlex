@@ -30,6 +30,8 @@ extension Roll {
             $0.takeNo < $1.takeNo
         }
     }
+    public var rollNameUnwrap: String { rollName ?? "N/A" }
+    public var createdAtUnwrap: Date { createdAt ?? Date() }
     
 }
 

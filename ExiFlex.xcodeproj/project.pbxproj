@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		042688AC28E9847C00084EDF /* RollEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042688AB28E9847C00084EDF /* RollEditView.swift */; };
+		042688AE28E98D0500084EDF /* RollEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042688AD28E98D0500084EDF /* RollEditViewModel.swift */; };
 		71729A50C268E4D43C99D3F8 /* Pods_ExiFlex_ExiFlexUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4BD80F9C41832B07ED0C16 /* Pods_ExiFlex_ExiFlexUITests.framework */; };
 		A889836B170E651C5B60C991 /* Pods_ExiFlex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA5E1D70A4E502BAEEA76B5 /* Pods_ExiFlex.framework */; };
 		B5FD3C42E99D93F931414121 /* Pods_ExiFlexTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */; };
@@ -70,6 +72,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		042688AB28E9847C00084EDF /* RollEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollEditView.swift; sourceTree = "<group>"; };
+		042688AD28E98D0500084EDF /* RollEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollEditViewModel.swift; sourceTree = "<group>"; };
 		280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlexTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		336E9FAC0DF321948F1D8337 /* Pods-ExiFlexTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlexTests.debug.xcconfig"; path = "Target Support Files/Pods-ExiFlexTests/Pods-ExiFlexTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4D4BD80F9C41832B07ED0C16 /* Pods_ExiFlex_ExiFlexUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlex_ExiFlexUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -307,6 +311,7 @@
 				C07FB62C28A14B0200653460 /* GoogleMapsView.swift */,
 				C038AF4228AD317100A559EC /* AlbumView.swift */,
 				C03C079E28D029BE0023E4CC /* TakeMetaArcView.swift */,
+				042688AB28E9847C00084EDF /* RollEditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 				C08BDE1228748D8D007F15B2 /* RootViewModel.swift */,
 				C03F00EB28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift */,
 				C038AF4428AD336B00A559EC /* AlbumViewModel.swift */,
+				042688AD28E98D0500084EDF /* RollEditViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -613,6 +619,7 @@
 				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */,
 				C070FBCD28B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift in Sources */,
+				042688AE28E98D0500084EDF /* RollEditViewModel.swift in Sources */,
 				C070FBCB28B7C34A00CA3C8B /* Roll+CoreDataClass.swift in Sources */,
 				C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */,
 				C038AF4328AD317100A559EC /* AlbumView.swift in Sources */,
@@ -628,6 +635,7 @@
 				C05F26E028DF145800908B3B /* FrameType.swift in Sources */,
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
+				042688AC28E9847C00084EDF /* RollEditView.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
 				C0FA4C69282938B40026DEFF /* CameraControlViewModel.swift in Sources */,
 				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,
