@@ -13,10 +13,32 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        //for _ in 0..<10 {
-        //    let newItem = Item(context: viewContext)
-        //    newItem.timestamp = Date()
-        //}
+        
+        // ここでプレビュー時の @FetchRequest inject値を生成する
+        let newRoll = Roll(context: viewContext)
+        newRoll.id = UUID()
+        newRoll.rollName = "テストフィルム"
+        newRoll.takeCount = 0
+        newRoll.createdAt = Date()
+        let leaderMeta = TakeMeta(context: viewContext)
+        leaderMeta.id = UUID()
+        leaderMeta.isoValue = "N/A"
+        leaderMeta.fValue = "N/A"
+        leaderMeta.ssValue = "N/A"
+        leaderMeta.takeNo = -1
+        leaderMeta.takeDate = Date()
+        leaderMeta.frameType = .leader
+        leaderMeta.refRoll = newRoll
+        let takeMeta = TakeMeta(context: viewContext)
+        takeMeta.id = UUID()
+        takeMeta.isoValue = "100"
+        takeMeta.fValue = "2.8"
+        takeMeta.ssValue = "125"
+        takeMeta.takeNo = 0
+        takeMeta.takeDate = Date()
+        takeMeta.frameType = .picture
+        takeMeta.refRoll = newRoll
+        
         do {
             try viewContext.save()
         } catch {

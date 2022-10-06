@@ -55,3 +55,16 @@ extension Roll {
 extension Roll : Identifiable {
 
 }
+
+// MARK: injection data for preview
+extension Roll {
+    // Example roll for Xcode previews
+    static var example: Roll {
+        // Get the first roll from the in-memory Core Data store
+        let context = PersistenceController.preview.container.viewContext
+        let fetchRequest: NSFetchRequest<Roll> = Roll.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        let results = try? context.fetch(fetchRequest)
+        return (results?.first!)!
+    }
+}

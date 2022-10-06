@@ -62,3 +62,16 @@ extension TakeMeta {
 extension TakeMeta : Identifiable {
 
 }
+
+// MARK: injection data for preview
+extension TakeMeta {
+    // Example take_meta for Xcode previews
+    static var example: TakeMeta {
+        // Get the first take_meta from the in-memory Core Data store
+        let context = PersistenceController.preview.container.viewContext
+        let fetchRequest: NSFetchRequest<TakeMeta> = TakeMeta.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        let results = try? context.fetch(fetchRequest)
+        return (results?.first!)!
+    }
+}
