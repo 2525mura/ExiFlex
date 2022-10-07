@@ -18,8 +18,10 @@ extension Roll {
 
     @NSManaged public var createdAt: Date?
     @NSManaged public var id: UUID?
+    @NSManaged public var rollBrand: String?
     @NSManaged public var rollName: String?
     @NSManaged public var takeCount: Int64
+    @NSManaged public var rollTypeValue: Int64
     @NSManaged public var takeMetas: NSSet?
 
     // 以下カスタマイズ
@@ -30,8 +32,23 @@ extension Roll {
             $0.takeNo < $1.takeNo
         }
     }
+    public var rollBrandUnwrap: String { rollBrand ?? "N/A" }
     public var rollNameUnwrap: String { rollName ?? "N/A" }
     public var createdAtUnwrap: Date { createdAt ?? Date() }
+    // RollType変換
+    var rollType: RollType {
+        // To get a RollType enum from rollTypeValue, initialize the
+        // RollType type from the Int64 value rollTypeValue
+        get {
+            return RollType(rawValue: self.rollTypeValue)!
+        }
+
+        // newValue will be of type RollType, thus rawValue will
+        // be an Int64 value that can be saved in Core Data
+        set {
+            self.rollTypeValue = newValue.rawValue
+        }
+    }
     
 }
 

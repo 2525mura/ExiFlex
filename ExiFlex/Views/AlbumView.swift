@@ -66,7 +66,7 @@ struct AlbumView: View {
 
 struct AlbumView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumView(viewModel: AlbumViewModel())
+        AlbumView(viewModel: AlbumViewModel()).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
             .previewLayout(.sizeThatFits)
     }
 }

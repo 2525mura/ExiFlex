@@ -124,7 +124,9 @@ final class CameraControlViewModel: ObservableObject {
     func addFilm(viewContext: NSManagedObjectContext) {
         let newRoll = Roll(context: viewContext)
         newRoll.id = UUID()
+        newRoll.rollBrand = "ブランド"
         newRoll.rollName = "フィルム"
+        newRoll.rollType = .colorReversal
         newRoll.takeCount = 0
         newRoll.createdAt = Date()
         // 保存

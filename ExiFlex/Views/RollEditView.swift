@@ -11,22 +11,24 @@ import CoreData
 struct RollEditView: View {
     
     @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject private(set) var viewModel: RollEditViewModel
+    @ObservedObject private(set) var viewModel: Roll
+    let rollBrands = ["Fujifilm Provia100", "Fujifilm Velvia100"]
     
     var body: some View {
         NavigationView {
             Form {
                 Text("フィルム名")
-                TextField("フィルム名を入力してください", text: $viewModel.rollName)
-                DatePicker(selection: $viewModel.createdAt, label: {Text("作成日")})
+                TextField("フィルム名を入力してください", text: Binding($viewModel.rollName)!)
+                DatePicker(selection: Binding($viewModel.createdAt)!, label: {Text("作成日")})
                 
-                Picker(selection: $viewModel.rollBrand,
+                Picker(selection: Binding($viewModel.rollBrand)!,
                        label: Text("ブランド")) {
-                    ForEach(viewModel.rollBrands, id: \.self) { brand in
+                    ForEach(rollBrands, id: \.self) { brand in
                         Text(brand)
                     }
                 }
                 
+                // Film typeを選択可能にする
                 Button(action: {}) {
                     Text("確定")
                 }
@@ -37,6 +39,6 @@ struct RollEditView: View {
 
 struct RollEditView_Previews: PreviewProvider {
     static var previews: some View {
-        RollEditView(viewModel: RollEditViewModel(viewContext: NSManagedObjectContext(), roll: nil))
+        RollEditView(viewModel: Roll.example).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

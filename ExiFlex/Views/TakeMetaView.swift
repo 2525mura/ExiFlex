@@ -71,7 +71,7 @@ struct TakeMetaView: View {
 
 struct TakeMetaView_Previews: PreviewProvider {
     static var previews: some View {
-        TakeMetaView(viewModel: TakeMeta())
+        TakeMetaView(viewModel: TakeMeta.example)
             .previewLayout(.sizeThatFits)
     }
 }

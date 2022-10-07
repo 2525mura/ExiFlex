@@ -17,7 +17,9 @@ struct PersistenceController {
         // ここでプレビュー時の @FetchRequest inject値を生成する
         let newRoll = Roll(context: viewContext)
         newRoll.id = UUID()
+        newRoll.rollBrand = "ブランド"
         newRoll.rollName = "テストフィルム"
+        newRoll.rollType = .colorReversal
         newRoll.takeCount = 0
         newRoll.createdAt = Date()
         let leaderMeta = TakeMeta(context: viewContext)

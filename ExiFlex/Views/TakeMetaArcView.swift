@@ -19,7 +19,7 @@ struct TakeMetaArcView: View {
                 Image("film_leader").resizable().aspectRatio(contentMode:.fit).frame(width: 105)
                 Spacer()
             } else if self.viewModel.frameType == .picture {
-                Image("film_frame").resizable().aspectRatio(contentMode:.fill).frame(width: 105)
+                Image("film_frame").resizable().aspectRatio(contentMode:.fit).frame(width: 105)
                     .overlay(
                         Text("\(self.viewModel.takeNo)").foregroundColor(.white).background(Color.blue).font(.subheadline),
                         alignment: .topTrailing
@@ -49,7 +49,7 @@ struct TakeMetaArcView: View {
 
 struct TakeMetaArcView_Previews: PreviewProvider {
     static var previews: some View {
-        TakeMetaArcView(viewModel: TakeMeta())
+        TakeMetaArcView(viewModel: TakeMeta.example)
             .previewLayout(.sizeThatFits)
     }
 }

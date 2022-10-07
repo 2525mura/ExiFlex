@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="20G314" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Roll" representedClassName="Roll" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="rollBrand" optional="YES" attributeType="String"/>
         <attribute name="rollName" optional="YES" attributeType="String"/>
+        <attribute name="rollTypeValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="takeCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="takeMetas" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TakeMeta" inverseName="refRoll" inverseEntity="TakeMeta"/>
     </entity>
@@ -20,8 +22,4 @@
         <attribute name="takeNo" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="refRoll" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Roll" inverseName="takeMetas" inverseEntity="Roll"/>
     </entity>
-    <elements>
-        <element name="Roll" positionX="-373.5079956054687" positionY="-263.3954467773438" width="128" height="104"/>
-        <element name="TakeMeta" positionX="-415.5508422851564" positionY="-21.49298095703119" width="128" height="208"/>
-    </elements>
 </model>
