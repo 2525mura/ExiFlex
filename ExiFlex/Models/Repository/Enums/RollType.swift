@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum RollType: Int64 {
-    case monoReversal = 0
-    case monoNegative = 1
-    case colorReversal = 2
-    case colorNegative = 3
+enum RollType: String, CaseIterable {
+    case monoReversal = "Monochrome Reversal"
+    case monoNegative = "Monochrome Negative"
+    case colorReversal = "Color Reversal"
+    case colorNegative = "Color Negative"
 }
