@@ -30,6 +30,9 @@ final class CameraControlViewModel: ObservableObject {
     @Published private(set) var selectedRoll: Roll?
     @Published var lastId: UUID = UUID()
     @Published var isFilmLoaded: Bool
+    @Published var tmpRoll: Roll?
+    // Memo: モーダルで何を開いているかは、ViewModel側で持つべし
+    var modalRollState: ModalRollState = .selectFilm
     
     init(bleService: BleService, locationService: LocationService) {
         self.bleService = bleService
@@ -121,18 +124,29 @@ final class CameraControlViewModel: ObservableObject {
         }
     }
     
-    func addFilm(viewContext: NSManagedObjectContext) {
-        let newRoll = Roll(context: viewContext)
-        newRoll.id = UUID()
-        newRoll.rollBrand = "ブランド"
-        newRoll.rollName = "フィルム"
-        newRoll.rollType = .colorReversal
-        newRoll.takeCount = 0
-        newRoll.createdAt = Date()
+    func tmpRollInit(viewContext: NSManagedObjectContext) {
+        self.tmpRoll = Roll(context: viewContext)
+        self.tmpRoll?.id = UUID()
+        self.tmpRoll?.rollBrand = ""
+        self.tmpRoll?.rollName = ""
+        self.tmpRoll?.rollType = .colorReversal
+        self.tmpRoll?.takeCount = 0
+        self.tmpRoll?.createdAt = Date()
+        self.modalRollState = .createFilm
+    }
+    
+    func tmpRollSave(viewContext: NSManagedObjectContext) {
         // 保存
         try? viewContext.save()
-        newRoll.addLeader(viewContext: viewContext)
+        self.tmpRoll?.addLeader(viewContext: viewContext)
+        self.selectedRoll = self.tmpRoll
+        self.isFilmLoaded = true
+        self.modalRollState = .selectFilm
     }
     
 }
 
+enum ModalRollState {
+    case selectFilm
+    case createFilm
+}

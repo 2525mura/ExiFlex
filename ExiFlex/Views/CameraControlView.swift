@@ -130,36 +130,44 @@ struct CameraControlView: View {
                     Image("film_set").resizable()
                         .aspectRatio(contentMode:.fill).frame(width:320, height:240)
                 }).sheet(isPresented: $showingModalFilm) {
-                    VStack {
-                        Button(action: {
-                            self.viewModel.addFilm(viewContext: viewContext)
-                        }, label: {
-                            Text("フィルム追加")
-                        })
-                        NavigationView {
-                            List {
-                                ForEach(rolls) { roll in
-                                    HStack {
-                                        Text(roll.rollName!)
-                                        Spacer()
-                                    }.contentShape(Rectangle()).onTapGesture {
-                                        self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
-                                        self.showingModalFilm = false
+                    
+                    if self.viewModel.modalRollState == .selectFilm {
+                        VStack {
+                            Button(action: {
+                                self.viewModel.tmpRollInit(viewContext: viewContext)
+                            }, label: {
+                                Text("フィルム追加")
+                            })
+                            NavigationView {
+                                List {
+                                    ForEach(rolls) { roll in
+                                        HStack {
+                                            Text(roll.rollName!)
+                                            Spacer()
+                                        }.contentShape(Rectangle()).onTapGesture {
+                                            self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
+                                            self.showingModalFilm = false
+                                        }
                                     }
-                                }
-                                .onDelete { (offsets) in
-                                    for index in offsets {
-                                        let delRoll = rolls[index]
-                                        viewContext.delete(delRoll)
+                                    .onDelete { (offsets) in
+                                        for index in offsets {
+                                            let delRoll = rolls[index]
+                                            viewContext.delete(delRoll)
+                                        }
+                                        do {
+                                            try viewContext.save()
+                                        } catch {
+                                            // handle the Core Data error
+                                        }
                                     }
-                                    do {
-                                        try viewContext.save()
-                                    } catch {
-                                        // handle the Core Data error
-                                    }
-                                }
-                            }.navigationBarTitle("フィルム棚")
+                                }.navigationBarTitle("フィルム棚")
+                            }
                         }
+                    } else if self.viewModel.modalRollState == .createFilm {
+                        RollEditView(viewModel: viewModel.tmpRoll!, onOk: {
+                            // 保存
+                            self.viewModel.tmpRollSave(viewContext: viewContext)
+                        })
                     }
                 }
             }

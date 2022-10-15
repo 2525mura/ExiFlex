@@ -11,8 +11,16 @@ import CoreData
 struct RollEditView: View {
     
     @Environment(\.managedObjectContext) var viewContext
+    @Environment(\.presentationMode) var presentation
     @ObservedObject private(set) var viewModel: Roll
     let rollBrands = ["Fujifilm Provia100", "Fujifilm Velvia100"]
+    let onOk: () -> Void
+    
+    // init定義ありのView(ボタン押下時に実行されるクロージャ付き)
+    public init(viewModel: Roll, onOk: @escaping () -> Void) {
+        self.viewModel = viewModel
+        self.onOk = onOk
+    }
     
     var body: some View {
         NavigationView {
@@ -36,7 +44,10 @@ struct RollEditView: View {
                     }
                 }
                 // Film typeを選択可能にする
-                Button(action: {}) {
+                Button(action: {
+                    self.onOk()
+                    self.presentation.wrappedValue.dismiss()
+                }) {
                     Text("確定")
                 }
             }.navigationBarTitle("フィルム情報")
@@ -46,6 +57,6 @@ struct RollEditView: View {
 
 struct RollEditView_Previews: PreviewProvider {
     static var previews: some View {
-        RollEditView(viewModel: Roll.example).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        RollEditView(viewModel: Roll.example, onOk: {}).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
