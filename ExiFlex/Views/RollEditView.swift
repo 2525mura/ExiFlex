@@ -29,8 +29,10 @@ struct RollEditView: View {
                 }
                 // Enumをリスト表示
                 Picker(selection: $viewModel.rollType, label: Text("フィルムタイプ")) {
-                    ForEach(RollType.allCases, id: \.self) { mode in
-                        Text(mode.rawValue).tag(mode)
+                    ForEach(RollType.allCases, id: \.self) { rollType in
+                        // rollTypeはRollType型、rollType.rawValueはString型
+                        // selectionに渡される値は、前者のRollType型の決定値
+                        Text(rollType.rawValue).tag(rollType)
                     }
                 }
                 // Film typeを選択可能にする
