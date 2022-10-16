@@ -15,7 +15,7 @@ struct CameraControlView: View {
     @State private var isoValue: String = "100"
     @State private var fValue: String = "2.8"
     @State private var ssValue: String = "125"
-    @State private var showingModalFilm = false
+    @State private var showingModalRoll = false
     
     @FetchRequest(
         entity: Roll.entity(),
@@ -125,11 +125,13 @@ struct CameraControlView: View {
                 }
             } else {
                 Button(action: {
-                    self.showingModalFilm.toggle()
+                    self.showingModalRoll = true
                 }, label: {
                     Image("film_set").resizable()
                         .aspectRatio(contentMode:.fill).frame(width:320, height:240)
-                }).sheet(isPresented: $showingModalFilm) {
+                }).sheet(isPresented: $showingModalRoll, onDismiss: {
+                    self.viewModel.tmpRollRollback(viewContext: viewContext)
+                }) {
                     
                     if self.viewModel.modalRollState == .selectFilm {
                         VStack {
@@ -146,7 +148,7 @@ struct CameraControlView: View {
                                             Spacer()
                                         }.contentShape(Rectangle()).onTapGesture {
                                             self.viewModel.setFilm(viewContext: viewContext, selectedRoll: roll)
-                                            self.showingModalFilm = false
+                                            self.showingModalRoll = false
                                         }
                                     }
                                     .onDelete { (offsets) in

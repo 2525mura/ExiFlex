@@ -144,6 +144,12 @@ final class CameraControlViewModel: ObservableObject {
         self.modalRollState = .selectFilm
     }
     
+    func tmpRollRollback(viewContext: NSManagedObjectContext) {
+        // ロールバック
+        viewContext.rollback()
+        self.modalRollState = .selectFilm
+    }
+    
 }
 
 enum ModalRollState {
