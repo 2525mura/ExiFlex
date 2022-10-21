@@ -12,24 +12,18 @@ struct RollEditView: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.presentationMode) var presentation
-    @ObservedObject private(set) var viewModel: Roll
+    @ObservedObject private(set) var viewModel: RollEditViewModel
     let rollBrands = ["Fujifilm Provia100", "Fujifilm Velvia100"]
     let onOk: () -> Void
-    
-    // init定義ありのView(ボタン押下時に実行されるクロージャ付き)
-    public init(viewModel: Roll, onOk: @escaping () -> Void) {
-        self.viewModel = viewModel
-        self.onOk = onOk
-    }
     
     var body: some View {
         NavigationView {
             Form {
                 Text("フィルム名")
-                TextField("フィルム名を入力してください", text: Binding($viewModel.rollName)!)
-                DatePicker(selection: Binding($viewModel.createdAt)!, label: {Text("作成日")})
+                TextField("フィルム名を入力してください", text: $viewModel.rollName)
+                DatePicker(selection: $viewModel.createdAt, label: {Text("作成日")})
                 
-                Picker(selection: Binding($viewModel.rollBrand)!,
+                Picker(selection: $viewModel.rollBrand,
                        label: Text("ブランド")) {
                     ForEach(rollBrands, id: \.self) { brand in
                         Text(brand)
@@ -45,8 +39,9 @@ struct RollEditView: View {
                 }
                 // Film typeを選択可能にする
                 Button(action: {
-                    self.onOk()
+                    self.viewModel.save(viewContext: viewContext)
                     self.presentation.wrappedValue.dismiss()
+                    self.onOk()
                 }) {
                     Text("確定")
                 }
@@ -57,6 +52,6 @@ struct RollEditView: View {
 
 struct RollEditView_Previews: PreviewProvider {
     static var previews: some View {
-        RollEditView(viewModel: Roll.example, onOk: {}).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        RollEditView(viewModel: RollEditViewModel(), onOk: {}).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
