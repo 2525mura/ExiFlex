@@ -130,13 +130,13 @@ struct CameraControlView: View {
                     Image("film_set").resizable()
                         .aspectRatio(contentMode:.fill).frame(width:320, height:240)
                 }).sheet(isPresented: $showingModalRoll, onDismiss: {
-                    self.viewModel.tmpRollRollback(viewContext: viewContext)
+                    self.viewModel.modalRollState = .selectFilm
                 }) {
                     
                     if self.viewModel.modalRollState == .selectFilm {
                         VStack {
                             Button(action: {
-                                self.viewModel.tmpRollInit(viewContext: viewContext)
+                                self.viewModel.tmpRollInit()
                             }, label: {
                                 Text("フィルム追加")
                             })
@@ -166,9 +166,9 @@ struct CameraControlView: View {
                             }
                         }
                     } else if self.viewModel.modalRollState == .createFilm {
-                        RollEditView(viewModel: viewModel.tmpRoll!, onOk: {
+                        RollEditView(viewModel: viewModel.rollEditViewModel!, onOk: {
                             // 保存
-                            self.viewModel.tmpRollSave(viewContext: viewContext)
+                            self.viewModel.tmpRollSave()
                         })
                     }
                 }

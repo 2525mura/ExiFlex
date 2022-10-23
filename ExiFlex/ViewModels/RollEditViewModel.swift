@@ -10,11 +10,11 @@ import CoreData
 
 class RollEditViewModel: ObservableObject {
     
-    public var createdAt: Date
-    public var rollBrand: String
-    public var rollName: String
-    public var takeCount: Int64
-    public var rollType: RollType
+    @Published public var createdAt: Date
+    @Published public var rollBrand: String
+    @Published public var rollName: String
+    @Published public var takeCount: Int64
+    @Published public var rollType: RollType
     private(set) var editRoll: Roll?
     
     // roll==nilなら新規作成、そうでなければ更新
@@ -24,7 +24,7 @@ class RollEditViewModel: ObservableObject {
         self.rollBrand = ""
         self.rollName = ""
         self.takeCount = 0
-        self.rollType = .colorReversal
+        self.rollType = .colorNegative
         self.editRoll = nil
         
         if roll != nil {

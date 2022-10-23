@@ -26,7 +26,7 @@ struct RollEditView: View {
                 Picker(selection: $viewModel.rollBrand,
                        label: Text("ブランド")) {
                     ForEach(rollBrands, id: \.self) { brand in
-                        Text(brand)
+                        Text(brand).tag(brand)
                     }
                 }
                 // Enumをリスト表示

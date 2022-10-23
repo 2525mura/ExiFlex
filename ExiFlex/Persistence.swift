@@ -19,7 +19,7 @@ struct PersistenceController {
         newRoll.id = UUID()
         newRoll.rollBrand = "ブランド"
         newRoll.rollName = "テストフィルム"
-        newRoll.rollType = .colorReversal
+        newRoll.rollType = .colorNegative
         newRoll.takeCount = 0
         newRoll.createdAt = Date()
         let leaderMeta = TakeMeta(context: viewContext)
