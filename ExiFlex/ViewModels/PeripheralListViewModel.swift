@@ -28,13 +28,13 @@ final class PeripheralListViewModel: ObservableObject {
             if blePower > 4 {blePower = 4}
             let rssi = Int(peripheral.rssi)
             // 既にペリフェラルが検出済みリストに登録されているかチェック
-            if let found = self.peripherals.first(where: { return $0.peripheralUuid == peripheral.peripheralUuid }) {
+            if let found = self.peripherals.first(where: { return $0.peripheralUuid == peripheral.peripheralUuid.uuidString }) {
                 found.blePower = blePower
                 found.rssi = rssi
                 found.state = peripheral.state
             } else {
                 self.peripherals.append(
-                    PeripheralAdvViewModel(peripheralUuid: peripheral.peripheralUuid,
+                    PeripheralAdvViewModel(peripheralUuid: peripheral.peripheralUuid.uuidString,
                                            peripheralName: peripheral.peripheralName,
                                            blePower: blePower,
                                            rssi: rssi)

@@ -13,13 +13,13 @@ import Combine
 class BlePeripheralModel {
     
     private (set) var rssi : Double
-    private (set) var peripheralUuid: String
+    private (set) var peripheralUuid: CBUUID
     private (set) var peripheralName: String?
     private (set) var state: BlePeripheralState     // BLEペリフェラル状態
     private var lastAdvRecvDate: Date               // Advertise最終受信日時
     private var peripheralConnect: CBPeripheral?
 
-    init(rssi: Double, peripheralUuid: String, peripheralName: String?) {
+    init(rssi: Double, peripheralUuid: CBUUID, peripheralName: String?) {
         self.rssi = rssi
         self.peripheralUuid = peripheralUuid
         self.peripheralName = peripheralName
