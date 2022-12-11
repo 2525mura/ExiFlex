@@ -28,30 +28,32 @@ class BlePeripheralModel {
         self.peripheralConnect = nil
     }
     
-    func advReceive(rssi: Double, notifier: PassthroughSubject<BlePeripheralModel, Never>?) {
+    // stateに変化があったらtrue を返す
+    func advReceive(rssi: Double) -> Bool {
         // RSSIが変化した、または、アドバタイズ有効でない状態から復帰した場合
         if (self.rssi != rssi) || (self.state != .adAct) {
             self.rssi = rssi
             self.state = .adAct
             self.lastAdvRecvDate = Date()
-            notifier?.send(self)
+            return true
         }
+        return false
     }
     
     // ViewModelからタイマー実行される。stateに変化があったらtrue を返す
-    func advHealthCheck(notifier: PassthroughSubject<BlePeripheralModel, Never>?) {
+    func advHealthCheck() -> Bool {
         switch self.state {
         case .adAct:
             // 最後にアドバタイズされてから5秒以上経っていたら、アドバタイズ有効から無功に切り替える
             if Date().timeIntervalSince(self.lastAdvRecvDate) > 5 {
                 self.rssi = -100
                 self.state = .adLost
-                notifier?.send(self)
+                return true
             }
         default:
             break
-            
         }
+        return false
     }
     
     func connectReq() {

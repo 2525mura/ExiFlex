@@ -12,7 +12,7 @@ import CoreBluetooth
 
 class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    var centralManager: CBCentralManager?
+    private var centralManager: CBCentralManager?
     private var blePeripheralModels: [CBUUID:BlePeripheralModel] = [:]
     private var advHealthCheckTimer: Timer?
     // ペリフェラルの状態変化イベントをViewModelに通知するためのSubject
@@ -22,9 +22,9 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     let characteristicSharedPublisher: Publishers.Share<AnyPublisher<BleCharacteristicMsgEntity, Never>>
     
     // MARK: ESP32 Ble UUID
-    let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-    var characteristicUuids: [CBUUID] = []
-    var characteristicAliases: [CBUUID:String] = [:]
+    private let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+    private var characteristicUuids: [CBUUID] = []
+    private var characteristicAliases: [CBUUID:String] = [:]
     
     // MARK: - Init
     // セントラルマネージャを起動する
@@ -40,8 +40,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     @objc private func advHealthCheckFunc() {
         for hashElem in blePeripheralModels {
             let bleModel = hashElem.value
-            bleModel.advHealthCheck(notifier: self.peripheralSubject)
-            // TODO: 結果をboolで返して、無くなったものをこのループで追加して行った方がいいかも
+            let statusChanged = bleModel.advHealthCheck()
+            if statusChanged {
+                self.peripheralSubject.send(bleModel)
+            }
         }
     }
     
@@ -77,8 +79,9 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // PeripheralListView表示時にPeripheralModelを全て送信する関数
     func flushPeripherals() {
-        for peripheral in blePeripheralModels {
-            self.peripheralSubject.send(peripheral.value)
+        for hashElem in blePeripheralModels {
+            let bleModel = hashElem.value
+            self.peripheralSubject.send(bleModel)
         }
     }
     
@@ -102,12 +105,19 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
             // RSSIと最終アドバタイズ受信日時を更新
             switch found.state {
+                // 直前のステータス
             case .adAct:
                 // ペリフェラルのアドバタイズが有効
-                found.advReceive(rssi: RSSI.doubleValue, notifier: self.peripheralSubject)
+                let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
+                if statusChanged {
+                    self.peripheralSubject.send(found)
+                }
             case .adLost:
                 // アドバタイズロスト回復
-                found.advReceive(rssi: RSSI.doubleValue, notifier: self.peripheralSubject)
+                let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
+                if statusChanged {
+                    self.peripheralSubject.send(found)
+                }
                 print("ペリフェラル再受信")
             case .adConnectReq:
                 // スキャン停止する
@@ -117,7 +127,10 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 print("ペリフェラル接続受付")
             case .connDisconnected:
                 // 切断後のアドバタイズ受信
-                found.advReceive(rssi: RSSI.doubleValue, notifier: self.peripheralSubject)
+                let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
+                if statusChanged {
+                    self.peripheralSubject.send(found)
+                }
                 print("切断後のアドバタイズ受信")
             default:
                 break
