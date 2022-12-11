@@ -89,11 +89,11 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         // ヘルスチェックタイマーを止めてからAdvertise scanを停止する
         self.advHealthCheckTimer?.invalidate()
         centralManager?.stopScan()
-        // 接続要求または接続中または接続済みのペリフェラル以外を削除する
+        // 接続要求または接続中または接続済みまたは接続ロストのペリフェラル以外を削除する
         for hashElem in blePeripheralModels {
             let bleModelUuid = hashElem.key
             let bleModel = hashElem.value
-            if !(bleModel.state == .adConnectReq || bleModel.state == .adConnecting || bleModel.state == .connAct) {
+            if !(bleModel.state == .adConnectReq || bleModel.state == .adConnecting || bleModel.state == .connAct || bleModel.state == .connLost) {
                 blePeripheralModels.removeValue(forKey: bleModelUuid)
             }
         }
@@ -105,7 +105,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
             // RSSIと最終アドバタイズ受信日時を更新
             switch found.state {
-                // 直前のステータス
+            // 直前のステータス
             case .adAct:
                 // ペリフェラルのアドバタイズが有効
                 let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
@@ -118,7 +118,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 if statusChanged {
                     self.peripheralSubject.send(found)
                 }
-                print("ペリフェラル再受信")
+                //print("ペリフェラル再受信")
             case .adConnectReq:
                 // スキャン停止する
                 stopAdvertiseScan()
@@ -132,6 +132,12 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     self.peripheralSubject.send(found)
                 }
                 print("切断後のアドバタイズ受信")
+            case .connLost:
+                // 自動再接続
+                stopAdvertiseScan()
+                found.connecting(peripheral: peripheral)
+                centralManager?.connect(peripheral)
+                print("ペリフェラル再接続受付")
             default:
                 break
             }
@@ -207,8 +213,19 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-            found.disConnected()
-            print("ペリフェラル切断済み")
+            switch found.state {
+            // 直前のステータス
+            case .connDisconnecting:
+                found.disConnected()
+                print("ペリフェラル切断済み")
+            case .connAct:
+                // 直前のステータスがアクティブの場合は、接続ロストと判定して再接続を行う
+                found.lostConnection()
+                startAdvertiseScan()
+                print("コネクションロスト。再接続します。")
+            default:
+                break
+            }
         }
     }
     // バックグラウンド実行から復帰した際に呼ばれる

@@ -79,4 +79,9 @@ class BlePeripheralModel {
         self.peripheralConnect = nil
     }
     
+    func lostConnection() {
+        self.state = .connLost
+        self.peripheralConnect = nil
+    }
+    
 }
