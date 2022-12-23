@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name "XIAOESP32C3")(type "KiCad")(uri "${KIPRJMOD}/partslib/Seeeduino XIAO KICAD")(options "")(descr ""))
+  (lib (name "ExiFlexLib")(type "KiCad")(uri "${KIPRJMOD}/partslib/ExiFlexLib.pretty")(options "")(descr ""))
+)
