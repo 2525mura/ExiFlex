@@ -9,5 +9,8 @@ Pods/
 # KiCAD ignore files
 Hardware/ExiFlexBoard/fp-info-cache
 Hardware/ExiFlexBoard/*.bak
+Hardware/ExiFlexBoard/*.bin
+Hardware/ExiFlexBoard/*.dsn
+Hardware/ExiFlexBoard/*.ses
 Hardware/ExiFlexBoard/partslib/*.bak
 Hardware/ExiFlexBoard/ExiFlexBoard-backups
