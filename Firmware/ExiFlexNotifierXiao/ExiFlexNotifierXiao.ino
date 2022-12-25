@@ -1,11 +1,13 @@
 #include "EspBleService.h"
+#include "FrontPanelController.h"
 #include <esp_sleep.h>
 #include "AE_TSL2572.h"
 #include "MU_S11059.h"
-#include "PCF8574.h"
 
 // BLE Service
 EspBleService* espBleService = NULL;
+// Front panel controller
+FrontPanelController* frontPanelCtl = NULL;
 // メインタイマー（1ms周期）
 hw_timer_t * mainTimer = NULL;
 // チャタリング防止制御用
@@ -22,8 +24,6 @@ MU_S11059 S11059;
 unsigned int colorWaitCounter = 0;
 // 起動時間タイマー
 unsigned int startUpCounter = 0;
-// IOエキスパンダー
-PCF8574 expander(0x20);
 
 void notifyShutter() {
   String out = "SHUTTER";
@@ -109,12 +109,6 @@ void mesureColor() {
     //Serial.println(String(getRotarySwValue(), DEC)+ " " +String(analogRead(A0), DEC));
 }
 
-
-byte getRotarySwValue() {
-  byte value = expander.read8() & 0x0F;
-  return value;
-}
-
 void espBleServiceStart(void *pvParameters) {
   // この関数はreturnさせてはいけない(resetしてしまう)
   espBleService->LoopTask(pvParameters);
@@ -122,13 +116,11 @@ void espBleServiceStart(void *pvParameters) {
 
 void setup() {
 
-  // Expanderの出力をAll HIにする
-  expander.begin();
-  expander.write8(0xFF);
+  frontPanelCtl = new FrontPanelController();
   // LED点灯
-  expander.write(4, LOW);
-  expander.write(5, LOW);
-  expander.write(6, LOW);
+  frontPanelCtl->LedOn(1);
+  frontPanelCtl->LedOn(2);
+  frontPanelCtl->LedOn(3);
 
   // ペリフェラル初期化
   Serial.begin(115200);
@@ -190,9 +182,9 @@ void loop() {
 
   } else {
     // LED消灯
-    expander.write(4, HIGH);
-    expander.write(5, HIGH);
-    expander.write(6, HIGH);
+    frontPanelCtl->LedOff(1);
+    frontPanelCtl->LedOff(2);
+    frontPanelCtl->LedOff(3);
     // deep sleep
     esp_deep_sleep_start();
   }
