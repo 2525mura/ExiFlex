@@ -17,6 +17,8 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var advHealthCheckTimer: Timer?
     // ペリフェラルの状態変化イベントをViewModelに通知するためのSubject
     let peripheralSubject: PassthroughSubject<BlePeripheralModel, Never>
+    // ヘッダーバーの接続状態表示エリアに通知するためのSubject
+    let connectStateBarSubject: PassthroughSubject<BlePeripheralState, Never>
     // キャラクタリスティックのNotifyイベントをViewModelに通知するためのSubject
     private let characteristicMsgNotifySubject: PassthroughSubject<BleCharacteristicMsgEntity, Never>
     let characteristicSharedPublisher: Publishers.Share<AnyPublisher<BleCharacteristicMsgEntity, Never>>
@@ -30,6 +32,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     // セントラルマネージャを起動する
     override init() {
         self.peripheralSubject = PassthroughSubject<BlePeripheralModel, Never>()
+        self.connectStateBarSubject = PassthroughSubject<BlePeripheralState, Never>()
         self.characteristicMsgNotifySubject = PassthroughSubject<BleCharacteristicMsgEntity, Never>()
         self.characteristicSharedPublisher = self.characteristicMsgNotifySubject.eraseToAnyPublisher().share()
         super.init()
@@ -163,8 +166,9 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     // ViewModelから指定したペリフェラルに接続するための関数
     func connectPeripheral(peripheralUuid: String) {
         if let found = blePeripheralModels[CBUUID(string: peripheralUuid)] {
-            print("ペリフェラル接続要求")
             found.connectReq()
+            // 接続ステータスバー更新
+            self.connectStateBarSubject.send(found.state)
         }
     }
     
@@ -208,7 +212,8 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     // どんなサービスでも探す
                     peripheral.discoverServices(nil)
                     found.connected()
-                    print("ペリフェラルに接続しました")
+                    // 接続ステータスバー更新
+                    self.connectStateBarSubject.send(found.state)
                 default:
                     break
                 }
@@ -232,8 +237,9 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             case .connAct:
                 // 直前のステータスがアクティブの場合は、接続ロストと判定して再接続を行う
                 found.lostConnection()
+                // 接続ステータスバー更新
+                self.connectStateBarSubject.send(found.state)
                 startAdvertiseScan()
-                print("コネクションロスト。再接続します。")
             case .connError:
                 found.disConnected()
                 print("ペリフェラルエラー切断済み")

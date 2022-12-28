@@ -17,7 +17,7 @@ struct RootView: View {
             HStack {
                 // memo: Spacer()は、VStack, HStackに1個だけ入れるとレイアウトが整う
                 Spacer()
-                Text("BLE 接続成功")
+                Text(viewModel.connectStateBarCaption)
                 Button(action: {
                     self.showingModal.toggle()
                     // TrueならAdvertiseスキャンを開始する
