@@ -74,6 +74,11 @@ class BlePeripheralModel {
         return self.peripheralConnect
     }
     
+    func disConnectReqError() -> CBPeripheral? {
+        self.state = .connError
+        return self.peripheralConnect
+    }
+    
     func disConnected() {
         self.state = .connDisconnected
         self.peripheralConnect = nil

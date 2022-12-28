@@ -47,27 +47,28 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
+    // 受信Characteristicのリスナー登録関数
     func addCharacteristicUuid(uuid: String, alias: String) {
         let cbUuid = CBUUID(string: uuid)
         self.characteristicUuids.append(cbUuid)
         self.characteristicAliases[cbUuid] = alias
     }
-    // セントラルマネージャーが電源ONになったらペリフェラルのスキャンを開始する
+    
+    // セントラルマネージャーのステータスが変化したときに呼ばれる
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-
         switch central.state {
-        // どんなサービスでもスキャン対象とする、アドバタイズを2回以上受信した場合も通知する
         case CBManagerState.poweredOn:
+            // 電源がONになった
             break
         default:
             break
         }
     }
     
-    
     func startAdvertiseScan() {
+        // どんなサービスでもスキャン対象とする、アドバタイズを2回以上受信した場合も通知する
         centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
-        // 各ペリフェラルのアドバタイズ最終受信日時を監視するタイマー
+        // 各ペリフェラルのアドバタイズ最終受信日時を監視するヘルスチェックタイマーを開始する
         self.advHealthCheckTimer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
@@ -176,6 +177,15 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
+    // 通信エラーが発生したペリフェラルを切断するための関数
+    func disConnectPeripheralError(peripheralUuid: String) {
+        if let found = blePeripheralModels[CBUUID(string: peripheralUuid)] {
+            print("ペリフェラルエラー切断要求")
+            let peripheral = found.disConnectReqError()
+            centralManager?.cancelPeripheralConnection(peripheral!)
+        }
+    }
+    
     // ViewModelから全てのペリフェラルを切断するための関数
     func disConnectPeripheralAll() {
         for hashElem in blePeripheralModels {
@@ -211,6 +221,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         print("ペリフェラルに接続失敗しました")
     }
 
+    // ペリフェラル切断時（切断要求後またはコネクションロスト時）に呼ばれる
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
             switch found.state {
@@ -223,16 +234,19 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 found.lostConnection()
                 startAdvertiseScan()
                 print("コネクションロスト。再接続します。")
+            case .connError:
+                found.disConnected()
+                print("ペリフェラルエラー切断済み")
             default:
                 break
             }
         }
     }
+    
     // バックグラウンド実行から復帰した際に呼ばれる
     func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
         print("willRestoreState")
     }
-    
     
     // 接続したペリフェラルのサービスが見つかった時に呼び出される
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -257,10 +271,8 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 }
                 
             } else {
-                // ステータスを変更する
-                // found.
-                centralManager?.cancelPeripheralConnection(peripheral)
-                
+                // エラーステータスに変更してペリフェラル切断
+                disConnectPeripheralError(peripheralUuid: peripheral.identifier.uuidString)
             }
         }
     }
@@ -289,9 +301,8 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 }
                 
             } else {
-                // ステータスを変更する
-                // found.
-                centralManager?.cancelPeripheralConnection(peripheral)
+                // エラーステータスに変更してペリフェラル切断
+                disConnectPeripheralError(peripheralUuid: peripheral.identifier.uuidString)
             }
         }
     }
@@ -322,10 +333,8 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 }
                 
             } else {
-                // ステータスを変更する
-                // found.
-                centralManager?.cancelPeripheralConnection(peripheral)
-                
+                // エラーステータスに変更してペリフェラル切断
+                disConnectPeripheralError(peripheralUuid: peripheral.identifier.uuidString)
             }
         }
     

@@ -8,15 +8,16 @@
 import Foundation
 
 public enum BlePeripheralState {
-    // デバイス発見・接続（アドバタイズチャネル）
+    // アドバタイズフェーズ
     case adAct
     case adLost
     case adConnectReq
     case adConnecting
     case adConnectFail
-    // コネクション通信（データチャネル）
+    // コネクション通信フェーズ
     case connAct
     case connLost
+    case connError
     case connDisconnecting
     case connDisconnected
 }
