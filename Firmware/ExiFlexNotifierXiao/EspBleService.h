@@ -10,22 +10,34 @@
 #include <BLEServer.h>
 #include <BLEUtils.h>
 #include <BLE2902.h>
+#include <map>
+#include <memory>
 
-class EspBleService {
+#ifndef __ESP_BLE_SERVICE_H__
+#define __ESP_BLE_SERVICE_H__
+
+class IEspBleService {
+  public:
+    virtual void AddCharacteristicUuid(String characteristicUuid) = 0;
+    virtual void SendMessage(String characteristicUuid, String message) = 0;
+    virtual void Setup() = 0;
+    virtual void LoopTask(void *pvParameters) = 0;
+    bool deviceConnected = false;
+};
+
+class EspBleService: public IEspBleService {
   public:
     EspBleService();
     void Setup();
     void LoopTask(void *pvParameters);
-
-    // BLE Handle
-    BLEServer* pServer = NULL;
-    BLECharacteristic* pCharacteristicShutter = NULL;
-    BLECharacteristic* pCharacteristicLux = NULL;
-    BLECharacteristic* pCharacteristicRGB = NULL;
-    bool deviceConnected = false;
-    bool oldDeviceConnected = false;
+    void AddCharacteristicUuid(String characteristicUuid);
+    void SendMessage(String characteristicUuid, String message);
 
   private:
+    BLEServer* pServer = NULL;
+    BLEService* pService = NULL;
+    bool oldDeviceConnected = false;
+    std::map<std::string, BLECharacteristic*> bleCharacteristicMap;
 
 };
 
@@ -44,3 +56,5 @@ class MyServerCallbacks: public BLEServerCallbacks {
       pService->deviceConnected = false;
     }
 };
+
+#endif __ESP_BLE_SERVICE_H__

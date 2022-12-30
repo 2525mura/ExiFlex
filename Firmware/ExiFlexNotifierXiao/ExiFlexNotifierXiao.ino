@@ -4,8 +4,12 @@
 #include "AE_TSL2572.h"
 #include "MU_S11059.h"
 
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
+#define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
+
 // BLE Service
-EspBleService* espBleService = NULL;
+IEspBleService* iEspBleService = NULL;
 // Front panel controller
 FrontPanelController* frontPanelCtl = NULL;
 // メインタイマー（1ms周期）
@@ -28,8 +32,7 @@ unsigned int startUpCounter = 0;
 void notifyShutter() {
   String out = "SHUTTER";
   Serial.println(out);
-  espBleService->pCharacteristicShutter->setValue(out.c_str());
-  espBleService->pCharacteristicShutter->notify();
+  iEspBleService->SendMessage(CHARACTERISTIC_UUID, out);
 }
 
 void IRAM_ATTR onShutter() {
@@ -92,8 +95,7 @@ void mesureLux() {
     //TSL2572.GetLux16()で照度を取得
     uint16_t lux = TSL2572.GetLux16();
     String out = "LUX:" + String(lux, DEC);
-    espBleService->pCharacteristicLux->setValue(out.c_str());
-    espBleService->pCharacteristicLux->notify();
+    iEspBleService->SendMessage(CHARACTERISTIC_LUX_UUID, out);
     //自動ゲイン調整
     // TSL2572.SetGainAuto();
 }
@@ -102,8 +104,7 @@ void mesureColor() {
     //TSL2572.GetLux16()で照度を取得
     ColorLux colorLux = S11059.GetLux();
     String out = "R:" + String(colorLux.lux_r, DEC) + " G:" + String(colorLux.lux_g, DEC) + " B:" + String(colorLux.lux_b, DEC) + " IR:" + String(colorLux.lux_ir, DEC);
-    espBleService->pCharacteristicRGB->setValue(out.c_str());
-    espBleService->pCharacteristicRGB->notify();
+    iEspBleService->SendMessage(CHARACTERISTIC_RGB_UUID, out);
 
     //デバッグ用
     //Serial.println(String(getRotarySwValue(), DEC)+ " " +String(analogRead(A0), DEC));
@@ -111,12 +112,20 @@ void mesureColor() {
 
 void espBleServiceStart(void *pvParameters) {
   // この関数はreturnさせてはいけない(resetしてしまう)
-  espBleService->LoopTask(pvParameters);
+  iEspBleService->LoopTask(pvParameters);
 }
 
 void setup() {
 
-  frontPanelCtl = new FrontPanelController();
+  // BLEサービス初期化
+  iEspBleService = new EspBleService();
+  iEspBleService->Setup();
+  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_UUID);
+  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID);
+  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID);
+  xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
+
+  frontPanelCtl = new FrontPanelController(iEspBleService);
   // LED点灯
   frontPanelCtl->LedOn(1);
   frontPanelCtl->LedOn(2);
@@ -144,10 +153,6 @@ void setup() {
   // Colorセンサー初期化
   S11059.SetIntegralTime(MU_S11059::S11059_INTTIME_175, 285);
 
-  // BLEサービス初期化
-  espBleService = new EspBleService();
-  espBleService->Setup();
-  xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 }
 
 void loop() {
@@ -155,7 +160,7 @@ void loop() {
   if(startUpCounter < 30000) {
 
       // notify changed value
-    if(espBleService->deviceConnected) {
+    if(iEspBleService->deviceConnected) {
       // Luxセンサー送信処理
       if (luxWaitCounter < 20) {
         luxWaitCounter++;

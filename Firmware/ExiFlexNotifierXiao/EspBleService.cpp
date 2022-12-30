@@ -7,11 +7,8 @@
 
 #include "EspBleService.h"
 
-// Service & Characteristic UUIDs
+// Service UUID
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-#define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
-#define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
 
 EspBleService::EspBleService() {
 
@@ -26,36 +23,7 @@ void EspBleService::Setup() {
   pServer->setCallbacks(new MyServerCallbacks(this));
 
   // Create the BLE Service
-  BLEService *pService = pServer->createService(SERVICE_UUID);
-
-  // Create a BLE Characteristic for shutter
-  pCharacteristicShutter = pService->createCharacteristic(
-                      CHARACTERISTIC_UUID,
-                      BLECharacteristic::PROPERTY_READ   |
-                      BLECharacteristic::PROPERTY_WRITE  |
-                      BLECharacteristic::PROPERTY_NOTIFY |
-                      BLECharacteristic::PROPERTY_INDICATE
-                    );
-
-  // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
-  // Create a BLE Descriptor
-  pCharacteristicShutter->addDescriptor(new BLE2902());
-
-  // Create a BLE Characteristic for lux sensor
-  pCharacteristicLux = pService->createCharacteristic(
-                      CHARACTERISTIC_LUX_UUID,
-                      BLECharacteristic::PROPERTY_WRITE  |
-                      BLECharacteristic::PROPERTY_NOTIFY
-                    );
-  pCharacteristicLux->addDescriptor(new BLE2902());
-
-  // Create a BLE Characteristic for RGB sensor
-  pCharacteristicRGB = pService->createCharacteristic(
-                      CHARACTERISTIC_RGB_UUID,
-                      BLECharacteristic::PROPERTY_WRITE  |
-                      BLECharacteristic::PROPERTY_NOTIFY
-                    );
-  pCharacteristicRGB->addDescriptor(new BLE2902());
+  pService = pServer->createService(SERVICE_UUID);
 
   // Start the service
   pService->start();
@@ -67,6 +35,29 @@ void EspBleService::Setup() {
   pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
   BLEDevice::startAdvertising();
   Serial.println("Waiting a client connection to notify...");
+}
+
+void EspBleService::AddCharacteristicUuid(String characteristicUuid) {
+  // Create a BLE Characteristic
+  BLECharacteristic* pCharacteristic = pService->createCharacteristic(
+                      characteristicUuid.c_str(),
+                      BLECharacteristic::PROPERTY_READ   |
+                      BLECharacteristic::PROPERTY_WRITE  |
+                      BLECharacteristic::PROPERTY_NOTIFY |
+                      BLECharacteristic::PROPERTY_INDICATE
+                    );
+  // Create BLEDescriptor instance by smart pointer
+  std::shared_ptr<BLE2902> ble2902(new BLE2902());
+  pCharacteristic->addDescriptor(ble2902.get());
+  // Store in hashtable
+  bleCharacteristicMap[std::string(characteristicUuid.c_str())] = pCharacteristic;
+}
+
+void EspBleService::SendMessage(String characteristicUuid, String message) {
+  BLECharacteristic* pCharacteristic = bleCharacteristicMap[std::string(characteristicUuid.c_str())];
+  pCharacteristic->setValue(message.c_str());
+  // notifyすると落ちる
+  //pCharacteristic->notify();
 }
 
 void EspBleService::LoopTask(void *pvParameters) {
