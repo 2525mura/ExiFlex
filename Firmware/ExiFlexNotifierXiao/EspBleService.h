@@ -18,10 +18,12 @@
 
 class IEspBleService {
   public:
-    virtual void AddCharacteristicUuid(String characteristicUuid) = 0;
-    virtual void SendMessage(String characteristicUuid, String message) = 0;
+    // Please call in the following order
     virtual void Setup() = 0;
+    virtual void AddCharacteristicUuid(String characteristicUuid) = 0;
+    virtual void StartService() = 0;
     virtual void LoopTask(void *pvParameters) = 0;
+    virtual void SendMessage(String characteristicUuid, String message) = 0;
     bool deviceConnected = false;
 };
 
@@ -29,8 +31,9 @@ class EspBleService: public IEspBleService {
   public:
     EspBleService();
     void Setup();
-    void LoopTask(void *pvParameters);
     void AddCharacteristicUuid(String characteristicUuid);
+    void StartService();
+    void LoopTask(void *pvParameters);
     void SendMessage(String characteristicUuid, String message);
 
   private:

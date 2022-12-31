@@ -123,9 +123,10 @@ void setup() {
   iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_UUID);
   iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID);
   iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID);
+  frontPanelCtl = new FrontPanelController(iEspBleService);
+  iEspBleService->StartService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 
-  frontPanelCtl = new FrontPanelController(iEspBleService);
   // LED点灯
   frontPanelCtl->LedOn(1);
   frontPanelCtl->LedOn(2);

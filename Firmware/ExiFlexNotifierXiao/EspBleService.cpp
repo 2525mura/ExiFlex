@@ -24,10 +24,12 @@ void EspBleService::Setup() {
 
   // Create the BLE Service
   pService = pServer->createService(SERVICE_UUID);
+}
 
+void EspBleService::StartService() {
   // Start the service
   pService->start();
-
+  
   // Start advertising
   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
   pAdvertising->addServiceUUID(SERVICE_UUID);
@@ -47,8 +49,7 @@ void EspBleService::AddCharacteristicUuid(String characteristicUuid) {
                       BLECharacteristic::PROPERTY_INDICATE
                     );
   // Create BLEDescriptor instance by smart pointer
-  std::shared_ptr<BLE2902> ble2902(new BLE2902());
-  pCharacteristic->addDescriptor(ble2902.get());
+  pCharacteristic->addDescriptor(new BLE2902());
   // Store in hashtable
   bleCharacteristicMap[std::string(characteristicUuid.c_str())] = pCharacteristic;
 }
@@ -56,27 +57,26 @@ void EspBleService::AddCharacteristicUuid(String characteristicUuid) {
 void EspBleService::SendMessage(String characteristicUuid, String message) {
   BLECharacteristic* pCharacteristic = bleCharacteristicMap[std::string(characteristicUuid.c_str())];
   pCharacteristic->setValue(message.c_str());
-  // notifyすると落ちる
-  //pCharacteristic->notify();
+  pCharacteristic->notify();
 }
 
 void EspBleService::LoopTask(void *pvParameters) {
   while(1) {
-    // notify changed value
     if (deviceConnected) {
-      delay(100); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
-    }
-    // disconnecting
-    if (!deviceConnected && oldDeviceConnected) {
-        delay(500); // give the bluetooth stack the chance to get things ready
-        pServer->startAdvertising(); // restart advertising
-        Serial.println("start advertising");
-        oldDeviceConnected = deviceConnected;
-    }
-    // connecting
-    if (deviceConnected && !oldDeviceConnected) {
-        // do stuff here on connecting
-        oldDeviceConnected = deviceConnected;
+      // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
+      delay(100);
+    } else if (!deviceConnected && oldDeviceConnected) {
+      // disconnecting
+      delay(500); // give the bluetooth stack the chance to get things ready
+      pServer->startAdvertising(); // restart advertising
+      Serial.println("start advertising");
+      oldDeviceConnected = deviceConnected;
+    } else if (deviceConnected && !oldDeviceConnected) {
+      // connecting
+      // do stuff here on connecting
+      oldDeviceConnected = deviceConnected;
+    } else {
+      delay(100);
     }
   }
 }
