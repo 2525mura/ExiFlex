@@ -115,6 +115,11 @@ void espBleServiceStart(void *pvParameters) {
   iEspBleService->LoopTask(pvParameters);
 }
 
+void frontPanelCtlStart(void *pvParameters) {
+  // この関数はreturnさせてはいけない(resetしてしまう)
+  frontPanelCtl->LoopTask(pvParameters);
+}
+
 void setup() {
 
   // BLEサービス初期化
@@ -126,6 +131,7 @@ void setup() {
   frontPanelCtl = new FrontPanelController(iEspBleService);
   iEspBleService->StartService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
+  xTaskCreateUniversal(frontPanelCtlStart, "FrontPanelTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 
   // LED点灯
   frontPanelCtl->LedOn(1);

@@ -11,7 +11,6 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include <map>
-#include <memory>
 
 #ifndef __ESP_BLE_SERVICE_H__
 #define __ESP_BLE_SERVICE_H__
