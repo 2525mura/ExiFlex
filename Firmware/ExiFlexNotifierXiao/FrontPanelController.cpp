@@ -19,8 +19,15 @@ FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
   expander->begin();
   expander->write8(0xFF);
   // Setting initial value
-  this->rotarySwValue = 0;
-  this->potentioValue = 0;
+  this->lastSsFnum = "";
+  // PotentioValue to fNum LUT
+  for(int adcValue=0; adcValue<256; adcValue++) {
+    // scalling -1 to 9
+    float dialValue = adcValue / 256.0 * 10.0 - 1.0;
+    float squrt2 = sqrt(2.0);
+    float fNum = pow(squrt2, dialValue);
+    fNumLut[adcValue] = fNum;
+  }
 }
 
 void FrontPanelController::LedOn(int ledNo) {
@@ -38,31 +45,23 @@ byte FrontPanelController::getRotarySwValue() {
   return value;
 }
 
-uint16_t FrontPanelController::getPotentioValue() {
-  return analogRead(A0);
+byte FrontPanelController::getPotentioValue() {
+  // quantize to 8bit
+  return analogRead(A0) >> 4;
 }
 
 void FrontPanelController::LoopTask(void *pvParameters) {
 
   // polling thread
   while(1) {
-    bool isUpdate = false;
-    byte rotarySwValue = this->getRotarySwValue();
-    uint16_t potentioValue = this->getPotentioValue();
-    
-    if(this->rotarySwValue != rotarySwValue) {
-      this->rotarySwValue = rotarySwValue;
-      isUpdate = true;
+    String ss = shutterSpeedLut[getRotarySwValue()];
+    float f = fNumLut[getPotentioValue()];
+    String ssf = ss + " " + String(f, 1);
+    if(!ssf.equals(this->lastSsFnum)) {
+      this->iEspBleService->SendMessage(CHARACTERISTIC_FRONTPANEL_UUID, ssf);
+      this->lastSsFnum = ssf;
     }
-    if(this->potentioValue != potentioValue) {
-      this->potentioValue = potentioValue;
-      isUpdate = true;
-    }
-
-    if(isUpdate) {
-      String message = String(rotarySwValue, DEC) + " " + String(potentioValue, DEC);
-      this->iEspBleService->SendMessage(CHARACTERISTIC_FRONTPANEL_UUID, message);
-    }
+    Serial.println(ssf);
     delay(100);
   }
 }

@@ -11,18 +11,36 @@
 
 class FrontPanelController {
   public:
-    FrontPanelController(IEspBleService* espBleService);
+    FrontPanelController(IEspBleService* iEspBleService);
     void LoopTask(void *pvParameters);
     void LedOn(int ledNo);
     void LedOff(int ledNo);
-    byte getRotarySwValue();
-    uint16_t getPotentioValue();
 
   private:
     // DI from constructor
     IEspBleService* iEspBleService = NULL;
     // IOエキスパンダー
     PCF8574* expander = NULL;
-    byte rotarySwValue;
-    uint16_t potentioValue;
+    String lastSsFnum;
+    const String shutterSpeedLut[16] = {
+      "0",
+      "0.125",
+      "0.25",
+      "0.5",
+      "1",
+      "2",
+      "4",
+      "8",
+      "15",
+      "30",
+      "60",
+      "125",
+      "250",
+      "500",
+      "1000",
+      "2000"
+    };
+    float fNumLut[256];
+    byte getRotarySwValue();
+    byte getPotentioValue();
 };
