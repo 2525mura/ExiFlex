@@ -8,6 +8,7 @@
 #include "Arduino.h"
 #include "EspBleService.h"
 #include "PCF8574.h"
+#include "ExposureMeterModel.h"
 
 class FrontPanelController {
   public:
@@ -21,7 +22,8 @@ class FrontPanelController {
     IEspBleService* iEspBleService = NULL;
     // IOエキスパンダー
     PCF8574* expander = NULL;
-    String lastSsFnum;
+    // ExposureMeterModel
+    ExposureMeterModel* exposureMeterModel = NULL;
     const String shutterSpeedLut[16] = {
       "0",
       "0.125",
@@ -43,4 +45,5 @@ class FrontPanelController {
     float fNumLut[256];
     byte getRotarySwValue();
     byte getPotentioValue();
+    float getProperLV();
 };

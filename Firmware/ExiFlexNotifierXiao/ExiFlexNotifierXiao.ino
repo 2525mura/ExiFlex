@@ -1,11 +1,9 @@
 #include "EspBleService.h"
 #include "FrontPanelController.h"
 #include <esp_sleep.h>
-#include "AE_TSL2572.h"
 #include "MU_S11059.h"
 
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-#define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
 #define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
 
 // BLE Service
@@ -19,10 +17,6 @@ bool antiChatteringMutex = false;
 unsigned int antiChatteringCounter = 0;
 // シャッター通知フラグ
 bool notifyShutterFlg = false;
-// Luxセンサー
-AE_TSL2572 TSL2572;
-bool luxSensorConnected = false;
-unsigned int luxWaitCounter = 0;
 // Colorセンサー
 MU_S11059 S11059;
 unsigned int colorWaitCounter = 0;
@@ -63,43 +57,6 @@ void IRAM_ATTR onMainTimer() {
   startUpCounter++;
 }
 
-bool initLuxSensor() {
-  //ゲイン　0～ 5 (x0.167 , x1.0 , x1.33 , x8 , x16 , x120)
-  byte gain_step = 1;
-  
-  //積分時間のカウンタ(0xFFから減るごとに+2.73ms)
-  //0xFF：  1サイクル(約 2.73ms)
-  //0xDB： 37サイクル(約  101ms)
-  //0xC0： 64サイクル(約  175ms)
-  //0x00：256サイクル(約  699ms)
-  byte atime_cnt = 0xC0;
-  
-  if (TSL2572.CheckID()) {
-    //ゲインを設定
-    TSL2572.SetGain(gain_step);
-    //積分時間を設定
-    TSL2572.SetIntegralTime(atime_cnt);
-
-    //計測開始
-    TSL2572.Reset();
-    delay(100);
-  }
-  else {
-    Serial.println("Failed. Check connection!!");
-    return false;
-  }
-  return true;
-}
-
-void mesureLux() {
-    //TSL2572.GetLux16()で照度を取得
-    uint16_t lux = TSL2572.GetLux16();
-    String out = "LUX:" + String(lux, DEC);
-    iEspBleService->SendMessage(CHARACTERISTIC_LUX_UUID, out);
-    //自動ゲイン調整
-    // TSL2572.SetGainAuto();
-}
-
 void mesureColor() {
     //TSL2572.GetLux16()で照度を取得
     ColorLux colorLux = S11059.GetLux();
@@ -126,7 +83,6 @@ void setup() {
   iEspBleService = new EspBleService();
   iEspBleService->Setup();
   iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_UUID);
-  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID);
   iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID);
   frontPanelCtl = new FrontPanelController(iEspBleService);
   iEspBleService->StartService();
@@ -155,8 +111,6 @@ void setup() {
   // DeepSleep復帰GPIOピン設定
   esp_deep_sleep_enable_gpio_wakeup(BIT(D1), ESP_GPIO_WAKEUP_GPIO_LOW);
 
-  // Luxセンサー初期化
-  luxSensorConnected = initLuxSensor();
   // Colorセンサー初期化
   S11059.SetIntegralTime(MU_S11059::S11059_INTTIME_175, 285);
 
@@ -168,15 +122,6 @@ void loop() {
 
       // notify changed value
     if(iEspBleService->deviceConnected) {
-      // Luxセンサー送信処理
-      if (luxWaitCounter < 20) {
-        luxWaitCounter++;
-      } else {
-        luxWaitCounter = 0;
-        if (luxSensorConnected) {
-          mesureLux();
-        }
-      }
       // Colorセンサー送信処理
       if (colorWaitCounter < 20) {
         colorWaitCounter++;
