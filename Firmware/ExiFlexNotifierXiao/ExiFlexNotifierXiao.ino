@@ -89,11 +89,6 @@ void setup() {
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
   xTaskCreateUniversal(frontPanelCtlStart, "FrontPanelTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 
-  // LED点灯
-  frontPanelCtl->LedOn(1);
-  frontPanelCtl->LedOn(2);
-  frontPanelCtl->LedOn(3);
-
   // ペリフェラル初期化
   Serial.begin(115200);
   Wire.begin(SDA, SCL);

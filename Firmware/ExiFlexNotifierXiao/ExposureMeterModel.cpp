@@ -50,10 +50,10 @@ float ExposureMeterModel::measureLux() {
     return (float)lux;
 }
 
-float ExposureMeterModel::measureEV() {
+void ExposureMeterModel::measureEV(float* ev, float* lux) {
     if(!luxSensorConnected) {
-        return 0.0;
+        return;
     }
-    float lux = measureLux();
-    return log2(lux / 2.5);
+    *lux = measureLux();
+    *ev = log2(*lux / 2.5);
 }

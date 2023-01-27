@@ -45,5 +45,6 @@ class FrontPanelController {
     float fNumLut[256];
     byte getRotarySwValue();
     byte getPotentioValue();
-    float getProperLV();
+    float getProperEV();
+    void indicateExposure(float dEv);
 };

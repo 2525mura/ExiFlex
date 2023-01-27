@@ -13,7 +13,7 @@ class ExposureMeterModel {
     ExposureMeterModel();
     bool initLuxSensor();
     float measureLux();
-    float measureEV();
+    void measureEV(float* ev, float* lux);
 
   private:
     // Luxセンサー

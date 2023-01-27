@@ -49,7 +49,7 @@ byte FrontPanelController::getPotentioValue() {
   return analogRead(A0) >> 4;
 }
 
-float FrontPanelController::getProperLV() {
+float FrontPanelController::getProperEV() {
   // TODO: ISO値を可変にする
   
   String strSs = shutterSpeedLut[getRotarySwValue()];
@@ -62,8 +62,26 @@ float FrontPanelController::getProperLV() {
   float ss = strSs.toFloat();
 
   float isoFix = log2(iso / 100.0);
-  float lv = 2 * log2(fnum) + log2(ss) - isoFix;
-  return lv;
+  float ev = 2 * log2(fnum) + log2(ss) - isoFix;
+  return ev;
+}
+
+void FrontPanelController::indicateExposure(float dEv) {
+    if(dEv >= 0.5) {
+        LedOn(1);
+    } else {
+        LedOff(1);
+    }
+    if(dEv > -1.0 && dEv < 1.0) {
+        LedOn(2);
+    } else {
+        LedOff(2);
+    }
+    if(dEv <= -0.5) {
+        LedOn(3);
+    } else {
+        LedOff(3);
+    }
 }
 
 void FrontPanelController::LoopTask(void *pvParameters) {
@@ -72,11 +90,13 @@ void FrontPanelController::LoopTask(void *pvParameters) {
   while(1) {
     String ss = shutterSpeedLut[getRotarySwValue()];
     float f = fNumLut[getPotentioValue()];
-    float lv = getProperLV();
-    float ev = exposureMeterModel->measureEV();
-    String message = "ISO:100 FNUM:" + String(f, 1) + " SS:" + ss + " LV:" + String(lv, 1) + " EV:" + String(ev, 1);
+    float ev = getProperEV();
+    float lv = 0;
+    float lux = 0;
+    exposureMeterModel->measureEV(&lv, &lux);
+    String message = "ISO:100 FNUM:" + String(f, 1) + " SS:" + ss + " LV:" + String(lv, 1) + " EV:" + String(ev, 1) + " LUX:" + String((int)lux);
     this->iEspBleService->SendMessage(CHARACTERISTIC_LUX_UUID, message);
-    Serial.println(message);
+    indicateExposure(lv - ev);
     delay(100);
   }
 }
