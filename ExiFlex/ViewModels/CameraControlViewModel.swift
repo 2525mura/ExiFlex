@@ -17,13 +17,13 @@ final class CameraControlViewModel: ObservableObject {
     private var cancellables: [AnyCancellable] = []
     private var nowLocation: CLLocation?
     // 画面部品の状態変数
-    var isoValue: String = "100"
-    var fValue: String = "2.8"
-    var ssValue: String = "125"
-    // Picker選択値から計算されたEV値
-    var evValue: Double = 0
-    // LUXセンサーから測定されたLV値
-    var lvValue: Double = 0
+    @Published var isoValue: String = "N/A"
+    @Published var fValue: String = "N/A"
+    @Published var ssValue: String = "N/A"
+    // 設定条件における適正EV値
+    private var evValue: Double = 0
+    // 実測LV値
+    private var lvValue: Double = 0
     // LV - EV
     @Published var dEv: Double = 0
     private(set) var viewContext: NSManagedObjectContext?
@@ -52,8 +52,8 @@ final class CameraControlViewModel: ObservableObject {
                     self.lastId = takeMeta.id!
                 }
             } else if characteristicMsg.characteristicAlias == "lux" {
-                // LUX -> LV計算
-                self.onChangeLv(recvStr: characteristicMsg.characteristicData)
+                // ExiFlexからの測定値をパースする
+                self.onReceiveExposure(recvStr: characteristicMsg.characteristicData)
             }
         })
         
@@ -68,24 +68,19 @@ final class CameraControlViewModel: ObservableObject {
         ]
     }
     
-    func onChangeEv(isoValue: String, fValue: String, ssValue: String) {
-        self.isoValue = isoValue
-        self.fValue = fValue
-        self.ssValue = ssValue
-        let isoValueDouble = Double(self.isoValue)!
-        let fValueDouble = Double(self.fValue)!
-        let ssValueDouble = Double(self.ssValue)!
-        let isoFix = log2(isoValueDouble / 100.0)
-        self.evValue = 2 * log2(fValueDouble) + log2(ssValueDouble) - isoFix
-        self.dEv = lvValue - evValue
-    }
-    
-    func onChangeLv(recvStr: String) {
-        if recvStr == "LUX:0" {
-            return
+    func onReceiveExposure(recvStr: String) {
+        var expParams = recvStr.components(separatedBy: " ").reduce([String: String]()) { (dict, item) in
+            var resultDict = dict
+            var kv = item.components(separatedBy: ":")
+            resultDict[kv[0]] = kv[1]
+            return resultDict
         }
-        let doubleLux = Double(recvStr.split(separator: ":")[1])!
-        self.lvValue = log2(doubleLux / 2.5)
+        self.isoValue = expParams["ISO"]!
+        self.fValue = expParams["FNUM"]!
+        self.ssValue = expParams["SS"]!
+        var luxValue = expParams["LUX"]!
+        self.lvValue = Double(expParams["LV"]!)!
+        self.evValue = Double(expParams["EV"]!)!
         self.dEv = lvValue - evValue
     }
     

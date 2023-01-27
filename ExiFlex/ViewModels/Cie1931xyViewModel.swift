@@ -91,7 +91,7 @@ class Cie1931xyViewModel: ObservableObject {
         // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
         let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
             if characteristicMsg.characteristicAlias == "lux" {
-                self.onChangeLux(recvStr: characteristicMsg.characteristicData)
+                self.onReceiveExposure(recvStr: characteristicMsg.characteristicData)
             } else if characteristicMsg.characteristicAlias == "xyz" {
                 self.onChangeXYZ(recvStr: characteristicMsg.characteristicData)
             }
@@ -102,11 +102,14 @@ class Cie1931xyViewModel: ObservableObject {
         ]
     }
     
-    func onChangeLux(recvStr: String) {
-        if recvStr == "LUX:0" {
-            return
+    func onReceiveExposure(recvStr: String) {
+        var expParams = recvStr.components(separatedBy: " ").reduce([String: String]()) { (dict, item) in
+            var resultDict = dict
+            var kv = item.components(separatedBy: ":")
+            resultDict[kv[0]] = kv[1]
+            return resultDict
         }
-        self.luxMonitor = Double(recvStr.split(separator: ":")[1])!
+        self.luxMonitor = Double(expParams["LUX"]!)!
     }
     
     func onChangeXYZ(recvStr: String) {

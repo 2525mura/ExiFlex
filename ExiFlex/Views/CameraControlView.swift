@@ -12,9 +12,6 @@ struct CameraControlView: View {
     // 自身のViewでインスタンス生成して代入する場合はStateObject、親Viewから貰う場合はObservedObject
     @ObservedObject private(set) var viewModel: CameraControlViewModel
     @Environment(\.managedObjectContext) var viewContext
-    @State private var isoValue: String = "100"
-    @State private var fValue: String = "2.8"
-    @State private var ssValue: String = "125"
     @State private var showingModalRoll = false
     
     @FetchRequest(
@@ -67,41 +64,9 @@ struct CameraControlView: View {
                 Text("ISO")
                 Text("F num")
                 Text("SS")
-                Picker(selection: self.$isoValue, label: Text("")) {
-                    Text("50").tag("50")
-                    Text("100").tag("100")
-                    Text("200").tag("200")
-                    Text("400").tag("400")
-                    Text("800").tag("800")
-                }.onChange(of: self.isoValue) { newValue in
-                    self.viewModel.onChangeEv(isoValue: newValue, fValue: self.fValue, ssValue: self.ssValue)
-                }.frame(width: 100, height: 150).clipped()
-                Picker(selection: self.$fValue, label: Text("")) {
-                    Text("1.4").tag("1.4")
-                    Text("2").tag("2")
-                    Text("2.8").tag("2.8")
-                    Text("4").tag("4")
-                    Text("5.6").tag("5.6")
-                    Text("8").tag("8")
-                    Text("11").tag("11")
-                    Text("16").tag("16")
-                }.onChange(of: self.fValue) { newValue in
-                    self.viewModel.onChangeEv(isoValue: self.isoValue, fValue: newValue, ssValue: self.ssValue)
-                }.frame(width: 100, height: 150).clipped()
-                Picker(selection: self.$ssValue, label: Text("")) {
-                    Text("1").tag("1")
-                    Text("2").tag("2")
-                    Text("4").tag("4")
-                    Text("8").tag("8")
-                    Text("15").tag("15")
-                    Text("30").tag("30")
-                    Text("60").tag("60")
-                    Text("125").tag("125")
-                    Text("250").tag("250")
-                    Text("500").tag("500")
-                }.onChange(of: self.ssValue) { newValue in
-                    self.viewModel.onChangeEv(isoValue: self.isoValue, fValue: self.fValue, ssValue: newValue)
-                }.frame(width: 100, height: 150).clipped()
+                Text(viewModel.isoValue).font(.system(size: 40, weight:.bold, design:.rounded)).foregroundColor(.blue)
+                Text(viewModel.fValue).font(.system(size: 40, weight:.bold, design:.rounded)).foregroundColor(.blue)
+                Text(viewModel.ssValue).font(.system(size: 40, weight:.bold, design:.rounded)).foregroundColor(.blue)
             }
             Spacer()
             if self.viewModel.isFilmLoaded {
