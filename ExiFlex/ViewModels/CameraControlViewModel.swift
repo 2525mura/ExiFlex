@@ -49,6 +49,7 @@ final class CameraControlViewModel: ObservableObject {
             if characteristicMsg.characteristicAlias == "shutter" && self.isFilmLoaded {
                 if let context = self.viewContext {
                     let takeMeta = self.selectedRoll!.take(viewContext: context, isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue, location: self.nowLocation)
+                    self.bleService.sendMessage(message: "SAVED", characteristicUuid: "beb5483e-36e1-4688-b7f5-ea07361b26a8")
                     self.lastId = takeMeta.id!
                 }
             } else if characteristicMsg.characteristicAlias == "lux" {

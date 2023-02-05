@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		040C308228EFA4D60054562D /* RollType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040C308128EFA4D60054562D /* RollType.swift */; };
+		041E8543298DC9FD0079B322 /* BleCharacteristicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041E8542298DC9FD0079B322 /* BleCharacteristicModel.swift */; };
 		042688AC28E9847C00084EDF /* RollEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042688AB28E9847C00084EDF /* RollEditView.swift */; };
 		04ADC3D8290029E3002A2CB9 /* RollEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC3D7290029E3002A2CB9 /* RollEditViewModel.swift */; };
 		71729A50C268E4D43C99D3F8 /* Pods_ExiFlex_ExiFlexUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4BD80F9C41832B07ED0C16 /* Pods_ExiFlex_ExiFlexUITests.framework */; };
@@ -73,6 +74,7 @@
 
 /* Begin PBXFileReference section */
 		040C308128EFA4D60054562D /* RollType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollType.swift; sourceTree = "<group>"; };
+		041E8542298DC9FD0079B322 /* BleCharacteristicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicModel.swift; sourceTree = "<group>"; };
 		042688AB28E9847C00084EDF /* RollEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollEditView.swift; sourceTree = "<group>"; };
 		04ADC3D7290029E3002A2CB9 /* RollEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollEditViewModel.swift; sourceTree = "<group>"; };
 		280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlexTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +214,7 @@
 				C0F3A79827AE50DC00F870BE /* Enums */,
 				C059CA6427906DF2008CB072 /* BleService.swift */,
 				C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */,
+				041E8542298DC9FD0079B322 /* BleCharacteristicModel.swift */,
 				C06A97A1289F818A0046A971 /* Tcs3430Utility.swift */,
 				C0E196D628BFA7490073D939 /* LocationService.swift */,
 			);
@@ -628,6 +631,7 @@
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				042688AC28E9847C00084EDF /* RollEditView.swift in Sources */,
+				041E8543298DC9FD0079B322 /* BleCharacteristicModel.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
 				C0FA4C69282938B40026DEFF /* CameraControlViewModel.swift in Sources */,
 				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,

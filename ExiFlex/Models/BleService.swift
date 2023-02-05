@@ -26,7 +26,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     // MARK: ESP32 Ble UUID
     private let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
     private var characteristicUuids: [CBUUID] = []
-    private var characteristicAliases: [CBUUID:String] = [:]
+    private var characteristicModels: [CBUUID:BleCharacteristicModel] = [:]
     
     // MARK: - Init
     // セントラルマネージャを起動する
@@ -54,7 +54,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func addCharacteristicUuid(uuid: String, alias: String) {
         let cbUuid = CBUUID(string: uuid)
         self.characteristicUuids.append(cbUuid)
-        self.characteristicAliases[cbUuid] = alias
+        self.characteristicModels[cbUuid] = BleCharacteristicModel(alias: alias)
     }
     
     // セントラルマネージャーのステータスが変化したときに呼ばれる
@@ -298,6 +298,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                                 print("キャラクタリスティック発見!")
                                 //Notificationを受け取るよっていうハンドラ
                                 peripheral.setNotifyValue(true, for: characteristic)
+                                self.characteristicModels[characteristic.uuid]?.setCharacteristic(characteristic: characteristic)
                             }
                         }
                     }
@@ -330,7 +331,7 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                             BleCharacteristicMsgEntity(peripheralUuid: peripheral.identifier.uuidString,
                                                        serviceUuid: characteristic.service!.uuid.uuidString,
                                                        characteristicUuid: characteristic.uuid.uuidString,
-                                                       characteristicAlias: self.characteristicAliases[characteristic.uuid]!,
+                                                       characteristicAlias: self.characteristicModels[characteristic.uuid]?.alias ?? "N/A",
                                                        characteristicData: String(data: data, encoding: .ascii)!)
                         )
                     }
@@ -345,4 +346,19 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     
     }
+    
+    // peripheralのcharacteristicに値を送信する関数
+    func sendMessage(message: String, characteristicUuid: String) {
+        let characteristic = self.characteristicModels[CBUUID(string: characteristicUuid)]?.getCharacteristic()
+        if characteristic != nil {
+            let peripheral = characteristic?.service?.peripheral
+            peripheral?.writeValue(message.data(using: .utf8)!, for: characteristic!, type: .withResponse)
+        }
+    }
+    
+    // call back of sendMessage
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        print("\(String(data: characteristic.value!, encoding: .utf8) ?? "")")
+    }
+    
 }
