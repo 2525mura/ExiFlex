@@ -8,6 +8,9 @@
 #include "Arduino.h"
 #include <BLEDevice.h>
 
+#ifndef __ESP_BLE_CHARACTERISTIC_MODEL_H__
+#define __ESP_BLE_CHARACTERISTIC_MODEL_H__
+
 class EspBleCharacteristicModel {
     public:
         EspBleCharacteristicModel(BLECharacteristic* pCharacteristic, String alias);
@@ -17,3 +20,5 @@ class EspBleCharacteristicModel {
         BLECharacteristic* pCharacteristic;
         String alias;
 };
+
+#endif __ESP_BLE_CHARACTERISTIC_MODEL_H__

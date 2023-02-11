@@ -20,7 +20,7 @@ void EspBleService::Setup() {
 
   // Create the BLE Server
   pServer = BLEDevice::createServer();
-  pServer->setCallbacks(new MyServerCallbacks(this));
+  pServer->setCallbacks(this);
 
   // Create the BLE Service
   pService = pServer->createService(SERVICE_UUID);
@@ -39,7 +39,7 @@ void EspBleService::StartService() {
   Serial.println("Waiting a client connection to notify...");
 }
 
-void EspBleService::AddCharacteristicUuid(String characteristicUuid) {
+void EspBleService::AddCharacteristicUuid(String characteristicUuid, String alias) {
   // Create a BLE Characteristic
   BLECharacteristic* pCharacteristic = pService->createCharacteristic(
                       characteristicUuid.c_str(),
@@ -48,14 +48,16 @@ void EspBleService::AddCharacteristicUuid(String characteristicUuid) {
                       BLECharacteristic::PROPERTY_NOTIFY |
                       BLECharacteristic::PROPERTY_INDICATE
                     );
-  // Create BLEDescriptor instance by smart pointer
+  // Set callback on message from master
+  pCharacteristic->setCallbacks(this);
+  // Create BLEDescriptor instance
   pCharacteristic->addDescriptor(new BLE2902());
   // Store in hashtable
-  bleCharacteristicMap[std::string(characteristicUuid.c_str())] = pCharacteristic;
+  bleCharacteristicMap[std::string(characteristicUuid.c_str())] = new EspBleCharacteristicModel(pCharacteristic, alias);
 }
 
 void EspBleService::SendMessage(String characteristicUuid, String message) {
-  BLECharacteristic* pCharacteristic = bleCharacteristicMap[std::string(characteristicUuid.c_str())];
+  BLECharacteristic* pCharacteristic = bleCharacteristicMap[std::string(characteristicUuid.c_str())]->getCharacteristic();
   pCharacteristic->setValue(message.c_str());
   pCharacteristic->notify();
 }
@@ -79,4 +81,19 @@ void EspBleService::LoopTask(void *pvParameters) {
       delay(100);
     }
   }
+}
+
+void EspBleService::onConnect(BLEServer* pServer) {
+      deviceConnected = true;
+}
+
+void EspBleService::onDisconnect(BLEServer* pServer) {
+      deviceConnected = false;
+}
+
+void EspBleService::onWrite(BLECharacteristic *pCharacteristic) {
+    std::string uuid = pCharacteristic->getUUID().toString();
+    String alias = bleCharacteristicMap[uuid]->getAlias();
+    String value = String(pCharacteristic->getValue().c_str());
+
 }

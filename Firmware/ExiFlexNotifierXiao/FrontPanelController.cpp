@@ -12,7 +12,7 @@
 FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
   // DI of EspBleService
   this->iEspBleService = iEspBleService;
-  this->iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID);
+  this->iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID, "lux");
   // init Exipander driver
   expander = new PCF8574(0x20);
   // Set expander's all outputs to Hi

@@ -25,7 +25,6 @@ unsigned int startUpCounter = 0;
 
 void notifyShutter() {
   String out = "SHUTTER";
-  Serial.println(out);
   iEspBleService->SendMessage(CHARACTERISTIC_UUID, out);
 }
 
@@ -82,8 +81,8 @@ void setup() {
   // BLEサービス初期化
   iEspBleService = new EspBleService();
   iEspBleService->Setup();
-  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_UUID);
-  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID);
+  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_UUID, "event");
+  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID, "xyz");
   frontPanelCtl = new FrontPanelController(iEspBleService);
   iEspBleService->StartService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);

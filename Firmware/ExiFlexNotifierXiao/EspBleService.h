@@ -6,6 +6,7 @@
 //
 
 #include "Arduino.h"
+#include "EspBleCharacteristicModel.h"
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
@@ -19,44 +20,31 @@ class IEspBleService {
   public:
     // Please call in the following order
     virtual void Setup() = 0;
-    virtual void AddCharacteristicUuid(String characteristicUuid) = 0;
+    virtual void AddCharacteristicUuid(String characteristicUuid, String alias) = 0;
     virtual void StartService() = 0;
     virtual void LoopTask(void *pvParameters) = 0;
     virtual void SendMessage(String characteristicUuid, String message) = 0;
     bool deviceConnected = false;
 };
 
-class EspBleService: public IEspBleService {
+class EspBleService: public IEspBleService, BLEServerCallbacks, BLECharacteristicCallbacks {
   public:
     EspBleService();
     void Setup();
-    void AddCharacteristicUuid(String characteristicUuid);
+    void AddCharacteristicUuid(String characteristicUuid, String alias);
     void StartService();
     void LoopTask(void *pvParameters);
     void SendMessage(String characteristicUuid, String message);
 
   private:
+    void onConnect(BLEServer* pServer);
+    void onDisconnect(BLEServer* pServer);
+    void onWrite(BLECharacteristic *pCharacteristic);
     BLEServer* pServer = NULL;
     BLEService* pService = NULL;
     bool oldDeviceConnected = false;
-    std::map<std::string, BLECharacteristic*> bleCharacteristicMap;
+    std::map<std::string, EspBleCharacteristicModel*> bleCharacteristicMap;
 
-};
-
-class MyServerCallbacks: public BLEServerCallbacks {
-  public:
-    EspBleService* pService = NULL;
-    MyServerCallbacks(EspBleService* pService) {
-      this->pService = pService;
-    }
-
-    void onConnect(BLEServer* pServer) {
-      pService->deviceConnected = true;
-    }
-
-    void onDisconnect(BLEServer* pServer) {
-      pService->deviceConnected = false;
-    }
 };
 
 #endif __ESP_BLE_SERVICE_H__
