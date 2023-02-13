@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 #include "EspBleCharacteristicModel.h"
+#include "EspBlePeripheralDelegate.h"
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
@@ -24,6 +25,7 @@ class IEspBleService {
     virtual void StartService() = 0;
     virtual void LoopTask(void *pvParameters) = 0;
     virtual void SendMessage(String characteristicUuid, String message) = 0;
+    virtual void setDelegate(EspBlePeripheralDelegate* delegate) = 0;
     bool deviceConnected = false;
 };
 
@@ -35,6 +37,7 @@ class EspBleService: public IEspBleService, BLEServerCallbacks, BLECharacteristi
     void StartService();
     void LoopTask(void *pvParameters);
     void SendMessage(String characteristicUuid, String message);
+    void setDelegate(EspBlePeripheralDelegate* delegate);
 
   private:
     void onConnect(BLEServer* pServer);
@@ -44,6 +47,7 @@ class EspBleService: public IEspBleService, BLEServerCallbacks, BLECharacteristi
     BLEService* pService = NULL;
     bool oldDeviceConnected = false;
     std::map<std::string, EspBleCharacteristicModel*> bleCharacteristicMap;
+    EspBlePeripheralDelegate* blePeripheraldelegate = NULL;
 
 };
 

@@ -94,6 +94,12 @@ void EspBleService::onDisconnect(BLEServer* pServer) {
 void EspBleService::onWrite(BLECharacteristic *pCharacteristic) {
     std::string uuid = pCharacteristic->getUUID().toString();
     String alias = bleCharacteristicMap[uuid]->getAlias();
-    String value = String(pCharacteristic->getValue().c_str());
+    String data = String(pCharacteristic->getValue().c_str());
+    if(!this->blePeripheraldelegate) {
+        blePeripheraldelegate->onReceiveCharacteristic(String(uuid.c_str()), alias, data);
+    }
+}
 
+void EspBleService::setDelegate(EspBlePeripheralDelegate* delegate) {
+    this->blePeripheraldelegate = delegate;
 }

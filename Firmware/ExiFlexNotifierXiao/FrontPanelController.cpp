@@ -12,6 +12,7 @@
 FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
   // DI of EspBleService
   this->iEspBleService = iEspBleService;
+  this->iEspBleService->setDelegate(this);
   this->iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID, "lux");
   // init Exipander driver
   expander = new PCF8574(0x20);
@@ -81,6 +82,12 @@ void FrontPanelController::indicateExposure(float dEv) {
         LedOn(3);
     } else {
         LedOff(3);
+    }
+}
+
+void FrontPanelController::onReceiveCharacteristic(String uuid, String alias, String data) {
+    if(alias.equals("event")) {
+
     }
 }
 

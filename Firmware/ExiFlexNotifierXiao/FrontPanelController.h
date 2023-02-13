@@ -9,13 +9,15 @@
 #include "EspBleService.h"
 #include "PCF8574.h"
 #include "ExposureMeterModel.h"
+#include "EspBlePeripheralDelegate.h"
 
-class FrontPanelController {
+class FrontPanelController: public EspBlePeripheralDelegate {
   public:
     FrontPanelController(IEspBleService* iEspBleService);
     void LoopTask(void *pvParameters);
     void LedOn(int ledNo);
     void LedOff(int ledNo);
+    void onReceiveCharacteristic(String uuid, String alias, String data);
 
   private:
     // DI from constructor
