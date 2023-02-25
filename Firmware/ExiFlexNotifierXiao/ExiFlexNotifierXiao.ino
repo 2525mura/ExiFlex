@@ -112,7 +112,7 @@ void setup() {
 
 void loop() {
 
-  if(startUpCounter < 30000) {
+  if(startUpCounter < 300000) {
 
       // notify changed value
     if(iEspBleService->deviceConnected) {

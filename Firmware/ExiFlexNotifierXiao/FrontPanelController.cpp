@@ -87,7 +87,7 @@ void FrontPanelController::indicateExposure(float dEv) {
 
 void FrontPanelController::onReceiveCharacteristic(String uuid, String alias, String data) {
     if(alias.equals("event")) {
-
+      // Do not lock the thread as the BLE background task will stop
     }
 }
 

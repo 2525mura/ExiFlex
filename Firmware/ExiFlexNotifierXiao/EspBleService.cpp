@@ -95,7 +95,7 @@ void EspBleService::onWrite(BLECharacteristic *pCharacteristic) {
     std::string uuid = pCharacteristic->getUUID().toString();
     String alias = bleCharacteristicMap[uuid]->getAlias();
     String data = String(pCharacteristic->getValue().c_str());
-    if(!this->blePeripheraldelegate) {
+    if(this->blePeripheraldelegate != NULL) {
         blePeripheraldelegate->onReceiveCharacteristic(String(uuid.c_str()), alias, data);
     }
 }
