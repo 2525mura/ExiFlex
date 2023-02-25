@@ -8,12 +8,14 @@
 #include "FrontPanelController.h"
 
 #define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
+#define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
 
 FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
   // DI of EspBleService
   this->iEspBleService = iEspBleService;
   this->iEspBleService->setDelegate(this);
   this->iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_LUX_UUID, "lux");
+  this->iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID, "xyz");
   // init Exipander driver
   expander = new PCF8574(0x20);
   // Set expander's all outputs to Hi
@@ -28,6 +30,7 @@ FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
     fNumLut[adcValue] = fNum;
   }
   exposureMeterModel = new ExposureMeterModel();
+  colorMeterModel = new ColorMeterModel();
 }
 
 void FrontPanelController::LedOn(int ledNo) {
@@ -93,8 +96,10 @@ void FrontPanelController::onReceiveCharacteristic(String uuid, String alias, St
 
 void FrontPanelController::LoopTask(void *pvParameters) {
   bool sensorConnected = exposureMeterModel->initLuxSensor();
+  colorMeterModel->initColorSensor();
   // polling thread
   while(1) {
+    // Exposure
     String ss = shutterSpeedLut[getRotarySwValue()];
     float f = fNumLut[getPotentioValue()];
     float ev = getProperEV();
@@ -104,6 +109,12 @@ void FrontPanelController::LoopTask(void *pvParameters) {
     String message = "ISO:100 FNUM:" + String(f, 1) + " SS:" + ss + " LV:" + String(lv, 1) + " EV:" + String(ev, 1) + " LUX:" + String((int)lux);
     this->iEspBleService->SendMessage(CHARACTERISTIC_LUX_UUID, message);
     indicateExposure(lv - ev);
+
+    // Color
+    float r, g, b, ir;
+    colorMeterModel->measureColor(&r, &g, &b, &ir);
+    String messageColor = "R:" + String((int)r) + " G:" + String((int)g) + " B:" + String((int)b) + " IR:" + String((int)ir);
+    this->iEspBleService->SendMessage(CHARACTERISTIC_RGB_UUID, messageColor);
     delay(100);
   }
 }

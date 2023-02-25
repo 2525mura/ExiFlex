@@ -9,14 +9,14 @@
 #include "../Infrastructures/AE_TSL2572.h"
 
 class ExposureMeterModel {
-  public:
-    ExposureMeterModel();
-    bool initLuxSensor();
-    float measureLux();
-    void measureEV(float* ev, float* lux);
+    public:
+        ExposureMeterModel();
+        bool initLuxSensor();
+        float measureLux();
+        void measureEV(float* ev, float* lux);
 
-  private:
-    // Luxセンサー
-    AE_TSL2572 tsl2572;
-    bool luxSensorConnected = false;
+    private:
+        // Luxセンサー
+        AE_TSL2572 tsl2572;
+        bool luxSensorConnected = false;
 };

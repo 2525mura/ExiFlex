@@ -1,10 +1,8 @@
+#include <esp_sleep.h>
 #include "src/Controllers/FrontPanelController.h"
 #include "src/Infrastructures/EspBleService.h"
-#include "src/Infrastructures/MU_S11059.h"
-#include <esp_sleep.h>
 
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-#define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
+#define CHARACTERISTIC_EVENT_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
 // BLE Service
 IEspBleService* iEspBleService = NULL;
@@ -17,15 +15,12 @@ bool antiChatteringMutex = false;
 unsigned int antiChatteringCounter = 0;
 // シャッター通知フラグ
 bool notifyShutterFlg = false;
-// Colorセンサー
-MU_S11059 S11059;
-unsigned int colorWaitCounter = 0;
 // 起動時間タイマー
 unsigned int startUpCounter = 0;
 
 void notifyShutter() {
   String out = "SHUTTER";
-  iEspBleService->SendMessage(CHARACTERISTIC_UUID, out);
+  iEspBleService->SendMessage(CHARACTERISTIC_EVENT_UUID, out);
 }
 
 void IRAM_ATTR onShutter() {
@@ -56,16 +51,6 @@ void IRAM_ATTR onMainTimer() {
   startUpCounter++;
 }
 
-void mesureColor() {
-    //TSL2572.GetLux16()で照度を取得
-    ColorLux colorLux = S11059.GetLux();
-    String out = "R:" + String(colorLux.lux_r, DEC) + " G:" + String(colorLux.lux_g, DEC) + " B:" + String(colorLux.lux_b, DEC) + " IR:" + String(colorLux.lux_ir, DEC);
-    iEspBleService->SendMessage(CHARACTERISTIC_RGB_UUID, out);
-
-    //デバッグ用
-    //Serial.println(String(getRotarySwValue(), DEC)+ " " +String(analogRead(A0), DEC));
-}
-
 void espBleServiceStart(void *pvParameters) {
   // この関数はreturnさせてはいけない(resetしてしまう)
   iEspBleService->LoopTask(pvParameters);
@@ -81,8 +66,7 @@ void setup() {
   // BLEサービス初期化
   iEspBleService = new EspBleService();
   iEspBleService->Setup();
-  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_UUID, "event");
-  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_RGB_UUID, "xyz");
+  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_EVENT_UUID, "event");
   frontPanelCtl = new FrontPanelController(iEspBleService);
   iEspBleService->StartService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
@@ -90,7 +74,6 @@ void setup() {
 
   // ペリフェラル初期化
   Serial.begin(115200);
-  Wire.begin(SDA, SCL);
 
   // メインタイマー初期化:1msごとにハンドラ実行
   mainTimer = timerBegin(0, 80, true);
@@ -105,9 +88,6 @@ void setup() {
   // DeepSleep復帰GPIOピン設定
   esp_deep_sleep_enable_gpio_wakeup(BIT(D1), ESP_GPIO_WAKEUP_GPIO_LOW);
 
-  // Colorセンサー初期化
-  S11059.SetIntegralTime(MU_S11059::S11059_INTTIME_175, 285);
-
 }
 
 void loop() {
@@ -116,13 +96,6 @@ void loop() {
 
       // notify changed value
     if(iEspBleService->deviceConnected) {
-      // Colorセンサー送信処理
-      if (colorWaitCounter < 20) {
-        colorWaitCounter++;
-      } else {
-        colorWaitCounter = 0;
-          mesureColor();
-      }
       // シャッター通知
       if(notifyShutterFlg) {
         notifyShutter();

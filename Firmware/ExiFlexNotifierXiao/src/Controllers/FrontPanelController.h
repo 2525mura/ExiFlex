@@ -10,6 +10,7 @@
 #include "../Infrastructures/EspBleService.h"
 #include "../Infrastructures/EspBlePeripheralDelegate.h"
 #include "../Models/ExposureMeterModel.h"
+#include "../Models/ColorMeterModel.h"
 
 class FrontPanelController: public EspBlePeripheralDelegate {
   public:
@@ -26,6 +27,8 @@ class FrontPanelController: public EspBlePeripheralDelegate {
     PCF8574* expander = NULL;
     // ExposureMeterModel
     ExposureMeterModel* exposureMeterModel = NULL;
+    // ColorMeterModel
+    ColorMeterModel* colorMeterModel = NULL;
     const String shutterSpeedLut[16] = {
       "0",
       "0.125",
