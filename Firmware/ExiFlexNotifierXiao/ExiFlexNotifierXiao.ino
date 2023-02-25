@@ -1,7 +1,7 @@
-#include "EspBleService.h"
-#include "FrontPanelController.h"
+#include "src/Controllers/FrontPanelController.h"
+#include "src/Infrastructures/EspBleService.h"
+#include "src/Infrastructures/MU_S11059.h"
 #include <esp_sleep.h>
-#include "MU_S11059.h"
 
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"

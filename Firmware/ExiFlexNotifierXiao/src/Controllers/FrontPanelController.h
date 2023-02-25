@@ -6,10 +6,10 @@
 //
 
 #include "Arduino.h"
-#include "EspBleService.h"
 #include "PCF8574.h"
-#include "ExposureMeterModel.h"
-#include "EspBlePeripheralDelegate.h"
+#include "../Infrastructures/EspBleService.h"
+#include "../Infrastructures/EspBlePeripheralDelegate.h"
+#include "../Models/ExposureMeterModel.h"
 
 class FrontPanelController: public EspBlePeripheralDelegate {
   public:
