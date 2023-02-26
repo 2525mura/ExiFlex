@@ -20,7 +20,7 @@ unsigned int startUpCounter = 0;
 
 void notifyShutter() {
   String out = "SHUTTER";
-  iEspBleService->SendMessage(CHARACTERISTIC_EVENT_UUID, out);
+  iEspBleService->sendMessage(CHARACTERISTIC_EVENT_UUID, out);
 }
 
 void IRAM_ATTR onShutter() {
@@ -53,22 +53,22 @@ void IRAM_ATTR onMainTimer() {
 
 void espBleServiceStart(void *pvParameters) {
   // この関数はreturnさせてはいけない(resetしてしまう)
-  iEspBleService->LoopTask(pvParameters);
+  iEspBleService->run(pvParameters);
 }
 
 void frontPanelCtlStart(void *pvParameters) {
   // この関数はreturnさせてはいけない(resetしてしまう)
-  frontPanelCtl->LoopTask(pvParameters);
+  frontPanelCtl->run(pvParameters);
 }
 
 void setup() {
 
   // BLEサービス初期化
   iEspBleService = new EspBleService();
-  iEspBleService->Setup();
-  iEspBleService->AddCharacteristicUuid(CHARACTERISTIC_EVENT_UUID, "event");
+  iEspBleService->setup();
+  iEspBleService->addCharacteristicUuid(CHARACTERISTIC_EVENT_UUID, "event");
   frontPanelCtl = new FrontPanelController(iEspBleService);
-  iEspBleService->StartService();
+  iEspBleService->startService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
   xTaskCreateUniversal(frontPanelCtlStart, "FrontPanelTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 
@@ -106,9 +106,9 @@ void loop() {
 
   } else {
     // LED消灯
-    frontPanelCtl->LedOff(1);
-    frontPanelCtl->LedOff(2);
-    frontPanelCtl->LedOff(3);
+    frontPanelCtl->ledOff(1);
+    frontPanelCtl->ledOff(2);
+    frontPanelCtl->ledOff(3);
     // deep sleep
     esp_deep_sleep_start();
   }

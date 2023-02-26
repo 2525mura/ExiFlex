@@ -18,36 +18,36 @@
 #define __ESP_BLE_SERVICE_H__
 
 class IEspBleService {
-  public:
-    // Please call in the following order
-    virtual void Setup() = 0;
-    virtual void AddCharacteristicUuid(String characteristicUuid, String alias) = 0;
-    virtual void StartService() = 0;
-    virtual void LoopTask(void *pvParameters) = 0;
-    virtual void SendMessage(String characteristicUuid, String message) = 0;
-    virtual void setDelegate(EspBlePeripheralDelegate* delegate) = 0;
-    bool deviceConnected = false;
+    public:
+        // Please call in the following order
+        virtual void setup() = 0;
+        virtual void addCharacteristicUuid(String characteristicUuid, String alias) = 0;
+        virtual void startService() = 0;
+        virtual void run(void *pvParameters) = 0;
+        virtual void sendMessage(String characteristicUuid, String message) = 0;
+        virtual void setDelegate(EspBlePeripheralDelegate* delegate) = 0;
+        bool deviceConnected = false;
 };
 
 class EspBleService: public IEspBleService, BLEServerCallbacks, BLECharacteristicCallbacks {
-  public:
-    EspBleService();
-    void Setup();
-    void AddCharacteristicUuid(String characteristicUuid, String alias);
-    void StartService();
-    void LoopTask(void *pvParameters);
-    void SendMessage(String characteristicUuid, String message);
-    void setDelegate(EspBlePeripheralDelegate* delegate);
+    public:
+        EspBleService();
+        void setup();
+        void addCharacteristicUuid(String characteristicUuid, String alias);
+        void startService();
+        void run(void *pvParameters);
+        void sendMessage(String characteristicUuid, String message);
+        void setDelegate(EspBlePeripheralDelegate* delegate);
 
-  private:
-    void onConnect(BLEServer* pServer);
-    void onDisconnect(BLEServer* pServer);
-    void onWrite(BLECharacteristic *pCharacteristic);
-    BLEServer* pServer = NULL;
-    BLEService* pService = NULL;
-    bool oldDeviceConnected = false;
-    std::map<std::string, EspBleCharacteristicModel*> bleCharacteristicMap;
-    EspBlePeripheralDelegate* blePeripheraldelegate = NULL;
+    private:
+        void onConnect(BLEServer* pServer);
+        void onDisconnect(BLEServer* pServer);
+        void onWrite(BLECharacteristic *pCharacteristic);
+        BLEServer* pServer = NULL;
+        BLEService* pService = NULL;
+        bool oldDeviceConnected = false;
+        std::map<std::string, EspBleCharacteristicModel*> bleCharacteristicMap;
+        EspBlePeripheralDelegate* blePeripheraldelegate = NULL;
 
 };
 
