@@ -4,51 +4,48 @@
 
 #define CHARACTERISTIC_EVENT_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
+ESP_EVENT_DEFINE_BASE(APP_EVENT_BASE);
+typedef enum {
+  EVENT_SHUTTER,
+  EVENT_LUX,
+  EVENT_RGB
+} EventID;
+
+esp_event_loop_handle_t loop_handle;
 // BLE Service
 IEspBleService* iEspBleService = NULL;
 // Front panel controller
 FrontPanelController* frontPanelCtl = NULL;
-// メインタイマー（1ms周期）
+// main timer (1ms interval)
 hw_timer_t * mainTimer = NULL;
-// チャタリング防止制御用
-bool antiChatteringMutex = false;
-unsigned int antiChatteringCounter = 0;
-// シャッター通知フラグ
-bool notifyShutterFlg = false;
-// 起動時間タイマー
-unsigned int startUpCounter = 0;
-
-void notifyShutter() {
-  String out = "SHUTTER";
-  iEspBleService->sendMessage(CHARACTERISTIC_EVENT_UUID, out);
-}
+// prevent chattering
+bool preventChatteringSection = false;
+unsigned int preventChatteringCounter = 0;
 
 void IRAM_ATTR onShutter() {
-  // 割り込み処理に重い処理を入れないこと
-  if (!antiChatteringMutex) {
-    // 排他フラグを有効にする
-    // 一定時間後にメインタイマー処理でfalseに落とされる
-    antiChatteringMutex = true;
-    notifyShutterFlg = true;
+  // Use only ISR-safe functions
+  if (!preventChatteringSection) {
+    preventChatteringSection = true;
+    if(iEspBleService->deviceConnected) {
+      esp_event_isr_post_to(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, NULL, 0, NULL);
+    }
   }
 }
 
 void IRAM_ATTR onMainTimer() {
   // チャタリング防止用フラグ管理
-  if (!antiChatteringMutex) {
-    // カウンターリセット
-    antiChatteringCounter = 0;
-  } else if (antiChatteringMutex && antiChatteringCounter<200) {
+  if (!preventChatteringSection) {
+    // reset
+    preventChatteringCounter = 0;
+  } else if (preventChatteringSection && preventChatteringCounter<200) {
     // チャタリング排他中
     // カウントアップ
-    antiChatteringCounter++;
+    preventChatteringCounter++;
   } else {
-    antiChatteringMutex = false;
-    antiChatteringCounter = 0;
+    // reset
+    preventChatteringSection = false;
+    preventChatteringCounter = 0;
   }
-
-  // 起動時間タイマー
-  startUpCounter++;
 }
 
 void espBleServiceStart(void *pvParameters) {
@@ -61,15 +58,38 @@ void frontPanelCtlStart(void *pvParameters) {
   frontPanelCtl->run(pvParameters);
 }
 
-void setup() {
+// Main event handler
+void run_on_event(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data) {
+  switch (id) {
+  case EVENT_SHUTTER:
+    iEspBleService->sendMessage(CHARACTERISTIC_EVENT_UUID, "SHUTTER");
+    // frontPanelCtl->sendEventShutter();
+    break;
+  default:
+    break;
+  }
+}
 
-  // BLEサービス初期化
+void setup() {
+  // init BLE service
   iEspBleService = new EspBleService();
   iEspBleService->setup();
   iEspBleService->addCharacteristicUuid(CHARACTERISTIC_EVENT_UUID, "event");
   frontPanelCtl = new FrontPanelController(iEspBleService);
   iEspBleService->startService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
+
+  // Main event loop init
+  esp_event_loop_args_t loop_args = {
+      .queue_size = 32,
+      .task_name = "AppTask",
+      .task_priority = uxTaskPriorityGet(NULL) + 1,
+      .task_stack_size = 8192,
+      .task_core_id = CONFIG_ARDUINO_RUNNING_CORE
+  };
+  esp_event_loop_create(&loop_args, &loop_handle);
+  esp_event_handler_register_with(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, run_on_event, NULL);
+
   xTaskCreateUniversal(frontPanelCtlStart, "FrontPanelTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 
   // ペリフェラル初期化
@@ -88,28 +108,18 @@ void setup() {
   // DeepSleep復帰GPIOピン設定
   esp_deep_sleep_enable_gpio_wakeup(BIT(D1), ESP_GPIO_WAKEUP_GPIO_LOW);
 
+  // main task
+  delay(300000);
+  // shutdown
+  frontPanelCtl->ledOff(1);
+  frontPanelCtl->ledOff(2);
+  frontPanelCtl->ledOff(3);
+  esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, run_on_event);
+  esp_event_loop_delete(loop_handle);
+  // deep sleep
+  esp_deep_sleep_start();
 }
 
 void loop() {
-
-  if(startUpCounter < 300000) {
-
-      // notify changed value
-    if(iEspBleService->deviceConnected) {
-      // シャッター通知
-      if(notifyShutterFlg) {
-        notifyShutter();
-        notifyShutterFlg = false;
-      }
-      delay(10);
-    }
-
-  } else {
-    // LED消灯
-    frontPanelCtl->ledOff(1);
-    frontPanelCtl->ledOff(2);
-    frontPanelCtl->ledOff(3);
-    // deep sleep
-    esp_deep_sleep_start();
-  }
+    delay(1000);
 }
