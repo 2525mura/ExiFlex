@@ -15,7 +15,9 @@
 class FrontPanelController: public EspBlePeripheralDelegate {
   public:
     FrontPanelController(IEspBleService* iEspBleService);
-    void run(void *pvParameters);
+    void onMeasureLuxEvent();
+    void onMeasureRGBEvent();
+    void onShutterEvent();
     void ledOn(int ledNo);
     void ledOff(int ledNo);
     void onReceiveCharacteristic(String uuid, String alias, String data);
