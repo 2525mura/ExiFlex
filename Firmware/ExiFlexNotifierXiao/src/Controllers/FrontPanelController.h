@@ -6,7 +6,6 @@
 //
 
 #include "Arduino.h"
-#include "PCF8574.h"
 #include "../Infrastructures/EspBleService.h"
 #include "../Infrastructures/EspBlePeripheralDelegate.h"
 #include "../Models/ExposureMeterModel.h"
@@ -18,40 +17,13 @@ class FrontPanelController: public EspBlePeripheralDelegate {
     void onMeasureLuxEvent();
     void onMeasureRGBEvent();
     void onShutterEvent();
-    void ledOn(int ledNo);
-    void ledOff(int ledNo);
     void onReceiveCharacteristic(String uuid, String alias, String data);
 
   private:
     // DI from constructor
     IEspBleService* iEspBleService = NULL;
-    // IOエキスパンダー
-    PCF8574* expander = NULL;
     // ExposureMeterModel
     ExposureMeterModel* exposureMeterModel = NULL;
     // ColorMeterModel
     ColorMeterModel* colorMeterModel = NULL;
-    const String shutterSpeedLut[16] = {
-      "0",
-      "0.125",
-      "0.25",
-      "0.5",
-      "1",
-      "2",
-      "4",
-      "8",
-      "15",
-      "30",
-      "60",
-      "125",
-      "250",
-      "500",
-      "1000",
-      "2000"
-    };
-    float fNumLut[256];
-    byte getRotarySwValue();
-    byte getPotentioValue();
-    float getProperEV();
-    void indicateExposure(float dEv);
 };

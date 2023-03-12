@@ -8,6 +8,17 @@
 #include "ExposureMeterModel.h"
 
 ExposureMeterModel::ExposureMeterModel() {
+  // PotentioValue to fNum LUT
+  for(int adcValue=0; adcValue<256; adcValue++) {
+    // scalling -1 to 9
+    float dialValue = adcValue / 256.0 * 10.0 - 1.0;
+    float squrt2 = sqrt(2.0);
+    float fNum = pow(squrt2, dialValue);
+    fNumLut[adcValue] = fNum;
+  }
+  // Set expander's all outputs to Hi
+  expander.begin();
+  expander.write8(0xFF);
 }
 
 bool ExposureMeterModel::initLuxSensor() {
@@ -50,10 +61,60 @@ float ExposureMeterModel::measureLux() {
     return (float)lux;
 }
 
-void ExposureMeterModel::measureEV(float* ev, float* lux) {
-    if(!luxSensorConnected) {
-        return;
-    }
-    *lux = measureLux();
-    *ev = log2(*lux / 2.5);
+void ExposureMeterModel::ledOn(int ledNo) {
+  if(ledNo<0 || ledNo>2) return;
+  expander.write(ledNo + 4, LOW);
+}
+
+void ExposureMeterModel::ledOff(int ledNo) {
+  if(ledNo<0 || ledNo>2) return;
+  expander.write(ledNo + 4, HIGH);
+}
+
+byte ExposureMeterModel::getRotarySwValue() {
+  byte value = expander.read8() & 0x0F;
+  return value;
+}
+
+byte ExposureMeterModel::getPotentioValue() {
+  // quantize to 8bit
+  return analogRead(A0) >> 4;
+}
+
+void ExposureMeterModel::indicateExposure(float dEv) {
+  if(dEv >= 0.5) {
+    ledOn(0);
+  } else {
+    ledOff(0);
+  }
+  if(dEv > -1.0 && dEv < 1.0) {
+    ledOn(1);
+  } else {
+    ledOff(1);
+  }
+  if(dEv <= -0.5) {
+    ledOn(2);
+  } else {
+    ledOff(2);
+  }
+}
+
+void ExposureMeterModel::getExposure(String& ssOut, float* fnumOut, float* evOut, float* lvOut, float* luxOut) {
+  // computed standard exposure
+  String ssDec = shutterSpeedLut[getRotarySwValue()];
+  float ss = ssDec.toFloat();
+  float fnum = fNumLut[getPotentioValue()];
+  // TODO: ISO値を可変にする
+  float iso = 100.0;
+  float isoFix = log2(iso / 100.0);
+  float ev = 2 * log2(fnum) + log2(ss) - isoFix;
+  // actual exposure
+  float lux = measureLux();
+  float lv = log2(lux / 2.5);
+  // output result
+  ssOut = ssDec;
+  *fnumOut = fnum;
+  *evOut = ev;
+  *lvOut = lv;
+  *luxOut = lux;
 }
