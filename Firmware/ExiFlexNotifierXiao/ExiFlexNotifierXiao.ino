@@ -129,9 +129,7 @@ void setup() {
   // main task(just waiting)
   delay(300000);
   // shutdown
-  frontPanelCtl->ledOff(1);
-  frontPanelCtl->ledOff(2);
-  frontPanelCtl->ledOff(3);
+  frontPanelCtl->shutdown();
   esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, run_on_event);
   esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_LUX, run_on_event);
   esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_RGB, run_on_event);

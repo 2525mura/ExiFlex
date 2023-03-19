@@ -71,6 +71,12 @@ void ExposureMeterModel::ledOff(int ledNo) {
   expander.write(ledNo + 4, HIGH);
 }
 
+void ExposureMeterModel::ledOffAll() {
+  ledOff(0);
+  ledOff(1);
+  ledOff(2);
+}
+
 byte ExposureMeterModel::getRotarySwValue() {
   byte value = expander.read8() & 0x0F;
   return value;
@@ -82,17 +88,17 @@ byte ExposureMeterModel::getPotentioValue() {
 }
 
 void ExposureMeterModel::indicateExposure(float dEv) {
-  if(dEv >= 0.5) {
+  if(dEv >= 0.3) {
     ledOn(0);
   } else {
     ledOff(0);
   }
-  if(dEv > -1.0 && dEv < 1.0) {
+  if(dEv > -1.1 && dEv < 1.1) {
     ledOn(1);
   } else {
     ledOff(1);
   }
-  if(dEv <= -0.5) {
+  if(dEv <= -0.3) {
     ledOn(2);
   } else {
     ledOff(2);
@@ -107,7 +113,13 @@ void ExposureMeterModel::getExposure(String& ssOut, float* fnumOut, float* evOut
   // TODO: ISO値を可変にする
   float iso = 100.0;
   float isoFix = log2(iso / 100.0);
-  float ev = 2 * log2(fnum) + log2(ss) - isoFix;
+  float ev;
+  if(ssDec == "0") {
+    // Bulb mode
+    ev = 0;
+  } else {
+    ev = 2 * log2(fnum) + log2(ss) - isoFix;
+  }
   // actual exposure
   float lux = measureLux();
   float lv = log2(lux / 2.5);

@@ -24,6 +24,10 @@ FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
     colorMeterModel->initColorSensor();
 }
 
+void FrontPanelController::shutdown() {
+  exposureMeterModel->ledOffAll();
+}
+
 void FrontPanelController::onReceiveCharacteristic(String uuid, String alias, String data) {
     if(alias.equals("event")) {
       // Do not lock the thread as the BLE background task will stop

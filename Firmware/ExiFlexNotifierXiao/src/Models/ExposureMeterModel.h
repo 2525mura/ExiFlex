@@ -15,6 +15,7 @@ class ExposureMeterModel {
   bool initLuxSensor();
   void getExposure(String& ssOut, float* fnumOut, float* evOut, float* lvOut, float* luxOut);
   void indicateExposure(float dEv);
+  void ledOffAll();
 
  private:
   float measureLux();

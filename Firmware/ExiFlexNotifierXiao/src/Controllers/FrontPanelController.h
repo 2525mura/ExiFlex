@@ -18,6 +18,7 @@ class FrontPanelController: public EspBlePeripheralDelegate {
     void onMeasureRGBEvent();
     void onShutterEvent();
     void onReceiveCharacteristic(String uuid, String alias, String data);
+    void shutdown();
 
   private:
     // DI from constructor
