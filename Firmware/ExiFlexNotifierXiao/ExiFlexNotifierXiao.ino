@@ -2,14 +2,8 @@
 #include "src/Controllers/FrontPanelController.h"
 #include "src/Infrastructures/EspBleService.h"
 
-ESP_EVENT_DEFINE_BASE(APP_EVENT_BASE);
-typedef enum {
-  EVENT_SHUTTER,
-  EVENT_LUX,
-  EVENT_RGB
-} EventID;
+ESP_EVENT_DECLARE_BASE(APP_EVENT_BASE);
 
-esp_event_loop_handle_t loop_handle;
 // BLE Service
 IEspBleService* iEspBleService = NULL;
 // Front panel controller
@@ -29,7 +23,7 @@ void IRAM_ATTR onShutter() {
   if (!preventChatteringSection) {
     preventChatteringSection = true;
     if(iEspBleService->deviceConnected) {
-      esp_event_isr_post_to(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, NULL, 0, NULL);
+      esp_event_isr_post_to(frontPanelCtl->loopHandle, APP_EVENT_BASE, EVENT_SHUTTER, NULL, 0, NULL);
     }
   }
 }
@@ -51,7 +45,7 @@ void IRAM_ATTR onMainTimer() {
 
   // generate EVENT_LUX
   if (measureLuxCounter > 100) {
-    esp_event_isr_post_to(loop_handle, APP_EVENT_BASE, EVENT_LUX, NULL, 0, NULL);
+    esp_event_isr_post_to(frontPanelCtl->loopHandle, APP_EVENT_BASE, EVENT_LUX, NULL, 0, NULL);
     measureLuxCounter = 0;
   } else {
     measureLuxCounter++;
@@ -59,7 +53,7 @@ void IRAM_ATTR onMainTimer() {
 
   // generate EVENT_RGB
   if (measureRGBCounter > 200) {
-    esp_event_isr_post_to(loop_handle, APP_EVENT_BASE, EVENT_RGB, NULL, 0, NULL);
+    esp_event_isr_post_to(frontPanelCtl->loopHandle, APP_EVENT_BASE, EVENT_RGB, NULL, 0, NULL);
     measureRGBCounter = 0;
   } else {
     measureRGBCounter++;
@@ -72,23 +66,6 @@ void espBleServiceStart(void *pvParameters) {
   iEspBleService->run(pvParameters);
 }
 
-// Main event handler
-void run_on_event(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data) {
-  switch (id) {
-  case EVENT_SHUTTER:
-    frontPanelCtl->onShutterEvent();
-    break;
-  case EVENT_LUX:
-    frontPanelCtl->onMeasureLuxEvent();
-    break;
-  case EVENT_RGB:
-    frontPanelCtl->onMeasureRGBEvent();
-    break;
-  default:
-    break;
-  }
-}
-
 void setup() {
   // init BLE service
   iEspBleService = new EspBleService();
@@ -97,19 +74,7 @@ void setup() {
   iEspBleService->startService();
   xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 
-  // Main event loop init
-  esp_event_loop_args_t loop_args = {
-      .queue_size = 32,
-      .task_name = "AppTask",
-      .task_priority = uxTaskPriorityGet(NULL) + 1,
-      .task_stack_size = 8192,
-      .task_core_id = CONFIG_ARDUINO_RUNNING_CORE
-  };
-  esp_event_loop_create(&loop_args, &loop_handle);
-  esp_event_handler_register_with(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, run_on_event, NULL);
-  esp_event_handler_register_with(loop_handle, APP_EVENT_BASE, EVENT_LUX, run_on_event, NULL);
-  esp_event_handler_register_with(loop_handle, APP_EVENT_BASE, EVENT_RGB, run_on_event, NULL);
-
+  frontPanelCtl->init();
   // ペリフェラル初期化
   Serial.begin(115200);
 
@@ -130,10 +95,6 @@ void setup() {
   delay(300000);
   // shutdown
   frontPanelCtl->shutdown();
-  esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_SHUTTER, run_on_event);
-  esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_LUX, run_on_event);
-  esp_event_handler_unregister_with(loop_handle, APP_EVENT_BASE, EVENT_RGB, run_on_event);
-  esp_event_loop_delete(loop_handle);
   // deep sleep
   esp_deep_sleep_start();
 }

@@ -11,6 +11,15 @@
 #include "../Models/ExposureMeterModel.h"
 #include "../Models/ColorMeterModel.h"
 
+#ifndef __FRONT_PANEL_CONTROLLER_H__
+#define __FRONT_PANEL_CONTROLLER_H__
+
+typedef enum {
+  EVENT_SHUTTER,
+  EVENT_LUX,
+  EVENT_RGB
+} EventID;
+
 class FrontPanelController: public EspBlePeripheralDelegate {
   public:
     FrontPanelController(IEspBleService* iEspBleService);
@@ -18,7 +27,10 @@ class FrontPanelController: public EspBlePeripheralDelegate {
     void onMeasureRGBEvent();
     void onShutterEvent();
     void onReceiveCharacteristic(String uuid, String alias, String data);
+    static void runOnEvent(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data);
+    void init();
     void shutdown();
+    esp_event_loop_handle_t loopHandle;
 
   private:
     // DI from constructor
@@ -28,3 +40,5 @@ class FrontPanelController: public EspBlePeripheralDelegate {
     // ColorMeterModel
     ColorMeterModel* colorMeterModel = NULL;
 };
+
+#endif __FRONT_PANEL_CONTROLLER_H__
