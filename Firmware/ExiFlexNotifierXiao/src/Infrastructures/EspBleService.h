@@ -23,7 +23,7 @@ class IEspBleService {
         virtual void setup() = 0;
         virtual void addCharacteristicUuid(String characteristicUuid, String alias) = 0;
         virtual void startService() = 0;
-        virtual void run(void *pvParameters) = 0;
+        virtual void monitorLoop(void *pvParameters) = 0;
         virtual void sendMessage(String characteristicUuid, String message) = 0;
         virtual void setDelegate(EspBlePeripheralDelegate* delegate) = 0;
         bool deviceConnected = false;
@@ -35,11 +35,12 @@ class EspBleService: public IEspBleService, BLEServerCallbacks, BLECharacteristi
         void setup();
         void addCharacteristicUuid(String characteristicUuid, String alias);
         void startService();
-        void run(void *pvParameters);
         void sendMessage(String characteristicUuid, String message);
         void setDelegate(EspBlePeripheralDelegate* delegate);
 
     private:
+        void monitorLoop(void *pvParameters);
+        static void runWorker(void *pvParameters);
         void onConnect(BLEServer* pServer);
         void onDisconnect(BLEServer* pServer);
         void onWrite(BLECharacteristic *pCharacteristic);

@@ -1,31 +1,34 @@
 //
-//  FrontPanelController.cpp
-//  Exiflex front panel controller
+//  AppController.cpp
+//  Exiflex firmware app main controller
 //
 //  Created by 村井慎太郎 on 2022/12/24.
 //
 
-#include "FrontPanelController.h"
+#include "AppController.h"
 
 #define CHARACTERISTIC_EVENT_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define CHARACTERISTIC_LUX_UUID "16cf81e3-0212-58b9-0380-0dbc6b54c51d"
 #define CHARACTERISTIC_RGB_UUID "67f46ec5-3d54-54c2-ae2d-fb318a4973b0"
 ESP_EVENT_DEFINE_BASE(APP_EVENT_BASE);
 
-FrontPanelController::FrontPanelController(IEspBleService* iEspBleService) {
-    // DI of EspBleService
-    this->iEspBleService = iEspBleService;
-    this->iEspBleService->setDelegate(this);
-    this->iEspBleService->addCharacteristicUuid(CHARACTERISTIC_EVENT_UUID, "event");
-    this->iEspBleService->addCharacteristicUuid(CHARACTERISTIC_LUX_UUID, "lux");
-    this->iEspBleService->addCharacteristicUuid(CHARACTERISTIC_RGB_UUID, "xyz");
-    exposureMeterModel = new ExposureMeterModel();
-    colorMeterModel = new ColorMeterModel();
-    bool sensorConnected = exposureMeterModel->initLuxSensor();
-    colorMeterModel->initColorSensor();
+AppController::AppController() {
+  iEspBleService.reset(new EspBleService());
+  exposureMeterModel.reset(new ExposureMeterModel());
+  colorMeterModel.reset(new ColorMeterModel());
 }
 
-void FrontPanelController::init() {
+void AppController::init() {
+  // init BLE service
+  iEspBleService->setup();
+  iEspBleService->setDelegate(this);
+  iEspBleService->addCharacteristicUuid(CHARACTERISTIC_EVENT_UUID, "event");
+  iEspBleService->addCharacteristicUuid(CHARACTERISTIC_LUX_UUID, "lux");
+  iEspBleService->addCharacteristicUuid(CHARACTERISTIC_RGB_UUID, "xyz");
+  iEspBleService->startService();
+  // init models
+  bool sensorConnected = exposureMeterModel->initLuxSensor();
+  colorMeterModel->initColorSensor();
   // Main event loop init
   esp_event_loop_args_t loop_args = {
       .queue_size = 32,
@@ -40,7 +43,7 @@ void FrontPanelController::init() {
   esp_event_handler_register_with(loopHandle, APP_EVENT_BASE, EVENT_RGB, runOnEvent, this);
 }
 
-void FrontPanelController::shutdown() {
+void AppController::shutdown() {
   esp_event_handler_unregister_with(loopHandle, APP_EVENT_BASE, EVENT_SHUTTER, runOnEvent);
   esp_event_handler_unregister_with(loopHandle, APP_EVENT_BASE, EVENT_LUX, runOnEvent);
   esp_event_handler_unregister_with(loopHandle, APP_EVENT_BASE, EVENT_RGB, runOnEvent);
@@ -48,13 +51,13 @@ void FrontPanelController::shutdown() {
   exposureMeterModel->ledOffAll();
 }
 
-void FrontPanelController::onReceiveCharacteristic(String uuid, String alias, String data) {
+void AppController::onReceiveCharacteristic(String uuid, String alias, String data) {
     if(alias.equals("event")) {
       // Do not lock the thread as the BLE background task will stop
     }
 }
 
-void FrontPanelController::onMeasureLuxEvent() {
+void AppController::onMeasureLuxEvent() {
   // Exposure
   String ss;
   float f;
@@ -67,7 +70,7 @@ void FrontPanelController::onMeasureLuxEvent() {
   exposureMeterModel->indicateExposure(lv - ev);
 }
 
-void FrontPanelController::onMeasureRGBEvent() {
+void AppController::onMeasureRGBEvent() {
     // Color
     float r, g, b, ir;
     colorMeterModel->measureColor(&r, &g, &b, &ir);
@@ -75,16 +78,18 @@ void FrontPanelController::onMeasureRGBEvent() {
     iEspBleService->sendMessage(CHARACTERISTIC_RGB_UUID, messageColor);
 }
 
-void FrontPanelController::onShutterEvent() {
+void AppController::onShutterEvent() {
+  if(iEspBleService->deviceConnected) {
     iEspBleService->sendMessage(CHARACTERISTIC_EVENT_UUID, "SHUTTER");
+  }
 }
 
 // Main event handler
-void FrontPanelController::runOnEvent(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data) {
+void AppController::runOnEvent(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data) {
   if (!handler_arg) {
     return;
   }
-  auto ctl = static_cast<FrontPanelController*>(handler_arg);
+  auto ctl = static_cast<AppController*>(handler_arg);
   switch (id) {
   case EVENT_SHUTTER:
     ctl->onShutterEvent();

@@ -37,6 +37,8 @@ void EspBleService::startService() {
     pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
     BLEDevice::startAdvertising();
     Serial.println("Waiting a client connection to notify...");
+    // Start monitoring thread
+    xTaskCreateUniversal(runWorker, "BleTask", 8192, this, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
 }
 
 void EspBleService::addCharacteristicUuid(String characteristicUuid, String alias) {
@@ -62,7 +64,13 @@ void EspBleService::sendMessage(String characteristicUuid, String message) {
     pCharacteristic->notify();
 }
 
-void EspBleService::run(void *pvParameters) {
+void EspBleService::runWorker(void *pvParameters) {
+  // この関数はreturnさせてはいけない(resetしてしまう)
+  auto espBleService = static_cast<EspBleService*>(pvParameters);
+  espBleService->monitorLoop(pvParameters);
+}
+
+void EspBleService::monitorLoop(void *pvParameters) {
     while(1) {
         if (deviceConnected) {
             // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms

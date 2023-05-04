@@ -1,13 +1,11 @@
+#include <memory>
 #include <esp_sleep.h>
-#include "src/Controllers/FrontPanelController.h"
-#include "src/Infrastructures/EspBleService.h"
+#include "src/Controllers/AppController.h"
 
 ESP_EVENT_DECLARE_BASE(APP_EVENT_BASE);
 
-// BLE Service
-IEspBleService* iEspBleService = NULL;
-// Front panel controller
-FrontPanelController* frontPanelCtl = NULL;
+// App main controller
+std::unique_ptr<AppController> appController;
 // main timer (1ms interval)
 hw_timer_t * mainTimer = NULL;
 // prevent chattering
@@ -22,9 +20,7 @@ void IRAM_ATTR onShutter() {
   // Use only ISR-safe functions
   if (!preventChatteringSection) {
     preventChatteringSection = true;
-    if(iEspBleService->deviceConnected) {
-      esp_event_isr_post_to(frontPanelCtl->loopHandle, APP_EVENT_BASE, EVENT_SHUTTER, NULL, 0, NULL);
-    }
+      esp_event_isr_post_to(appController->loopHandle, APP_EVENT_BASE, EVENT_SHUTTER, NULL, 0, NULL);
   }
 }
 
@@ -45,7 +41,7 @@ void IRAM_ATTR onMainTimer() {
 
   // generate EVENT_LUX
   if (measureLuxCounter > 100) {
-    esp_event_isr_post_to(frontPanelCtl->loopHandle, APP_EVENT_BASE, EVENT_LUX, NULL, 0, NULL);
+    esp_event_isr_post_to(appController->loopHandle, APP_EVENT_BASE, EVENT_LUX, NULL, 0, NULL);
     measureLuxCounter = 0;
   } else {
     measureLuxCounter++;
@@ -53,7 +49,7 @@ void IRAM_ATTR onMainTimer() {
 
   // generate EVENT_RGB
   if (measureRGBCounter > 200) {
-    esp_event_isr_post_to(frontPanelCtl->loopHandle, APP_EVENT_BASE, EVENT_RGB, NULL, 0, NULL);
+    esp_event_isr_post_to(appController->loopHandle, APP_EVENT_BASE, EVENT_RGB, NULL, 0, NULL);
     measureRGBCounter = 0;
   } else {
     measureRGBCounter++;
@@ -61,20 +57,9 @@ void IRAM_ATTR onMainTimer() {
 
 }
 
-void espBleServiceStart(void *pvParameters) {
-  // この関数はreturnさせてはいけない(resetしてしまう)
-  iEspBleService->run(pvParameters);
-}
-
 void setup() {
-  // init BLE service
-  iEspBleService = new EspBleService();
-  iEspBleService->setup();
-  frontPanelCtl = new FrontPanelController(iEspBleService);
-  iEspBleService->startService();
-  xTaskCreateUniversal(espBleServiceStart, "BleTask", 8192, NULL, 10, NULL, CONFIG_ARDUINO_RUNNING_CORE);
-
-  frontPanelCtl->init();
+  appController.reset(new AppController());
+  appController->init();
   // ペリフェラル初期化
   Serial.begin(115200);
 
@@ -94,7 +79,7 @@ void setup() {
   // main task(just waiting)
   delay(300000);
   // shutdown
-  frontPanelCtl->shutdown();
+  appController->shutdown();
   // deep sleep
   esp_deep_sleep_start();
 }
