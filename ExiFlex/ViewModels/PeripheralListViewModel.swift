@@ -6,13 +6,12 @@
 //
 
 import Foundation
-import Combine
+import CoreBluetooth
 
-final class PeripheralListViewModel: ObservableObject {
+final class PeripheralListViewModel: ObservableObject, BleServiceDelegate {
 
     private let bleService: BleService
     @Published private(set) var peripherals: [PeripheralAdvViewModel] = []
-    private var cancellables: [AnyCancellable] = []
     
     init(bleService: BleService) {
         self.bleService = bleService
@@ -20,32 +19,42 @@ final class PeripheralListViewModel: ObservableObject {
     
     // BleServiceからのアドバタイズ更新通知を受け付ける処理
     func bind() {
-        // BlePeripheralModelが更新されたら通知されるパイプライン処理の実装
-        let peripheralAdvSubscriber = bleService.peripheralSubject.sink(receiveValue: { peripheral in
-            // rssiの範囲は-100 〜 -30
-            var blePower = Int(ceil((peripheral.rssi + 100.0) / 17.5))
-            if blePower < 0 {blePower = 0}
-            if blePower > 4 {blePower = 4}
-            let rssi = Int(peripheral.rssi)
-            // 既にペリフェラルが検出済みリストに登録されているかチェック
-            if let found = self.peripherals.first(where: { return $0.peripheralUuid == peripheral.peripheralUuid.uuidString }) {
-                found.blePower = blePower
-                found.rssi = rssi
-                found.state = peripheral.state
-            } else {
-                self.peripherals.append(
-                    PeripheralAdvViewModel(peripheralUuid: peripheral.peripheralUuid.uuidString,
-                                           peripheralName: peripheral.peripheralName,
-                                           blePower: blePower,
-                                           rssi: rssi)
-                )
-            }
-        })
-        
-        cancellables += [
-            peripheralAdvSubscriber
-        ]
-        
+        bleService.delegate = self
+    }
+    
+    func peripheralDidDiscover(uuid: UUID, peripheral: CBPeripheral, rssi: Double) {
+        // rssiの範囲は-100 〜 -30
+        var blePower = Int(ceil((rssi + 100.0) / 17.5))
+        if blePower < 0 {blePower = 0}
+        if blePower > 4 {blePower = 4}
+        let rssi = Int(rssi)
+        // ペリフェラル情報を追加する
+        self.peripherals.append(
+            PeripheralAdvViewModel(peripheralUuid: peripheral.identifier.uuidString,
+                                   peripheralName: peripheral.name,
+                                   blePower: blePower,
+                                   rssi: rssi)
+        )
+    }
+    
+    func peripheralDidUpdate(uuid: UUID, peripheral: CBPeripheral, rssi: Double) {
+        // rssiの範囲は-100 〜 -30
+        var blePower = Int(ceil((rssi + 100.0) / 17.5))
+        if blePower < 0 {blePower = 0}
+        if blePower > 4 {blePower = 4}
+        let rssi = Int(rssi)
+        // ペリフェラルを更新する
+        if let vmPeripheral = peripherals.first(where: { return $0.peripheralUuid == peripheral.identifier.uuidString }) {
+            vmPeripheral.blePower = blePower
+            vmPeripheral.rssi = rssi
+            vmPeripheral.state = .adAct
+        }
+    }
+    
+    func peripheralDidDelete(uuid: UUID) {
+        if let index = peripherals.firstIndex(where: { return $0.peripheralUuid == uuid.uuidString }) {
+            peripherals.remove(at: index)
+        }
     }
     
     // ペリフェラル選択のキャンセルボタンを押した時に呼ばれる関数
@@ -64,8 +73,8 @@ final class PeripheralListViewModel: ObservableObject {
     }
     
     func removeAllPeripherals() {
-        // ここでパイプラインを止める
-        cancellables[0].cancel()
+        // ここでdelegateを止める
+        self.bleService.delegate = nil
         self.peripherals.removeAll()
     }
     

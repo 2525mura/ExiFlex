@@ -50,7 +50,6 @@ class Cie1931xyViewModel: ObservableObject {
         self.cieIR1 = 0.0
         self.colorTemp = 0.0
         plot(chromaticity: CGPoint(x: 0.0, y: 0.0))
-        self.bleService.addCharacteristicUuid(uuid: "67f46ec5-3d54-54c2-ae2d-fb318a4973b0", alias: "xyz")
         bind()
     }
 
@@ -88,45 +87,36 @@ class Cie1931xyViewModel: ObservableObject {
     
     // BleServiceからのキャラクタリスティック受信を受け付ける処理
     func bind() {
-        // BleCharacteristicMsgEntityが生成されたら通知されるパイプライン処理の実装
-        let characteristicMsgSubscriber = bleService.characteristicSharedPublisher.sink(receiveValue: { characteristicMsg in
-            if characteristicMsg.characteristicAlias == "lux" {
-                self.onReceiveExposure(recvStr: characteristicMsg.characteristicData)
-            } else if characteristicMsg.characteristicAlias == "xyz" {
-                self.onChangeXYZ(recvStr: characteristicMsg.characteristicData)
-            }
+        // characteristicLux subscribe process
+        let luxSubscriber = bleService.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
+            self.luxMonitor = Double(payload.lux)
+        })
+        
+        // characteristicLux subscribe process
+        let rgbSubscriber = bleService.bleServiceExpose.onRecvRGBPublisher.sink(receiveValue: { payload in
+            self.onChangeRGB(rgb: payload)
         })
         
         cancellables += [
-            characteristicMsgSubscriber
+            luxSubscriber,
+            rgbSubscriber
         ]
     }
     
-    func onReceiveExposure(recvStr: String) {
-        var expParams = recvStr.components(separatedBy: " ").reduce([String: String]()) { (dict, item) in
-            var resultDict = dict
-            var kv = item.components(separatedBy: ":")
-            resultDict[kv[0]] = kv[1]
-            return resultDict
-        }
-        self.luxMonitor = Double(expParams["LUX"]!)!
-    }
-    
-    func onChangeXYZ(recvStr: String) {
-        let recvStrSplit = recvStr.split(separator: " ")
-        let ir1 = Double(recvStrSplit[3].split(separator: ":")[1])!
-        // 測定データを校正して各種パラメータを算出
+    func onChangeRGB(rgb: CharacteristicRGB) {
+        let ir = Double(rgb.ir)
+        // Estimate XYZ from RGB
         let tristimulus = tcs3430Utility.getTristimulus(
-            X: Double(recvStrSplit[0].split(separator: ":")[1])!,
-            Y: Double(recvStrSplit[1].split(separator: ":")[1])!,
-            Z: Double(recvStrSplit[2].split(separator: ":")[1])!,
-            IR: ir1
+            X: Double(rgb.r),
+            Y: Double(rgb.g),
+            Z: Double(rgb.b),
+            IR: ir
         )
-        // パラメータをViewに設定
+        // Set parameter to View
         self.cieX = tristimulus.X
         self.cieY = tristimulus.Y
         self.cieZ = tristimulus.Z
-        self.cieIR1 = ir1
+        self.cieIR1 = ir
         self.colorTemp = tristimulus.colorTemp
         plot(chromaticity: CGPoint(x: tristimulus.x, y: tristimulus.y))
     }

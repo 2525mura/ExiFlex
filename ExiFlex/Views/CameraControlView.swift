@@ -12,6 +12,7 @@ struct CameraControlView: View {
     // 自身のViewでインスタンス生成して代入する場合はStateObject、親Viewから貰う場合はObservedObject
     @ObservedObject private(set) var viewModel: CameraControlViewModel
     @Environment(\.managedObjectContext) var viewContext
+    @State private var isoValue: String = "100"
     @State private var showingModalRoll = false
     
     @FetchRequest(
@@ -64,7 +65,15 @@ struct CameraControlView: View {
                 Text("ISO")
                 Text("F num")
                 Text("SS")
-                Text(viewModel.isoValue).font(.system(size: 40, weight:.bold, design:.rounded)).foregroundColor(.blue)
+                Picker(selection: self.$isoValue, label: Text("")) {
+                                    Text("50").tag("50")
+                                    Text("100").tag("100")
+                                    Text("200").tag("200")
+                                    Text("400").tag("400")
+                                    Text("800").tag("800")
+                                }.onChange(of: self.isoValue) { newValue in
+                                    self.viewModel.onChangeIso(isoValue: newValue)
+                                }.frame(width: 100, height: 150).clipped()
                 Text(viewModel.fValue).font(.system(size: 40, weight:.bold, design:.rounded)).foregroundColor(.blue)
                 Text(viewModel.ssValue).font(.system(size: 40, weight:.bold, design:.rounded)).foregroundColor(.blue)
             }

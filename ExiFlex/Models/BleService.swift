@@ -9,243 +9,117 @@ import Foundation
 import Combine
 import CoreBluetooth
 
+class BleService: NSObject, CBCentralManagerDelegate {
 
-class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
-    
-    private var centralManager: CBCentralManager?
-    private var blePeripheralModels: [CBUUID:BlePeripheralModel] = [:]
-    private var advHealthCheckTimer: Timer?
-    // ペリフェラルの状態変化イベントをViewModelに通知するためのSubject
-    let peripheralSubject: PassthroughSubject<BlePeripheralModel, Never>
-    // ヘッダーバーの接続状態表示エリアに通知するためのSubject
-    let connectStateBarSubject: PassthroughSubject<BlePeripheralState, Never>
-    // キャラクタリスティックのNotifyイベントをViewModelに通知するためのSubject
-    private let characteristicMsgNotifySubject: PassthroughSubject<BleCharacteristicMsgEntity, Never>
-    let characteristicSharedPublisher: Publishers.Share<AnyPublisher<BleCharacteristicMsgEntity, Never>>
-    
-    // MARK: ESP32 Ble UUID
-    private let service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-    private var characteristicUuids: [CBUUID] = []
-    private var characteristicModels: [CBUUID:BleCharacteristicModel] = [:]
+    // サービス単位に存在するUUIDとStubClass
+    private let serviceExposeUuid = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")
+    public let bleServiceExpose: BleServiceExpose
+    private var serviceUuids: [CBUUID] = []
     
     // MARK: - Init
-    // セントラルマネージャを起動する
     override init() {
-        self.peripheralSubject = PassthroughSubject<BlePeripheralModel, Never>()
-        self.connectStateBarSubject = PassthroughSubject<BlePeripheralState, Never>()
-        self.characteristicMsgNotifySubject = PassthroughSubject<BleCharacteristicMsgEntity, Never>()
-        self.characteristicSharedPublisher = self.characteristicMsgNotifySubject.eraseToAnyPublisher().share()
+        self.connectStateBarSubject = PassthroughSubject<String, Never>()
+        self.bleServiceExpose = BleServiceExpose(serviceUuid: serviceExposeUuid)
+        self.serviceUuids.append(serviceExposeUuid)
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
-    // 定期的に実行される
-    @objc private func advHealthCheckFunc() {
-        for hashElem in blePeripheralModels {
-            let bleModel = hashElem.value
-            let statusChanged = bleModel.advHealthCheck()
-            if statusChanged {
-                self.peripheralSubject.send(bleModel)
-            }
-        }
-    }
+    // 以降、共通処理
+    private var centralManager: CBCentralManager?
+    private var peripheralsDiscoverDate: [UUID:Date] = [:]
+    private var peripheralsConnectRequestQueue: [UUID:String] = [:]
+    private var peripheralsDisconnectRequestQueue: [UUID:String] = [:]
+    private var peripheralsConnect: [UUID:CBPeripheral] = [:]
+    private var advertiseCheckingTimer: Timer?
+    public var delegate: BleServiceDelegate? = nil
+    // ヘッダーバーの接続状態表示エリアに通知するためのSubject
+    public let connectStateBarSubject: PassthroughSubject<String, Never>
     
-    // 受信Characteristicのリスナー登録関数
-    func addCharacteristicUuid(uuid: String, alias: String) {
-        let cbUuid = CBUUID(string: uuid)
-        self.characteristicUuids.append(cbUuid)
-        self.characteristicModels[cbUuid] = BleCharacteristicModel(alias: alias)
-    }
-    
-    // セントラルマネージャーのステータスが変化したときに呼ばれる
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case CBManagerState.poweredOn:
-            // 電源がONになった
             break
         default:
             break
         }
     }
     
-    func startAdvertiseScan() {
-        // どんなサービスでもスキャン対象とする、アドバタイズを2回以上受信した場合も通知する
-        centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
-        // 各ペリフェラルのアドバタイズ最終受信日時を監視するヘルスチェックタイマーを開始する
-        self.advHealthCheckTimer = Timer.scheduledTimer(
-            timeInterval: 1,
-            target: self,
-            selector: #selector(self.advHealthCheckFunc),
-            userInfo: nil,
-            repeats: true
-        )
-    }
-    
-    // PeripheralListView表示時にPeripheralModelを全て送信する関数
-    func flushPeripherals() {
-        for hashElem in blePeripheralModels {
-            let bleModel = hashElem.value
-            self.peripheralSubject.send(bleModel)
-        }
-    }
-    
-    func stopAdvertiseScan() {
-        // ヘルスチェックタイマーを止めてからAdvertise scanを停止する
-        self.advHealthCheckTimer?.invalidate()
-        centralManager?.stopScan()
-        // 接続要求または接続中または接続済みまたは接続ロストのペリフェラル以外を削除する
-        for hashElem in blePeripheralModels {
-            let bleModelUuid = hashElem.key
-            let bleModel = hashElem.value
-            if !(bleModel.state == .adConnectReq || bleModel.state == .adConnecting || bleModel.state == .connAct || bleModel.state == .connLost) {
-                blePeripheralModels.removeValue(forKey: bleModelUuid)
-            }
-        }
-    }
-    
-    // ペリフェラルのアドバタイズを受信
+    // On receive peripheral's advertise message
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        // 既にペリフェラルが検出済みリストに登録されているかチェック
-        if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-            // RSSIと最終アドバタイズ受信日時を更新
-            switch found.state {
-            // 直前のステータス
-            case .adAct:
-                // ペリフェラルのアドバタイズが有効
-                let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
-                if statusChanged {
-                    self.peripheralSubject.send(found)
-                }
-            case .adLost:
-                // アドバタイズロスト回復
-                let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
-                if statusChanged {
-                    self.peripheralSubject.send(found)
-                }
-                //print("ペリフェラル再受信")
-            case .adConnectReq:
-                // スキャン停止する
-                stopAdvertiseScan()
-                found.connecting(peripheral: peripheral)
-                centralManager?.connect(peripheral)
-                print("ペリフェラル接続受付")
-            case .connDisconnected:
-                // 切断後のアドバタイズ受信
-                let statusChanged = found.advReceive(rssi: RSSI.doubleValue)
-                if statusChanged {
-                    self.peripheralSubject.send(found)
-                }
-                print("切断後のアドバタイズ受信")
-            case .connLost:
-                // 自動再接続
-                stopAdvertiseScan()
-                found.connecting(peripheral: peripheral)
-                centralManager?.connect(peripheral)
-                print("ペリフェラル再接続受付")
-            default:
-                break
-            }
-            
-        } else {
-            // ハッシュテーブルになければペリフェラルを追加
-            let newCBUuid = CBUUID(string: peripheral.identifier.uuidString)
-            let blePeripheral = BlePeripheralModel(rssi: RSSI.doubleValue,
-                                                   peripheralUuid: newCBUuid,
-                                                   peripheralName: peripheral.name
-            )
-            self.peripheralSubject.send(blePeripheral)
-            blePeripheralModels[newCBUuid] = blePeripheral
-            if let services = peripheral.services {
-                print("ペリフェラル追加\(peripheral.name ?? "Unknown")" + String(RSSI.doubleValue) + String(services.count))
+        
+        let uuid = peripheral.identifier
+        // send peripheral discovery and rediscoverd notifycation
+        if let discoverDelegate = self.delegate {
+            if peripheralsDiscoverDate.keys.contains(uuid) {
+                // Rediscovered
+                peripheralsDiscoverDate[uuid] = Date()
+                discoverDelegate.peripheralDidUpdate(uuid: uuid, peripheral: peripheral, rssi: RSSI.doubleValue)
             } else {
-                print("ペリフェラル追加\(peripheral.name ?? "Unknown")" + String(RSSI.doubleValue))
+                // First discovered
+                peripheralsDiscoverDate[uuid] = Date()
+                discoverDelegate.peripheralDidDiscover(uuid: uuid, peripheral: peripheral, rssi: RSSI.doubleValue)
+            }
+        }
+        
+        // commit connect request
+        if peripheralsConnect.keys.contains(uuid) {
+            // ubnormal case
+        } else {
+            // commit connect request
+            // When a connection request for this Periphera is queued
+            if let requestUuid = peripheralsConnectRequestQueue[uuid] {
+                stopAdvertiseScan()
+                centralManager?.connect(peripheral)
+                peripheralsConnect[uuid] = peripheral
+                // remove reserved peripheral uuid from queue
+                peripheralsConnectRequestQueue.removeValue(forKey: uuid)
+                print("ペリフェラル接続受付")
             }
         }
     }
     
-    // ViewModelから指定したペリフェラルに接続するための関数
-    func connectPeripheral(peripheralUuid: String) {
-        if let found = blePeripheralModels[CBUUID(string: peripheralUuid)] {
-            found.connectReq()
-            // 接続ステータスバー更新
-            self.connectStateBarSubject.send(found.state)
-        }
-    }
-    
-    // ViewModelから指定したペリフェラルを切断するための関数
-    func disConnectPeripheral(peripheralUuid: String) {
-        if let found = blePeripheralModels[CBUUID(string: peripheralUuid)] {
-            print("ペリフェラル切断要求")
-            let peripheral = found.disConnectReq()
-            centralManager?.cancelPeripheralConnection(peripheral!)
-        }
-    }
-    
-    // 通信エラーが発生したペリフェラルを切断するための関数
-    func disConnectPeripheralError(peripheralUuid: String) {
-        if let found = blePeripheralModels[CBUUID(string: peripheralUuid)] {
-            print("ペリフェラルエラー切断要求")
-            let peripheral = found.disConnectReqError()
-            centralManager?.cancelPeripheralConnection(peripheral!)
-        }
-    }
-    
-    // ViewModelから全てのペリフェラルを切断するための関数
-    func disConnectPeripheralAll() {
-        for hashElem in blePeripheralModels {
-            let peripheralModel = hashElem.value
-            if peripheralModel.state == .connAct {
-                let peripheral = peripheralModel.disConnectReq()
-                centralManager?.cancelPeripheralConnection(peripheral!)
-            }
-        }
-    }
-    
-    // ペリフェラルに接続成功したら呼び出される
+    // On connect success peripheral
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         if peripheral.state == .connected {
-            // 検出済みリストに登録されているものかをチェック
-            if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-                switch found.state {
-                case .adConnecting:
-                    peripheral.delegate = self
-                    // どんなサービスでも探す
-                    peripheral.discoverServices(nil)
-                    found.connected()
-                    // 接続ステータスバー更新
-                    self.connectStateBarSubject.send(found.state)
-                default:
-                    break
-                }
+            let uuid = peripheral.identifier
+            if peripheralsConnect.keys.contains(uuid) {
+                // マルチサービスの場合はここでUUIDおよびdelegate先の分岐が必要
+                peripheral.delegate = bleServiceExpose
+                peripheral.discoverServices(serviceUuids)
+                self.connectStateBarSubject.send("Connected")
             }
         }
     }
     
-    
+    // On connect failed peripheral
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        let uuid = peripheral.identifier
+        peripheralsConnect.removeValue(forKey: uuid)
+        self.connectStateBarSubject.send("Connect Failed")
         print("ペリフェラルに接続失敗しました")
     }
-
-    // ペリフェラル切断時（切断要求後またはコネクションロスト時）に呼ばれる
+    
+    // calld on disconnect (requested or unexpected disconnect)
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-            switch found.state {
-            // 直前のステータス
-            case .connDisconnecting:
-                found.disConnected()
-                print("ペリフェラル切断済み")
-            case .connAct:
-                // 直前のステータスがアクティブの場合は、接続ロストと判定して再接続を行う
-                found.lostConnection()
-                // 接続ステータスバー更新
-                self.connectStateBarSubject.send(found.state)
+        let uuid = peripheral.identifier
+        
+        // commit disconnect request
+        if peripheralsConnect.keys.contains(uuid) {
+            if let requestUuid = peripheralsDisconnectRequestQueue[uuid] {
+                // disconnect request commited
+                peripheralsConnect.removeValue(forKey: uuid)
+                peripheralsDisconnectRequestQueue.removeValue(forKey: uuid)
+            } else {
+                // Disconnected without a disconnect request
+                // retry connect
+                peripheralsConnect.removeValue(forKey: uuid)
+                connectPeripheral(peripheralUuid: uuid.uuidString)
                 startAdvertiseScan()
-            case .connError:
-                found.disConnected()
-                print("ペリフェラルエラー切断済み")
-            default:
-                break
+                print("ペリフェラル再接続中")
             }
+        } else {
+            // ubnormal case
         }
     }
     
@@ -254,111 +128,108 @@ class BleService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         print("willRestoreState")
     }
     
-    // 接続したペリフェラルのサービスが見つかった時に呼び出される
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        // 既にペリフェラルが検出済みリストに登録されているかチェック
-        if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-            if error == nil {
-                // 指定したキャラクタリスティックへの接続を要求する
-                switch found.state {
-                case .connAct:
-                    if let services = peripheral.services {
-                        for service in services {
-                            // あらかじめ指定したサービスが見つかった
-                            if service.uuid == CBUUID(string: service_uuid) {
-                                print("サービス発見。キャラクラリスティックへ接続します。")
-                                peripheral.discoverCharacteristics(self.characteristicUuids, for: service)
-                            }
-                        }
-                    }
-                    
-                default:
-                    break
+    // Notify Peripheral deletion if more than 5 seconds have passed since Advertise was last received
+    @objc private func advertiseChecker() {
+        
+        // send peripheral delete notifycation
+        if let discoverDelegate = self.delegate {
+            for discoverdDate in peripheralsDiscoverDate {
+                let uuid = discoverdDate.key
+                let date = discoverdDate.value
+                if Date().timeIntervalSince(date) > 5 {
+                    peripheralsDiscoverDate.removeValue(forKey: uuid)
+                    discoverDelegate.peripheralDidDelete(uuid: uuid)
                 }
-                
-            } else {
-                // エラーステータスに変更してペリフェラル切断
-                disConnectPeripheralError(peripheralUuid: peripheral.identifier.uuidString)
             }
         }
     }
     
-    // 指定したキャラクタリスティックが見つかった時に呼び出される
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        // 既にペリフェラルが検出済みリストに登録されているかチェック
-        if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-            if error == nil {
-                // 指定したキャラクタリスティックへの接続を要求する
-                switch found.state {
-                case .connAct:
-                    if let characteristics = service.characteristics {
-                        for characteristic in characteristics {
-                            // あらかじめ指定したキャラクタリスティックが見つかった
-                            if self.characteristicUuids.contains(characteristic.uuid) {
-                                print("キャラクタリスティック発見!")
-                                //Notificationを受け取るよっていうハンドラ
-                                peripheral.setNotifyValue(true, for: characteristic)
-                                self.characteristicModels[characteristic.uuid]?.setCharacteristic(characteristic: characteristic)
-                            }
-                        }
-                    }
-                    
-                default:
-                    break
-                }
-                
-            } else {
-                // エラーステータスに変更してペリフェラル切断
-                disConnectPeripheralError(peripheralUuid: peripheral.identifier.uuidString)
+    // connect to the specified peripheral from ViewModel
+    func connectPeripheral(peripheralUuid: String) {
+        let uuid = UUID(uuidString: peripheralUuid)!
+        peripheralsConnectRequestQueue[uuid] = ""
+        // Update status bar message
+        self.connectStateBarSubject.send("Connecting")
+    }
+    
+    // disconnect to the specified peripheral from ViewModel
+    func disConnectPeripheral(peripheralUuid: String) {
+        let uuid = UUID(uuidString: peripheralUuid)!
+        peripheralsDisconnectRequestQueue[uuid] = ""
+        if let peripheral = peripheralsConnect[uuid] {
+            centralManager?.cancelPeripheralConnection(peripheral)
+            // Update status bar message
+            self.connectStateBarSubject.send("Disconnecting")
+            print("ペリフェラル切断要求")
+        }
+    }
+    
+    // disconnect to all peripheral from ViewModel
+    func disConnectPeripheralAll() {
+        for kvPeripheral in peripheralsConnect {
+            let uuid = kvPeripheral.key
+            disConnectPeripheral(peripheralUuid: uuid.uuidString)
+        }
+    }
+    
+    func startAdvertiseScan() {
+        centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+        // Start Advertise checker (Polling method)
+        self.advertiseCheckingTimer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(self.advertiseChecker),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+    
+    func stopAdvertiseScan() {
+        // Stop Advertise checker
+        self.advertiseCheckingTimer?.invalidate()
+        centralManager?.stopScan()
+        peripheralsDiscoverDate.removeAll()
+    }
+    
+    // 不要と思われる
+    func flushPeripherals() {
+
+    }
+    
+}
+
+extension Data {
+    var bytes: [UInt8] {
+        self.withUnsafeBytes {
+            guard let pointer = $0.baseAddress?.assumingMemoryBound(to: UInt8.self) else {
+                return []
             }
+            return [UInt8](UnsafeBufferPointer(start: pointer, count: count))
         }
     }
     
-    // ペリフェラルからnotify通知があった時に呼び出される
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        // 既にペリフェラルが検出済みリストに登録されているかチェック
-        if let found = blePeripheralModels[CBUUID(string: peripheral.identifier.uuidString)] {
-            if error == nil {
-                // 指定したキャラクタリスティックへの接続を要求する
-                switch found.state {
-                case .connAct:
-                    // あらかじめ指定したキャラクタリスティックが見つかった
-                    if self.characteristicUuids.contains(characteristic.uuid) {
-                        guard let data = characteristic.value else {
-                            return
-                        }
-                        characteristicMsgNotifySubject.send(
-                            BleCharacteristicMsgEntity(peripheralUuid: peripheral.identifier.uuidString,
-                                                       serviceUuid: characteristic.service!.uuid.uuidString,
-                                                       characteristicUuid: characteristic.uuid.uuidString,
-                                                       characteristicAlias: self.characteristicModels[characteristic.uuid]?.alias ?? "N/A",
-                                                       characteristicData: String(data: data, encoding: .ascii)!)
-                        )
-                    }
-                default:
-                    break
-                }
-                
-            } else {
-                // エラーステータスに変更してペリフェラル切断
-                disConnectPeripheralError(peripheralUuid: peripheral.identifier.uuidString)
+    var arrayInt32: [Int32] {
+        self.withUnsafeBytes {
+            guard let pointer = $0.baseAddress?.assumingMemoryBound(to: Int32.self) else {
+                return []
             }
-        }
-    
-    }
-    
-    // peripheralのcharacteristicに値を送信する関数
-    func sendMessage(message: String, characteristicUuid: String) {
-        let characteristic = self.characteristicModels[CBUUID(string: characteristicUuid)]?.getCharacteristic()
-        if characteristic != nil {
-            let peripheral = characteristic?.service?.peripheral
-            peripheral?.writeValue(message.data(using: .utf8)!, for: characteristic!, type: .withResponse)
+            return [Int32](UnsafeBufferPointer(start: pointer, count: count>>2))
         }
     }
     
-    // call back of sendMessage
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        print("\(String(data: characteristic.value!, encoding: .utf8) ?? "")")
+    var arrayFloat: [Float] {
+        self.withUnsafeBytes {
+            guard let pointer = $0.baseAddress?.assumingMemoryBound(to: Float.self) else {
+                return []
+            }
+            return [Float](UnsafeBufferPointer(start: pointer, count: count>>2))
+        }
     }
-    
+}
+
+extension Int32 {
+    var data: Data {
+        var int = self
+        return Data(bytes: &int, count: MemoryLayout<Int32>.size)
+    }
 }

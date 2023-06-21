@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		040C308228EFA4D60054562D /* RollType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040C308128EFA4D60054562D /* RollType.swift */; };
-		041E8543298DC9FD0079B322 /* BleCharacteristicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041E8542298DC9FD0079B322 /* BleCharacteristicModel.swift */; };
 		042688AC28E9847C00084EDF /* RollEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042688AB28E9847C00084EDF /* RollEditView.swift */; };
+		0433057E2A3EBC5100304D1A /* BleServiceExposeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433057D2A3EBC5100304D1A /* BleServiceExposeDelegate.swift */; };
+		0490FCB92A3DCF2D00D62292 /* BleServiceExpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0490FCB82A3DCF2D00D62292 /* BleServiceExpose.swift */; };
+		04ACB1602A415F2F002912ED /* BleServiceExposeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ACB15F2A415F2F002912ED /* BleServiceExposeEntity.swift */; };
 		04ADC3D8290029E3002A2CB9 /* RollEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADC3D7290029E3002A2CB9 /* RollEditViewModel.swift */; };
+		04CAD1972A3D5ADD00032E72 /* BleServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAD1962A3D5ADD00032E72 /* BleServiceDelegate.swift */; };
 		71729A50C268E4D43C99D3F8 /* Pods_ExiFlex_ExiFlexUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4BD80F9C41832B07ED0C16 /* Pods_ExiFlex_ExiFlexUITests.framework */; };
 		A889836B170E651C5B60C991 /* Pods_ExiFlex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA5E1D70A4E502BAEEA76B5 /* Pods_ExiFlex.framework */; };
 		B5FD3C42E99D93F931414121 /* Pods_ExiFlexTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */; };
-		C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */; };
 		C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C01DB3F528B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld */; };
 		C01DB3F928B50991001CCD1D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01DB3F828B50991001CCD1D /* Persistence.swift */; };
 		C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */; };
@@ -48,7 +50,6 @@
 		C07FB62D28A14B0200653460 /* GoogleMapsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FB62C28A14B0200653460 /* GoogleMapsView.swift */; };
 		C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BDE1228748D8D007F15B2 /* RootViewModel.swift */; };
 		C08CECA6283E8AE6002C9EFB /* ExiFlexNotifier.ino in Resources */ = {isa = PBXBuildFile; fileRef = C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */; };
-		C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */; };
 		C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */; };
 		C0E196D728BFA7490073D939 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E196D628BFA7490073D939 /* LocationService.swift */; };
 		C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3A79927AE510D00F870BE /* BlePeripheralState.swift */; };
@@ -74,9 +75,12 @@
 
 /* Begin PBXFileReference section */
 		040C308128EFA4D60054562D /* RollType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollType.swift; sourceTree = "<group>"; };
-		041E8542298DC9FD0079B322 /* BleCharacteristicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicModel.swift; sourceTree = "<group>"; };
 		042688AB28E9847C00084EDF /* RollEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollEditView.swift; sourceTree = "<group>"; };
+		0433057D2A3EBC5100304D1A /* BleServiceExposeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleServiceExposeDelegate.swift; sourceTree = "<group>"; };
+		0490FCB82A3DCF2D00D62292 /* BleServiceExpose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleServiceExpose.swift; sourceTree = "<group>"; };
+		04ACB15F2A415F2F002912ED /* BleServiceExposeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleServiceExposeEntity.swift; sourceTree = "<group>"; };
 		04ADC3D7290029E3002A2CB9 /* RollEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollEditViewModel.swift; sourceTree = "<group>"; };
+		04CAD1962A3D5ADD00032E72 /* BleServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BleServiceDelegate.swift; path = ExiFlex/Models/BleServiceDelegate.swift; sourceTree = SOURCE_ROOT; };
 		280F74748AED709632E57DCD /* Pods_ExiFlexTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlexTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		336E9FAC0DF321948F1D8337 /* Pods-ExiFlexTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlexTests.debug.xcconfig"; path = "Target Support Files/Pods-ExiFlexTests/Pods-ExiFlexTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4D4BD80F9C41832B07ED0C16 /* Pods_ExiFlex_ExiFlexUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlex_ExiFlexUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,7 +88,6 @@
 		8312B0CD64E731AAD4867B35 /* Pods-ExiFlex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlex.release.xcconfig"; path = "Target Support Files/Pods-ExiFlex/Pods-ExiFlex.release.xcconfig"; sourceTree = "<group>"; };
 		AAA5E1D70A4E502BAEEA76B5 /* Pods_ExiFlex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExiFlex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B597E38CD41B6E7AA02E98 /* Pods-ExiFlex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExiFlex.debug.xcconfig"; path = "Target Support Files/Pods-ExiFlex/Pods-ExiFlex.debug.xcconfig"; sourceTree = "<group>"; };
-		C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleCharacteristicMsgEntity.swift; sourceTree = "<group>"; };
 		C01DB3F628B504C1001CCD1D /* ExiFlexDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExiFlexDataModel.xcdatamodel; sourceTree = "<group>"; };
 		C01DB3F828B50991001CCD1D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		C02D7EF1278AE95D00920A32 /* PeripheralAdvViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAdvViewModel.swift; sourceTree = "<group>"; };
@@ -121,7 +124,6 @@
 		C07FB62C28A14B0200653460 /* GoogleMapsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapsView.swift; sourceTree = "<group>"; };
 		C08BDE1228748D8D007F15B2 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C08CECA5283E8AE5002C9EFB /* ExiFlexNotifier.ino */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ExiFlexNotifier.ino; sourceTree = "<group>"; };
-		C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheralModel.swift; sourceTree = "<group>"; };
 		C0BF9875278C3D1A0095CC65 /* PeripheralListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralListView.swift; sourceTree = "<group>"; };
 		C0C005CD282385E500244FD8 /* BleWorkerState.puml */ = {isa = PBXFileReference; lastKnownFileType = text; path = BleWorkerState.puml; sourceTree = "<group>"; };
 		C0C005CE282385E500244FD8 /* ScreenFlow.puml */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScreenFlow.puml; sourceTree = "<group>"; };
@@ -186,8 +188,8 @@
 		C016BEEA27C912FD0012582B /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				C017DDB227C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift */,
 				C06A97A3289FCD2B0046A971 /* TristimulusEntity.swift */,
+				04ACB15F2A415F2F002912ED /* BleServiceExposeEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -213,8 +215,9 @@
 				C016BEEA27C912FD0012582B /* Entities */,
 				C0F3A79827AE50DC00F870BE /* Enums */,
 				C059CA6427906DF2008CB072 /* BleService.swift */,
-				C0950EEE2791BC4000F25AA5 /* BlePeripheralModel.swift */,
-				041E8542298DC9FD0079B322 /* BleCharacteristicModel.swift */,
+				04CAD1962A3D5ADD00032E72 /* BleServiceDelegate.swift */,
+				0490FCB82A3DCF2D00D62292 /* BleServiceExpose.swift */,
+				0433057D2A3EBC5100304D1A /* BleServiceExposeDelegate.swift */,
 				C06A97A1289F818A0046A971 /* Tcs3430Utility.swift */,
 				C0E196D628BFA7490073D939 /* LocationService.swift */,
 			);
@@ -611,19 +614,20 @@
 				C08BDE1328748D8D007F15B2 /* RootViewModel.swift in Sources */,
 				C06A97A2289F818A0046A971 /* Tcs3430Utility.swift in Sources */,
 				C070FBCC28B7C34A00CA3C8B /* Roll+CoreDataProperties.swift in Sources */,
-				C017DDB327C8FCA700D9E15B /* BleCharacteristicMsgEntity.swift in Sources */,
 				04ADC3D8290029E3002A2CB9 /* RollEditViewModel.swift in Sources */,
 				C01DB3F728B504C1001CCD1D /* ExiFlexDataModel.xcdatamodeld in Sources */,
+				0433057E2A3EBC5100304D1A /* BleServiceExposeDelegate.swift in Sources */,
 				C070FBCD28B7C34A00CA3C8B /* TakeMeta+CoreDataClass.swift in Sources */,
 				C070FBCB28B7C34A00CA3C8B /* Roll+CoreDataClass.swift in Sources */,
+				0490FCB92A3DCF2D00D62292 /* BleServiceExpose.swift in Sources */,
 				C03F00EC28ABCA1500ED0CF7 /* GoogleMapsViewModel.swift in Sources */,
 				C038AF4328AD317100A559EC /* AlbumView.swift in Sources */,
+				04ACB1602A415F2F002912ED /* BleServiceExposeEntity.swift in Sources */,
 				C059CA6527906DF2008CB072 /* BleService.swift in Sources */,
 				C03C079F28D029BE0023E4CC /* TakeMetaArcView.swift in Sources */,
 				C038AF4528AD336B00A559EC /* AlbumViewModel.swift in Sources */,
 				C06A97A4289FCD2B0046A971 /* TristimulusEntity.swift in Sources */,
 				C02DCF7827DA50C800A36AE7 /* TakeMetaView.swift in Sources */,
-				C0950EEF2791BC4000F25AA5 /* BlePeripheralModel.swift in Sources */,
 				C070FBCE28B7C34A00CA3C8B /* TakeMeta+CoreDataProperties.swift in Sources */,
 				C0BF9876278C3D1A0095CC65 /* PeripheralListView.swift in Sources */,
 				C05F26E028DF145800908B3B /* FrameType.swift in Sources */,
@@ -631,12 +635,12 @@
 				C05CB36A2787280D00B28849 /* RootView.swift in Sources */,
 				C06B169527D8F4E100E4ABDF /* CameraControlView.swift in Sources */,
 				042688AC28E9847C00084EDF /* RollEditView.swift in Sources */,
-				041E8543298DC9FD0079B322 /* BleCharacteristicModel.swift in Sources */,
 				C02D7EF2278AE95D00920A32 /* PeripheralAdvViewModel.swift in Sources */,
 				C0FA4C69282938B40026DEFF /* CameraControlViewModel.swift in Sources */,
 				C0F3A79A27AE510D00F870BE /* BlePeripheralState.swift in Sources */,
 				C05CB3682787280D00B28849 /* ExiFlexApp.swift in Sources */,
 				C03B5498286C927300E5F0E8 /* Cie1931xyView.swift in Sources */,
+				04CAD1972A3D5ADD00032E72 /* BleServiceDelegate.swift in Sources */,
 				C06A97A0289F80030046A971 /* Matrix.swift in Sources */,
 				C064AD3C278734370014BFFD /* PeripheralAdvCardView.swift in Sources */,
 				C02D7EF4278AEAE200920A32 /* PeripheralListViewModel.swift in Sources */,

@@ -32,33 +32,8 @@ class RootViewModel: ObservableObject {
     
     // BleServiceからのステータスバー表示値の更新通知を受け付ける処理
     func bind() {
-        let connectStateBarSubscriber = bleService.connectStateBarSubject.sink(receiveValue: { peripheralState in
-            switch peripheralState {
-            case .adAct:
-                break
-            case .adLost:
-                break
-            case .adConnectReq:
-                self.connectStateBarCaption = "Connectiing"
-                break
-            case .adConnecting:
-                break
-            case .adConnectFail:
-                break
-            case .connAct:
-                self.connectStateBarCaption = "Connection Act"
-                break
-            case .connLost:
-                self.connectStateBarCaption = "Connection Lost"
-                break
-            case .connError:
-                break
-            case .connDisconnecting:
-                break
-            case .connDisconnected:
-                break
-            }
-
+        let connectStateBarSubscriber = bleService.connectStateBarSubject.sink(receiveValue: { caption in
+            self.connectStateBarCaption = caption
         })
         cancellables += [
             connectStateBarSubscriber
