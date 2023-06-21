@@ -14,13 +14,11 @@ class BleService: NSObject, CBCentralManagerDelegate {
     // サービス単位に存在するUUIDとStubClass
     private let serviceExposeUuid = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")
     public let bleServiceExpose: BleServiceExpose
-    private var serviceUuids: [CBUUID] = []
     
     // MARK: - Init
     override init() {
         self.connectStateBarSubject = PassthroughSubject<String, Never>()
         self.bleServiceExpose = BleServiceExpose(serviceUuid: serviceExposeUuid)
-        self.serviceUuids.append(serviceExposeUuid)
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -69,12 +67,16 @@ class BleService: NSObject, CBCentralManagerDelegate {
             // commit connect request
             // When a connection request for this Periphera is queued
             if let requestUuid = peripheralsConnectRequestQueue[uuid] {
-                stopAdvertiseScan()
                 centralManager?.connect(peripheral)
                 peripheralsConnect[uuid] = peripheral
                 // remove reserved peripheral uuid from queue
                 peripheralsConnectRequestQueue.removeValue(forKey: uuid)
                 print("ペリフェラル接続受付")
+                // When all request commited
+                if peripheralsConnectRequestQueue.isEmpty {
+                    stopAdvertiseScan()
+                    print("Stop advertise scanning")
+                }
             }
         }
     }
@@ -84,9 +86,9 @@ class BleService: NSObject, CBCentralManagerDelegate {
         if peripheral.state == .connected {
             let uuid = peripheral.identifier
             if peripheralsConnect.keys.contains(uuid) {
-                // マルチサービスの場合はここでUUIDおよびdelegate先の分岐が必要
+                // マルチサービスの場合は現在のところ非対応
                 peripheral.delegate = bleServiceExpose
-                peripheral.discoverServices(serviceUuids)
+                peripheral.discoverServices([serviceExposeUuid])
                 self.connectStateBarSubject.send("Connected")
             }
         }
@@ -188,12 +190,11 @@ class BleService: NSObject, CBCentralManagerDelegate {
         // Stop Advertise checker
         self.advertiseCheckingTimer?.invalidate()
         centralManager?.stopScan()
-        peripheralsDiscoverDate.removeAll()
+        clearDiscoverHistory()
     }
     
-    // 不要と思われる
-    func flushPeripherals() {
-
+    func clearDiscoverHistory() {
+        peripheralsDiscoverDate.removeAll()
     }
     
 }

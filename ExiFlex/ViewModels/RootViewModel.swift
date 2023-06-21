@@ -42,7 +42,7 @@ class RootViewModel: ObservableObject {
     
     func startAdvertiseScan() {
         self.peripheralListVm.bind()
-        self.bleService.flushPeripherals()
+        self.bleService.clearDiscoverHistory()
         self.bleService.startAdvertiseScan()
     }
     
