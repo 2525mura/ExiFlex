@@ -2,44 +2,44 @@
 //  AppController.h
 //  Exiflex firmware app main controller
 //
-//  Created by 村井慎太郎 on 2022/12/24.
+//  Created by 2525mura on 2022/12/24.
 //
 
 #include <memory>
+#include <BLEDevice.h>
 #include "Arduino.h"
-#include "../Infrastructures/EspBleService.h"
-#include "../Infrastructures/EspBlePeripheralDelegate.h"
+#include "../Views/BLEServiceExpose.h"
+#include "../Views/BLEServiceExposeDelegate.h"
+#include "../Views/EventLoopDelegate.h"
 #include "../Models/ExposureMeterModel.h"
 #include "../Models/ColorMeterModel.h"
 
 #ifndef __APP_CONTROLLER_H__
 #define __APP_CONTROLLER_H__
 
-typedef enum {
-  EVENT_SHUTTER,
-  EVENT_LUX,
-  EVENT_RGB
-} EventID;
-
-class AppController: public EspBlePeripheralDelegate {
+class AppController: public BLEServerCallbacks, public BLEServiceExposeDelegate, public EventLoopDelegate {
   public:
     AppController();
     void init();
     void shutdown();
-    esp_event_loop_handle_t loopHandle;
 
   private:
-    static void runOnEvent(void* handler_arg, esp_event_base_t base, int32_t id, void* event_data);
-    void onMeasureLuxEvent();
-    void onMeasureRGBEvent();
-    void onShutterEvent();
-    void onReceiveCharacteristic(String uuid, String alias, String data);
-    // BLE service
-    std::unique_ptr<IEspBleService> iEspBleService;
+    void onMeasureLuxEvent() override;
+    void onMeasureRGBEvent() override;
+    void onShutterEvent() override;
+    void onConnect(BLEServer* pServer) override;
+    void onDisconnect(BLEServer* pServer) override;
+    void onRecvEvent(std::string msg) override;
+    void onRecvISO(int iso) override;
+    // BLE server
+    std::unique_ptr<BLEServer> pServer;
+    // BLE service stub
+    std::unique_ptr<BLEServiceExpose> bleServiceExpose;
     // ExposureMeterModel
     std::unique_ptr<ExposureMeterModel> exposureMeterModel;
     // ColorMeterModel
     std::unique_ptr<ColorMeterModel> colorMeterModel;
+    bool bleConnected = false;
 };
 
 #endif __APP_CONTROLLER_H__

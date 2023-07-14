@@ -1,0 +1,110 @@
+@startuml
+
+title ExiFlex Peripheral class design\n\nArchitecture is based on Cocoa MVC
+
+package controller <<Rectangle>> {
+  class AppController {
+    # @Inject appConfig
+    --
+    - init()
+    - shutdown()
+    - onMeasureLuxEvent()
+    - onMeasureRGBEvent()
+    - onShutterEvent()
+    - onConnect()
+    - onDisconnect()
+    - onRecvEvent()
+    - onRecvISO()
+  }
+}
+
+package view <<Rectangle>> {
+  class ino_file {
+    # appConfig
+    # appController
+    # eventLoopDelegate
+    # loopHandle
+    --
+    - setup()
+    - loop()
+  }
+  Interface EventLoopDelegate {
+    - {abstract} onMeasureLuxEvent()
+    - {abstract} onMeasureRGBEvent()
+    - {abstract} onShutterEven()
+  }
+
+  class BleServiceExpose {
+    # @Inject appConfig
+    # bleServiceExposeDelegate
+    # pCharacteristicEvent
+    # pCharacteristicLux
+    # pCharacteristicRGB
+    # pCharacteristicISO
+    --
+    - sendEvent()
+    - sendLux()
+    - sendRGB()
+  }
+  Interface BleServiceExposeDelegate {
+    - {abstract} onRecvEvent()
+    - {abstract} onRecvISO()
+  }
+
+  class BLEServer {
+    # bleServerCallbacks
+    --
+    - setCallbacks()
+    - createService()
+  }
+  Interface BLEServerCallbacks {
+    - {abstract} onConnect()
+    - {abstract} onDisconnect()
+  }
+
+}
+
+package model <<Rectangle>> {
+  class ExposureMeterModel {
+    # @Inject appConfig
+    # luxSensorDriver
+    --
+    - initLuxSensor()
+    - getExposure()
+  }
+}
+
+package dependencies <<Rectangle>> {
+  abstract AppConfigBase {
+    # system
+    # network
+    --
+    + {abstract} load()
+    + getSystem()
+    + getNetwork()
+  }
+  class AppConfigIni {
+    + load()
+  }
+
+}
+
+' controller to model relation
+AppController --> ExposureMeterModel: Update
+
+' controller to view relation
+ino_file --> EventLoopDelegate: User action (Local)
+AppController ..|> EventLoopDelegate
+
+AppController --> BLEServer: Create Service
+BLEServer --> BLEServerCallbacks
+AppController ..|> BLEServerCallbacks
+
+AppController --> BleServiceExpose: Update
+BleServiceExpose --> BleServiceExposeDelegate: User action (Remote)
+AppController ..|> BleServiceExposeDelegate
+
+' dependency inner relation
+AppConfigBase <|.. AppConfigIni
+
+@enduml
