@@ -5,6 +5,10 @@ title ExiFlex Peripheral class design\n\nArchitecture is based on Cocoa MVC
 package controller <<Rectangle>> {
   class AppController {
     # @Inject appConfig
+    # bleServer
+    # bleServiceExpose
+    # colorMeterModel
+    # exposureMeterModel
     --
     - init()
     - shutdown()
@@ -35,7 +39,6 @@ package view <<Rectangle>> {
   }
 
   class BleServiceExpose {
-    # @Inject appConfig
     # bleServiceExposeDelegate
     # pCharacteristicEvent
     # pCharacteristicLux
@@ -72,39 +75,30 @@ package model <<Rectangle>> {
     - initLuxSensor()
     - getExposure()
   }
-}
 
-package dependencies <<Rectangle>> {
-  abstract AppConfigBase {
-    # system
-    # network
+  class ColorMeterModel {
+    # @Inject appConfig
+    # colorSensorDriver
     --
-    + {abstract} load()
-    + getSystem()
-    + getNetwork()
+    - initColorSensor()
+    - measureColor()
   }
-  class AppConfigIni {
-    + load()
-  }
-
 }
 
 ' controller to model relation
-AppController --> ExposureMeterModel: Update
+'AppController --> ExposureMeterModel: Update
+'AppController --> ColorMeterModel: Update
 
 ' controller to view relation
 ino_file --> EventLoopDelegate: User action (Local)
-AppController ..|> EventLoopDelegate
+'AppController ..|> EventLoopDelegate
 
-AppController --> BLEServer: Create Service
-BLEServer --> BLEServerCallbacks
-AppController ..|> BLEServerCallbacks
+'AppController --> BLEServer: Create Service
+BLEServer --> BLEServerCallbacks: Notify
+'AppController ..|> BLEServerCallbacks
 
-AppController --> BleServiceExpose: Update
+'AppController --> BleServiceExpose: Update
 BleServiceExpose --> BleServiceExposeDelegate: User action (Remote)
-AppController ..|> BleServiceExposeDelegate
-
-' dependency inner relation
-AppConfigBase <|.. AppConfigIni
+'AppController ..|> BleServiceExposeDelegate
 
 @enduml

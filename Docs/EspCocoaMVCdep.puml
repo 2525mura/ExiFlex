@@ -1,0 +1,22 @@
+@startuml
+
+package dependencies <<Rectangle>> {
+  abstract AppConfigBase {
+    # system
+    # network
+    --
+    + {abstract} load()
+    + getSystem()
+    + getNetwork()
+  }
+  class AppConfigIni {
+    + load()
+  }
+
+}
+
+left to right direction
+' dependency inner relation
+AppConfigBase <|.. AppConfigIni
+
+@enduml
