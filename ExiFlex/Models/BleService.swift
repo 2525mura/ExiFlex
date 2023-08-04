@@ -1,8 +1,7 @@
 //
-//  BleService.swift
-//  ExiFlex
+//  BleCentral.swift
 //
-//  Created by 村井慎太郎 on 2022/01/13.
+//  BlueJinja Common library for iOS
 //
 
 import Foundation
@@ -11,14 +10,13 @@ import CoreBluetooth
 
 class BleService: NSObject, CBCentralManagerDelegate {
 
-    // サービス単位に存在するUUIDとStubClass
-    private let serviceExposeUuid = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")
-    public let bleServiceExpose: BleServiceExpose
+    // BLE Profile (Auto generated class)
+    public let bleProfile: BleProfile
     
     // MARK: - Init
     override init() {
         self.connectStateBarSubject = PassthroughSubject<String, Never>()
-        self.bleServiceExpose = BleServiceExpose(serviceUuid: serviceExposeUuid)
+        self.bleProfile = BleProfile()
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -30,7 +28,7 @@ class BleService: NSObject, CBCentralManagerDelegate {
     private var peripheralsDisconnectRequestQueue: [UUID:String] = [:]
     private var peripheralsConnect: [UUID:CBPeripheral] = [:]
     private var advertiseCheckingTimer: Timer?
-    public var delegate: BleServiceDelegate? = nil
+    public var delegate: BleCentralDelegate? = nil
     // ヘッダーバーの接続状態表示エリアに通知するためのSubject
     public let connectStateBarSubject: PassthroughSubject<String, Never>
     
@@ -86,9 +84,8 @@ class BleService: NSObject, CBCentralManagerDelegate {
         if peripheral.state == .connected {
             let uuid = peripheral.identifier
             if peripheralsConnect.keys.contains(uuid) {
-                // マルチサービスの場合は現在のところ非対応
-                peripheral.delegate = bleServiceExpose
-                peripheral.discoverServices([serviceExposeUuid])
+                peripheral.delegate = bleProfile
+                peripheral.discoverServices(bleProfile.serviceUuids)
                 self.connectStateBarSubject.send("Connected")
             }
         }

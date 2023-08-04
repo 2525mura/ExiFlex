@@ -8,7 +8,7 @@
 import Foundation
 import CoreBluetooth
 
-final class PeripheralListViewModel: ObservableObject, BleServiceDelegate {
+final class PeripheralListViewModel: ObservableObject, BleCentralDelegate {
 
     private let bleService: BleService
     @Published private(set) var peripherals: [PeripheralAdvViewModel] = []
