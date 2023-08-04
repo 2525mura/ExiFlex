@@ -46,6 +46,6 @@ struct PeripheralListView: View {
 
 struct PeripheralListView_Previews: PreviewProvider {
     static var previews: some View {
-        PeripheralListView(viewModel: PeripheralListViewModel(bleService: BleService()))
+        PeripheralListView(viewModel: PeripheralListViewModel(bleCentral: BleCentral()))
     }
 }

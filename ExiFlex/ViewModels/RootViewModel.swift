@@ -10,7 +10,7 @@ import Combine
 
 class RootViewModel: ObservableObject {
     
-    private let bleService: BleService
+    private let bleCentral: BleCentral
     private let locationService: LocationService
     var peripheralListVm: PeripheralListViewModel
     var cameraControlViewModel: CameraControlViewModel
@@ -20,19 +20,19 @@ class RootViewModel: ObservableObject {
     private var cancellables: [AnyCancellable] = []
     
     init() {
-        self.bleService = BleService()
+        self.bleCentral = BleCentral()
         self.locationService = LocationService()
-        self.peripheralListVm = PeripheralListViewModel(bleService: bleService)
-        self.cameraControlViewModel = CameraControlViewModel(bleService: bleService, locationService: locationService)
-        self.cie1931xyViewModel = Cie1931xyViewModel(bleService: self.bleService)
+        self.peripheralListVm = PeripheralListViewModel(bleCentral: bleCentral)
+        self.cameraControlViewModel = CameraControlViewModel(bleCentral: bleCentral, locationService: locationService)
+        self.cie1931xyViewModel = Cie1931xyViewModel(bleCentral: bleCentral)
         self.albumViewModel = AlbumViewModel()
         self.connectStateBarCaption = "No Connect"
         bind()
     }
     
-    // BleServiceからのステータスバー表示値の更新通知を受け付ける処理
+    // BleCentralからのステータスバー表示値の更新通知を受け付ける処理
     func bind() {
-        let connectStateBarSubscriber = bleService.connectStateBarSubject.sink(receiveValue: { caption in
+        let connectStateBarSubscriber = bleCentral.connectStateBarSubject.sink(receiveValue: { caption in
             self.connectStateBarCaption = caption
         })
         cancellables += [
@@ -42,8 +42,8 @@ class RootViewModel: ObservableObject {
     
     func startAdvertiseScan() {
         self.peripheralListVm.bind()
-        self.bleService.clearDiscoverHistory()
-        self.bleService.startAdvertiseScan()
+        self.bleCentral.clearDiscoverHistory()
+        self.bleCentral.startAdvertiseScan()
     }
     
 }

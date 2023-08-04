@@ -10,16 +10,16 @@ import CoreBluetooth
 
 final class PeripheralListViewModel: ObservableObject, BleCentralDelegate {
 
-    private let bleService: BleService
+    private let bleCentral: BleCentral
     @Published private(set) var peripherals: [PeripheralAdvViewModel] = []
     
-    init(bleService: BleService) {
-        self.bleService = bleService
+    init(bleCentral: BleCentral) {
+        self.bleCentral = bleCentral
     }
     
-    // BleServiceからのアドバタイズ更新通知を受け付ける処理
+    // BleCentralからのアドバタイズ更新通知を受け付ける処理
     func bind() {
-        bleService.delegate = self
+        bleCentral.delegate = self
     }
     
     func peripheralDidDiscover(uuid: UUID, peripheral: CBPeripheral, rssi: Double) {
@@ -59,22 +59,22 @@ final class PeripheralListViewModel: ObservableObject, BleCentralDelegate {
     
     // ペリフェラル選択のキャンセルボタンを押した時に呼ばれる関数
     func stopAdvertiseScan() {
-        self.bleService.stopAdvertiseScan()
+        self.bleCentral.stopAdvertiseScan()
     }
     
     // ペリフェラルをタップした時に呼ばれる関数
     func connectPeripheral(peripheral: PeripheralAdvViewModel) {
-        self.bleService.connectPeripheral(peripheralUuid: peripheral.peripheralUuid)
+        self.bleCentral.connectPeripheral(peripheralUuid: peripheral.peripheralUuid)
     }
     
     // 全ての接続済みペリフェラルを切断するための関数
     func disConnectPeripheralAll() {
-        self.bleService.disConnectPeripheralAll()
+        self.bleCentral.disConnectPeripheralAll()
     }
     
     func removeAllPeripherals() {
         // ここでdelegateを止める
-        self.bleService.delegate = nil
+        self.bleCentral.delegate = nil
         self.peripherals.removeAll()
     }
     

@@ -8,7 +8,7 @@ import Foundation
 import Combine
 import CoreBluetooth
 
-class BleService: NSObject, CBCentralManagerDelegate {
+class BleCentral: NSObject, CBCentralManagerDelegate {
 
     // BLE Profile (Auto generated class)
     public let bleProfile: BleProfile

@@ -11,7 +11,7 @@ import UIKit
 
 class Cie1931xyViewModel: ObservableObject {
 
-    private let bleService: BleService
+    private let bleCentral: BleCentral
     private var cancellables: [AnyCancellable] = []
     private let chartOrigin: CGPoint
     private let chartUnitScale: CGPoint
@@ -27,7 +27,7 @@ class Cie1931xyViewModel: ObservableObject {
     @Published var cieIR1: Double
     @Published var colorTemp: Double
 
-    init(bleService: BleService,
+    init(bleCentral: BleCentral,
          chartImageName: String = "cie1931xy",
          chartOrigin: CGPoint = CGPoint(x: 135, y: 1033),
          chartUnitScale: CGPoint = CGPoint(x: 1184, y: 1184),
@@ -35,7 +35,7 @@ class Cie1931xyViewModel: ObservableObject {
         // chartImageName: チャート画像名
         // chartOrigin: CGPoint(チャート画像の原点ピクセル座標x, チャート画像の原点ピクセル座標y)
         // chartUnitScale: CGSize(xが1変化した場合の増加ピクセル数, yが1変化した場合の増加ピクセル数)
-        self.bleService = bleService
+        self.bleCentral = bleCentral
         self.chartOrigin = chartOrigin
         self.chartUnitScale = chartUnitScale
         self.cursorSize = cursorSize
@@ -85,15 +85,15 @@ class Cie1931xyViewModel: ObservableObject {
         UIGraphicsEndImageContext()
     }
     
-    // BleServiceからのキャラクタリスティック受信を受け付ける処理
+    // BleCentralからのキャラクタリスティック受信を受け付ける処理
     func bind() {
         // characteristicLux subscribe process
-        let luxSubscriber = bleService.bleProfile.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
+        let luxSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
             self.luxMonitor = Double(payload.lux)
         })
         
         // characteristicLux subscribe process
-        let rgbSubscriber = bleService.bleProfile.bleServiceExpose.onRecvRGBPublisher.sink(receiveValue: { payload in
+        let rgbSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvRGBPublisher.sink(receiveValue: { payload in
             self.onChangeRGB(rgb: payload)
         })
         

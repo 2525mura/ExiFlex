@@ -31,7 +31,7 @@ struct Cie1931xyView: View {
 
 struct Cie1931xyView_Previews: PreviewProvider {
     static var previews: some View {
-        Cie1931xyView(viewModel: Cie1931xyViewModel(bleService: BleService()))
+        Cie1931xyView(viewModel: Cie1931xyViewModel(bleCentral: BleCentral()))
             .previewLayout(.sizeThatFits)
     }
 }

@@ -12,7 +12,7 @@ import CoreLocation
 
 final class CameraControlViewModel: ObservableObject {
 
-    private let bleService: BleService
+    private let bleCentral: BleCentral
     private let locationService: LocationService
     private var cancellables: [AnyCancellable] = []
     private var nowLocation: CLLocation?
@@ -34,8 +34,8 @@ final class CameraControlViewModel: ObservableObject {
     // Memo: モーダルで何を開いているかは、ViewModel側で持つべし
     @Published var modalRollState: ModalRollState = .selectFilm
     
-    init(bleService: BleService, locationService: LocationService) {
-        self.bleService = bleService
+    init(bleCentral: BleCentral, locationService: LocationService) {
+        self.bleCentral = bleCentral
         self.locationService = locationService
         self.isFilmLoaded = false
         bind()
@@ -44,18 +44,18 @@ final class CameraControlViewModel: ObservableObject {
     // Subscribe BLE message
     func bind() {
         // characteristicEvent subscribe process
-        let eventSubscriber = bleService.bleProfile.bleServiceExpose.onRecvEventPublisher.sink(receiveValue: { payload in
+        let eventSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvEventPublisher.sink(receiveValue: { payload in
             if payload.msg == "SHUTTER" && self.isFilmLoaded {
                 if let context = self.viewContext {
                     let takeMeta = self.selectedRoll!.take(viewContext: context, isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue, location: self.nowLocation)
-                    self.bleService.bleProfile.bleServiceExpose.sendEvent(msg: "SAVED")
+                    self.bleCentral.bleProfile.bleServiceExpose.sendEvent(msg: "SAVED")
                     self.lastId = takeMeta.id!
                 }
             }
         })
         
         // characteristicLux subscribe process
-        let luxSubscriber = bleService.bleProfile.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
+        let luxSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
             // ExiFlexからの測定値をパースする
             self.onReceiveExposure(lux: payload)
         })
@@ -118,7 +118,7 @@ final class CameraControlViewModel: ObservableObject {
     }
     
     func onChangeIso(isoValue: String) {
-        self.bleService.bleProfile.bleServiceExpose.sendISO(iso: Int32(isoValue)!)
+        self.bleCentral.bleProfile.bleServiceExpose.sendISO(iso: Int32(isoValue)!)
     }
     
     func tmpRollInit() {
