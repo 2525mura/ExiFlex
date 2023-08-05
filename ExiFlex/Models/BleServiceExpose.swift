@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import CoreBluetooth
 
-class BleServiceExpose: BleServiceDelegate, BleServiceExposeDelegate {
+class BleServiceExpose: BleGattClientDelegate, BleServiceExposeDelegate {
 
     // MARK: ESP32 Ble UUID
     static let serviceUuid = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")

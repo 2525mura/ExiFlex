@@ -10,13 +10,13 @@ import CoreBluetooth
 
 class BleCentral: NSObject, CBCentralManagerDelegate {
 
-    // BLE Profile (Auto generated class)
-    public let bleProfile: BleProfile
+    // BLE GATT Client (Auto generated class)
+    public let bleGattClient: BleGattClient
     
     // MARK: - Init
     override init() {
         self.connectStateBarSubject = PassthroughSubject<String, Never>()
-        self.bleProfile = BleProfile()
+        self.bleGattClient = BleGattClient()
         super.init()
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -84,8 +84,8 @@ class BleCentral: NSObject, CBCentralManagerDelegate {
         if peripheral.state == .connected {
             let uuid = peripheral.identifier
             if peripheralsConnect.keys.contains(uuid) {
-                peripheral.delegate = bleProfile
-                peripheral.discoverServices(bleProfile.serviceUuids)
+                peripheral.delegate = bleGattClient
+                peripheral.discoverServices(bleGattClient.serviceUuids)
                 self.connectStateBarSubject.send("Connected")
             }
         }

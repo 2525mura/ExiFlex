@@ -88,12 +88,12 @@ class Cie1931xyViewModel: ObservableObject {
     // BleCentralからのキャラクタリスティック受信を受け付ける処理
     func bind() {
         // characteristicLux subscribe process
-        let luxSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
+        let luxSubscriber = bleCentral.bleGattClient.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
             self.luxMonitor = Double(payload.lux)
         })
         
         // characteristicLux subscribe process
-        let rgbSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvRGBPublisher.sink(receiveValue: { payload in
+        let rgbSubscriber = bleCentral.bleGattClient.bleServiceExpose.onRecvRGBPublisher.sink(receiveValue: { payload in
             self.onChangeRGB(rgb: payload)
         })
         

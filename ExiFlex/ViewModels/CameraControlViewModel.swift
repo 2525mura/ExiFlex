@@ -44,18 +44,18 @@ final class CameraControlViewModel: ObservableObject {
     // Subscribe BLE message
     func bind() {
         // characteristicEvent subscribe process
-        let eventSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvEventPublisher.sink(receiveValue: { payload in
+        let eventSubscriber = bleCentral.bleGattClient.bleServiceExpose.onRecvEventPublisher.sink(receiveValue: { payload in
             if payload.msg == "SHUTTER" && self.isFilmLoaded {
                 if let context = self.viewContext {
                     let takeMeta = self.selectedRoll!.take(viewContext: context, isoValue: self.isoValue, fValue: self.fValue, ssValue: self.ssValue, location: self.nowLocation)
-                    self.bleCentral.bleProfile.bleServiceExpose.sendEvent(msg: "SAVED")
+                    self.bleCentral.bleGattClient.bleServiceExpose.sendEvent(msg: "SAVED")
                     self.lastId = takeMeta.id!
                 }
             }
         })
         
         // characteristicLux subscribe process
-        let luxSubscriber = bleCentral.bleProfile.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
+        let luxSubscriber = bleCentral.bleGattClient.bleServiceExpose.onRecvLuxPublisher.sink(receiveValue: { payload in
             // ExiFlexからの測定値をパースする
             self.onReceiveExposure(lux: payload)
         })
@@ -118,7 +118,7 @@ final class CameraControlViewModel: ObservableObject {
     }
     
     func onChangeIso(isoValue: String) {
-        self.bleCentral.bleProfile.bleServiceExpose.sendISO(iso: Int32(isoValue)!)
+        self.bleCentral.bleGattClient.bleServiceExpose.sendISO(iso: Int32(isoValue)!)
     }
     
     func tmpRollInit() {
